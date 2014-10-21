@@ -5,14 +5,9 @@ import java.util.Hashtable;
 
 import javax.servlet.http.HttpServletRequest;
 
-import pedidos.control.UseCaseController;
-import pedidos.util.ActionDone;
-import pedidos.util.DoAction;
-import pedidos.viewUseCases.ManterAdmView;
-import pedidos.viewUseCases.ManterClienteView;
-import pedidos.viewUseCases.ManterPedidoView;
-import pedidos.viewUseCases.ManterProdutoView;
-import pedidos.viewUseCases.SecurityView;
+import module1.pechincha.controllers.UseCaseController;
+import module1.pechincha.util.ActionDone;
+import module1.pechincha.util.DoAction;
 import biz.source_code.miniTemplator.MiniTemplator;
 import biz.source_code.miniTemplator.MiniTemplator.TemplateSyntaxException;
 
@@ -33,11 +28,8 @@ public class ServletController {
 	
 	//Adicionar todas as classes de gerenciamento de conteúdo aqui.
 	private void initViews(){
-		listViews.put("manterCliente", new ManterClienteView(servletContext,"manterCliente"));
-		listViews.put("manterProduto", new ManterProdutoView(servletContext,"manterProduto"));
-		listViews.put("manterPedido", new ManterPedidoView(servletContext,"manterPedido"));
-		listViews.put("manterAdm", new ManterAdmView(servletContext,"manterAdm"));
-		listViews.put("security", new SecurityView(servletContext,"security"));
+		//listViews.put("manterCliente", new ManterClienteView(servletContext,"manterCliente"));
+
 	};
 	
 	private String init() throws TemplateSyntaxException, IOException{

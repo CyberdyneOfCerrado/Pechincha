@@ -3,12 +3,8 @@ package module1.pechincha.controllers;
 import java.lang.reflect.Method;
 import java.util.Hashtable;
 
-import pedidos.useCases.ManterAdm;
-import pedidos.useCases.ManterCliente;
-import pedidos.useCases.ManterPedido;
-import pedidos.useCases.ManterProduto;
-import pedidos.util.ActionDone;
-import pedidos.util.DoAction;
+import module1.pechincha.util.ActionDone;
+import module1.pechincha.util.DoAction;
 
 //Esta classe procura pela classe de UseCase mais adequada para atuar na requisição
 public class UseCaseController {
@@ -18,10 +14,8 @@ public class UseCaseController {
 		listUserCase = new Hashtable<>(); 
 		
 		//Casos de uso novos devem ser adicionados aqui.
-		 listUserCase.put("manterCliente", new ManterCliente());
-		 listUserCase.put("manterProduto", new ManterProduto());
-		 listUserCase.put("manterPedido", new ManterPedido());
-		 listUserCase.put("manterAdm", new ManterAdm());
+		//listUserCase.put("manterCliente", new ManterCliente());
+		
 	};
 	
 	@SuppressWarnings("unchecked")

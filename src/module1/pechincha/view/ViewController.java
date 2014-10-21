@@ -2,9 +2,9 @@ package module1.pechincha.view;
 
 import java.io.IOException;
 
+import module1.pechincha.util.ActionDone;
 import biz.source_code.miniTemplator.MiniTemplator;
 import biz.source_code.miniTemplator.MiniTemplator.TemplateSyntaxException;
-import pedidos.util.ActionDone;
 //Classe com o comportamento genérico de uma classe de controle de visão de caso de uso.
 
 public abstract class ViewController {
