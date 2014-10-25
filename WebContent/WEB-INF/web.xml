@@ -9,4 +9,14 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  <servlet>
+    <description></description>
+    <display-name>Question</display-name>
+    <servlet-name>Question</servlet-name>
+    <servlet-class>module1.pechincha.view.Question</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Question</servlet-name>
+    <url-pattern>/q</url-pattern>
+  </servlet-mapping>
 </web-app>

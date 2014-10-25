@@ -17,7 +17,7 @@ public class Question extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
 		PrintWriter out = response.getWriter();
-		out.print(sc.process(request)); //transforma a request em String (html)
+		out.print(sc.process(request)); 
 		out.close();
 	}
 
@@ -26,7 +26,7 @@ public class Question extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
 		PrintWriter out = response.getWriter();
-		out.print(sc.process(request));
+		out.print(sc.process(request)); 
 		out.close();
 	}
 

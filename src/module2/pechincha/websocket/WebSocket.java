@@ -6,16 +6,16 @@ import javax.websocket.OnClose;
 import javax.websocket.OnError;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
+import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
-import org.apache.catalina.Session;
 
 
 @ServerEndpoint("/server")
 public class WebSocket {
    @OnMessage
    public void onMessage(Session session, String msg) {
-     
+     System.out.println(msg);
    }; 
    
    @OnOpen
