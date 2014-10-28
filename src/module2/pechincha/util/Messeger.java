@@ -1,6 +1,7 @@
 package module2.pechincha.util;
 
 import javax.net.*;
+import javax.websocket.Session;
 
 import module2.pechincha.enumeration.MsgTypes;
 
@@ -9,6 +10,7 @@ public class Messeger {
 	private int idLeilao;
 	private MsgTypes tipoMsg; 
 	private String msg;
+	private Session session; 
 	
 	
 	public int getIdEmissor() {
@@ -34,5 +36,11 @@ public class Messeger {
 	}
 	public void setMsg(String msg) {
 		this.msg = msg;
+	}
+	public Session getSession() {
+		return session;
+	}
+	public void setSession(Session session) {
+		this.session = session;
 	} 
 }

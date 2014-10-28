@@ -4,5 +4,6 @@ public enum MsgTypes {
 	LANCE, 
 	FINALIZAR, 
 	HANDSHAKE, 
+	MENSAGEM,
 	LANCE_INVALIDO
 }

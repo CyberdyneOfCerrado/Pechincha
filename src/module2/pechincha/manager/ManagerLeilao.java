@@ -8,4 +8,5 @@ public class ManagerLeilao extends java.lang.Thread {
 		
 	}
 	
+
 }
