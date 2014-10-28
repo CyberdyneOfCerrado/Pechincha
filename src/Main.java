@@ -8,9 +8,8 @@ import org.json.JSONObject;
 public class Main {
 
 	public static void main(String[] args) {
-	 String test = "{ 'idEmissor':'1', 'idLeilao':'1', 'TipoMSG':'MENSAGEM', 'Msg':'Olá mundo' }"; 
+	 String test = "{'idEmissor':'1', 'idLeilao':'1', 'TipoMSG':'HANDSHAKE', 'Msg':'José' }"; 
 	 
-	 Messeger m = MessegerFactory.createMesseger(test, null); 
 	}
 
 }

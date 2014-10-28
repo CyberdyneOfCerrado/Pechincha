@@ -7,15 +7,16 @@ import module2.pechincha.enumeration.MsgTypes;
 import org.json.JSONObject;
 
 public class MessegerFactory {
-	public static Messeger createMesseger( String JsonObjectString , Session session){
+	public static Messeger createMesseger( String JsonObjectString){
 		JSONObject o = new JSONObject(JsonObjectString); 
 		Messeger m = null;
 		
 		switch ( MsgTypes.valueOf(o.get("TipoMSG").toString())){
 		case MENSAGEM: 
-			m = createMenasgem(o, session);
+			m = createMenasgem(o);
 			break;
 		case HANDSHAKE: 
+			m = createMenasgem(o);
 			break;
 		case LANCE: 
 			break;
@@ -29,9 +30,8 @@ public class MessegerFactory {
 		return m;
 	}; 
 	
-	private static Messeger createMenasgem(JSONObject o , Session session ){
+	private static Messeger createMenasgem(JSONObject o ){
 		Messeger m = new Messeger();
-		m.setSession(session);
 		m.setIdEmissor(Integer.parseInt(o.get("idEmissor").toString())); 
 		m.setIdLeilao(Integer.parseInt(o.get("idLeilao").toString()));
 		m.setMsg(o.get("Msg").toString());
