@@ -3,10 +3,11 @@ package module2.pechincha.manager;
 import java.util.Hashtable;
 
 import module1.pechincha.model.Leilao;
+import module2.pechincha.util.Messeger;
 import module2.pechincha.util.UserSession;
 
 public class ManagerStorage extends Thread{
-	private Hashtable<Integer, ManagerLeilao > managers; 
+	private Hashtable<Integer, ManagerLeilao> managers; 
 	
 	public void run(){
 		
@@ -20,6 +21,11 @@ public class ManagerStorage extends Thread{
 		ManagerLeilao ml =  findLeilao( userSession.getIdLeilao()); 
 		if(ml != null)
 			ml.addSession(userSession);
+	}; 
+	
+	public void resolverMsg( Messeger messeger ){
+		ManagerLeilao ml = findLeilao( messeger.getIdLeilao()); 
+		ml.resolverMsg(messeger);//Encaminhando para o Manager específico.
 	}; 
 	
 	public void removeSession( UserSession userSession ){

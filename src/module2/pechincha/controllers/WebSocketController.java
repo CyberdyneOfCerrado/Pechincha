@@ -8,6 +8,8 @@ import javax.websocket.CloseReason;
 import javax.websocket.EndpointConfig;
 import javax.websocket.Session;
 
+import module1.pechincha.model.Leilao;
+import module2.pechincha.enumeration.MsgTypes;
 import module2.pechincha.manager.StorageLeilaoEnvironments;
 import module2.pechincha.util.Messeger;
 import module2.pechincha.util.MessegerFactory;
@@ -18,7 +20,7 @@ public class WebSocketController {
 	   
 	   public WebSocketController(){
 		   StorageLeilaoEnvironments.initialize();
-		   StorageLeilaoEnvironments.iniciarAmbienteLeilao(1);//Apenas para teste
+		   StorageLeilaoEnvironments.iniciarAmbienteLeilao( new Leilao(1));
 	   }; 
 	   
 	   //Em caso de uma mensagem do tipo HandShake, este método deve registrar a Session a variável peers. 
@@ -27,13 +29,11 @@ public class WebSocketController {
 		 //1: HandShake; 
 		   
 	     Messeger m = MessegerFactory.createMesseger(JsonObjectString);
-	     
-	     switch(m.getTipoMsg()){
-	     case HANDSHAKE: 
+	     if(m.getTipoMsg() == MsgTypes.HANDSHAKE ){
 	    	 configureHandShake(m,session);
-	    	 break;
-		default:
-			break;
+	    	 return;
+	     }else{
+	    	 StorageLeilaoEnvironments.resolverMsg(m);
 	     }
 	   }; 
 	   
@@ -71,7 +71,6 @@ public class WebSocketController {
 		   
 		   UserSession userSession = peers.get(session); 
 		   if(userSession == null) return;
-		   
 		   StorageLeilaoEnvironments.removeSession(userSession);
 		   peers.remove(session);
 		   System.err.println("Quantidade de Sessões: "+peers.size()); 

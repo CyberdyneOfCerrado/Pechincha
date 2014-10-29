@@ -6,6 +6,7 @@ import java.util.Hashtable;
 import javax.websocket.Session;
 
 import module1.pechincha.model.Leilao;
+import module2.pechincha.util.Messeger;
 import module2.pechincha.util.UserSession;
 
 public class ManagerLeilao extends Thread {
@@ -14,6 +15,7 @@ public class ManagerLeilao extends Thread {
 	private Leilao leilao; 
 	private int tempoCorrente; 
 	private UserSession maiorLance; 
+	private boolean isDone; 
 	
 	@Override
 	public void run(){
@@ -24,17 +26,36 @@ public class ManagerLeilao extends Thread {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} 
-			MsgBroadcast();
 		}
 	}; 
 	
 	public ManagerLeilao( Leilao leilao){
 		this.leilao = leilao; 
+		this.isDone = false;
 		peers = new Hashtable<>(); 
+		
+		
 	};
 	
 	public void startManager(){
 		this.start();
+	}; 
+	
+	public void resolverMsg(Messeger messeger){
+		//Ações: 
+		//1: Resolver a mensagem conforme a ação do TipoMsg; 
+		
+		switch( messeger.getTipoMsg()){
+			case MENSAGEM: 
+					msgBroadcast(peers.get(messeger.getIdEmissor()), messeger); 
+				break;
+			case LANCE: 
+				break;
+			case FINALIZAR: 
+				break;
+			default:
+				break;
+		}
 	}; 
 	
 	public synchronized void removeSession( UserSession userSession ){
@@ -51,13 +72,13 @@ public class ManagerLeilao extends Thread {
 		
 	}; 
 	 
-	public void MsgBroadcast(){
+	private void msgBroadcast( UserSession userSession, Messeger messeger){//Arrumar isso.
+		//Enviar para todos os cliente, exceto para o emissor. 
 		Collection<UserSession> c = peers.values();
 		
 		for(UserSession us : c){
 			Session session = us.getSession(); 
-			session.getAsyncRemote().sendText("Seus putos"); 
+			session.getAsyncRemote().sendText(messeger.getMsg()); 
 		}
-		
-	}
+	}; 
 }
