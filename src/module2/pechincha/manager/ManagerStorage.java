@@ -20,8 +20,8 @@ public class ManagerStorage extends Thread{
 			while(keys.hasMoreElements()){
 				int key = keys.nextElement(); 
 				if(managers.get(key).isDone())managers.remove(key);
-				System.out.println("Storege fazendo a limpeza."); 
 			}
+			System.out.println("Storege fazendo a limpeza."); 
 		}
 	}; 
 

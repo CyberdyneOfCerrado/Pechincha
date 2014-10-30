@@ -21,20 +21,25 @@ public class WebSocketController {
 	   public WebSocketController(){
 		   StorageLeilaoEnvironments.initialize();
 		   StorageLeilaoEnvironments.iniciarAmbienteLeilao( new Leilao(1));
+		   StorageLeilaoEnvironments.iniciarAmbienteLeilao( new Leilao(2));
+		   StorageLeilaoEnvironments.iniciarAmbienteLeilao( new Leilao(3));
+		   StorageLeilaoEnvironments.iniciarAmbienteLeilao( new Leilao(4));
+		   StorageLeilaoEnvironments.iniciarAmbienteLeilao( new Leilao(5));
+		   StorageLeilaoEnvironments.iniciarAmbienteLeilao( new Leilao(6));
+		   StorageLeilaoEnvironments.iniciarAmbienteLeilao( new Leilao(7));
+		   StorageLeilaoEnvironments.iniciarAmbienteLeilao( new Leilao(8));
+		   StorageLeilaoEnvironments.iniciarAmbienteLeilao( new Leilao(9));
 	   }; 
 	   
 	   //Em caso de uma mensagem do tipo HandShake, este método deve registrar a Session a variável peers. 
 	   public void onMessage(Session session, String JsonObjectString) {
 		 //Lista do que fazer: 
-		 //1: HandShake; 
-		   
+		 //1: inteceptar HANDSKAKE; 
 	     Messeger m = MessegerFactory.createMesseger(JsonObjectString);
-	     if(m.getTipoMsg() == MsgTypes.HANDSHAKE ){
+	     //É necessário inteceptar a mensagem de tipo HANDSHAKE, motivos: arranjo técnico. 
+	     if(m.getTipoMsg() == MsgTypes.HANDSHAKE )
 	    	 configureHandShake(m,session);
-	    	 return;
-	     }else{
 	    	 StorageLeilaoEnvironments.resolverMsg(m);
-	     }
 	   }; 
 	   
 	   //Não fazer nada por enquanto. 

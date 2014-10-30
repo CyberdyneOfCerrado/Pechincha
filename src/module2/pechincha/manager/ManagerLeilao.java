@@ -47,6 +47,9 @@ public class ManagerLeilao extends Thread {
 			case MENSAGEM: 
 					msgBroadcast(peers.get(messeger.getIdEmissor()), messeger); 
 				break;
+			case HANDSHAKE:
+				 	msgUnicast(peers.get(messeger.getIdEmissor()), messeger);
+				break;
 			case LANCE: 
 				break;
 			case FINALIZAR: 
@@ -79,6 +82,11 @@ public class ManagerLeilao extends Thread {
 			session.getAsyncRemote().sendText(messeger.getMsg()); 
 		}
 	}; 
+	
+	private void msgUnicast( UserSession userSession, Messeger messeger){
+		//Criar um método na MessegerFactory para converter messeger em JsonString.
+		userSession.getSession().getAsyncRemote().sendText("Você tá conectado Bah. Leilão: "+ this.leilao.getId()+ "Cliente conectados: "+ this.peers.size());
+	};
 	
 	public boolean isDone(){
 		return done;
