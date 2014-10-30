@@ -1,5 +1,7 @@
 package module2.pechincha.manager;
 
+import java.util.Collection;
+import java.util.Enumeration;
 import java.util.Hashtable;
 
 import module1.pechincha.model.Leilao;
@@ -8,13 +10,24 @@ import module2.pechincha.util.UserSession;
 
 public class ManagerStorage extends Thread{
 	private Hashtable<Integer, ManagerLeilao> managers; 
+	private final int TIME_DELAY = 2 * 1000;
 	
+	//Retirará ManagerLeilao que já foram concluídos da memória da máquina. 
 	public void run(){
-		
-	}
+		while(true){
+			sleep(TIME_DELAY); 
+			Enumeration<Integer> keys = managers.keys(); 
+			while(keys.hasMoreElements()){
+				int key = keys.nextElement(); 
+				if(managers.get(key).isDone())managers.remove(key);
+				System.out.println("Storege fazendo a limpeza."); 
+			}
+		}
+	}; 
 
 	public ManagerStorage(){
 		managers = new Hashtable<>();
+		this.start(); 
 	}; 
 	
 	public void addSession( UserSession userSession ){
@@ -43,5 +56,17 @@ public class ManagerStorage extends Thread{
 	private ManagerLeilao findLeilao ( int id ){
 		return managers.get(id);
 	}; 
+	
+	public Collection<ManagerLeilao> getMetadata(){
+		return managers.values(); 
+	}; 
+	
+	private void sleep( int time ){
+		try {
+			Thread.sleep(time);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} 
+	};
 }
 

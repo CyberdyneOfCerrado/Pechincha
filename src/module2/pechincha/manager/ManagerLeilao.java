@@ -10,31 +10,30 @@ import module2.pechincha.util.Messeger;
 import module2.pechincha.util.UserSession;
 
 public class ManagerLeilao extends Thread {
+	private final int TIME_DELAY = 4 * 1000;
+	
 	private double lanceCorrente; 
 	private Hashtable<Integer,UserSession> peers; 
 	private Leilao leilao; 
-	private int tempoCorrente; 
+	private int tempoCorrente = 10000; 
 	private UserSession maiorLance; 
-	private boolean isDone; 
+	private boolean done; 
 	
 	@Override
 	public void run(){
-		while(true){
-			try {
-				Thread.sleep(600);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} 
+		while(tempoCorrente >= 0){
+			sleep(TIME_DELAY);
+			 tempoCorrente--;
+			System.out.println("Manager verificando se o tempo já acabou: " + tempoCorrente);
 		}
+		done = true;
+		//Provavelmente terei que chamar o método de finalizar aqui. 
 	}; 
 	
 	public ManagerLeilao( Leilao leilao){
 		this.leilao = leilao; 
-		this.isDone = false;
+		this.done = false;
 		peers = new Hashtable<>(); 
-		
-		
 	};
 	
 	public void startManager(){
@@ -44,7 +43,6 @@ public class ManagerLeilao extends Thread {
 	public void resolverMsg(Messeger messeger){
 		//Ações: 
 		//1: Resolver a mensagem conforme a ação do TipoMsg; 
-		
 		switch( messeger.getTipoMsg()){
 			case MENSAGEM: 
 					msgBroadcast(peers.get(messeger.getIdEmissor()), messeger); 
@@ -81,4 +79,16 @@ public class ManagerLeilao extends Thread {
 			session.getAsyncRemote().sendText(messeger.getMsg()); 
 		}
 	}; 
+	
+	public boolean isDone(){
+		return done;
+	}; 
+	
+	private void sleep( int time ){
+		try {
+			Thread.sleep(time);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} 
+	};
 }

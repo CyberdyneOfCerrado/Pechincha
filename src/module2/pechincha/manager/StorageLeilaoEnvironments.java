@@ -1,5 +1,7 @@
 package module2.pechincha.manager;
 
+import java.util.Collection;
+
 import module1.pechincha.model.Leilao;
 import module2.pechincha.util.Messeger;
 import module2.pechincha.util.UserSession;
@@ -28,12 +30,17 @@ public class StorageLeilaoEnvironments {
 	}; 
 	
 	/** 
-	*Este método inicializa um ambiente de leilão a partir de um modelo de leilão.  
+	*Este método inicializa um ambiente de leilão a partir de um modelo de leilão. O parêmetro leilão
+	*deve estar devidamente inicializado.  
     * @author Allyson Maciel Guimarães
     * @param  Uma variável Leilão
     * @return void
     */
 	public static void iniciarAmbienteLeilao(Leilao leilao){		
 		ms.createNewManagerLeilao( leilao);
-	}
+	}; 
+	
+	public static Collection<ManagerLeilao> getMetadataEnvironments(){
+		return ms.getMetadata();
+	}; 
 }
