@@ -5,6 +5,8 @@ public enum MsgTypes {
 	FINALIZAR, 
 	HANDSHAKE, 
 	MENSAGEM,
+	MENSAGEM_MAIOR_LANCE,
+	MENSAGEM_LEILOEIRO,
 	LANCE_INVALIDO,
 	CALLBACK; //Usado para idendificar mensagem informativas do servidor para clientes. 
 }

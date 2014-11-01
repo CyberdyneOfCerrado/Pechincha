@@ -7,6 +7,7 @@ import javax.websocket.Session;
 
 import module1.pechincha.model.Leilao;
 import module2.pechincha.util.Messeger;
+import module2.pechincha.util.MessegerFactory;
 import module2.pechincha.util.UserSession;
 
 public class ManagerLeilao extends Thread {
@@ -45,10 +46,11 @@ public class ManagerLeilao extends Thread {
 		//1: Resolver a mensagem conforme a ação do TipoMsg; 
 		switch( messeger.getTipoMsg()){
 			case MENSAGEM: 
-					msgBroadcast(peers.get(messeger.getIdEmissor()), messeger); 
+					
+					chat(peers.get(messeger.getIdEmissor()), messeger); 
 				break;
 			case HANDSHAKE:
-				 	msgUnicast(peers.get(messeger.getIdEmissor()), messeger);
+				 	//msgUnicast(peers.get(messeger.getIdEmissor()), messeger);
 				break;
 			case LANCE: 
 				break;
@@ -58,6 +60,10 @@ public class ManagerLeilao extends Thread {
 				break;
 		}
 	}; 
+	
+	private void chat ( UserSession userSession, Messeger messeger){
+		msgBroadcast(userSession, messeger); 
+	};
 	
 	public synchronized void removeSession( UserSession userSession ){
 		if(!peers.containsKey(userSession.getIdUser())) return; 
@@ -79,13 +85,13 @@ public class ManagerLeilao extends Thread {
 		
 		for(UserSession us : c){
 			Session session = us.getSession(); 
-			session.getAsyncRemote().sendText(messeger.getMsg()); 
+			session.getAsyncRemote().sendText(MessegerFactory.MessegerToJSONString(messeger)); 
 		}
 	}; 
 	
 	private void msgUnicast( UserSession userSession, Messeger messeger){
 		//Criar um método na MessegerFactory para converter messeger em JsonString.
-		userSession.getSession().getAsyncRemote().sendText("Você tá conectado Bah. Leilão: "+ this.leilao.getId()+ "Cliente conectados: "+ this.peers.size());
+		userSession.getSession().getAsyncRemote().sendText(MessegerFactory.MessegerToJSONString(messeger));
 	};
 	
 	public boolean isDone(){

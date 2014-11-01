@@ -7,11 +7,23 @@ import module2.pechincha.enumeration.MsgTypes;
 import org.json.JSONObject;
 
 public class MessegerFactory {
+	
+	public static String MessegerToJSONString( Messeger messeger){
+		JSONObject o = new JSONObject();
+		o.put("idEmissor", messeger.getIdEmissor()); 
+		o.put("idLeilao", messeger.getIdLeilao()); 
+		o.put("msg", messeger.getMsg()); 
+		o.put("userName", messeger.getUserName()); 
+		o.put("tipoMsg", messeger.getTipoMsg()); 
+		
+		return o.toString();
+	}; 
+	
 	public static Messeger createMesseger( String JsonObjectString){
 		JSONObject o = new JSONObject(JsonObjectString); 
 		Messeger m = null;
-		
-		switch ( MsgTypes.valueOf(o.get("TipoMSG").toString())){
+		System.out.println(o.get("tipoMsg"));
+		switch ( MsgTypes.valueOf(o.get("tipoMsg").toString())){
 		case MENSAGEM: 
 			m = createMenasgem(o);
 			break;
@@ -34,8 +46,9 @@ public class MessegerFactory {
 		Messeger m = new Messeger();
 		m.setIdEmissor(Integer.parseInt(o.get("idEmissor").toString())); 
 		m.setIdLeilao(Integer.parseInt(o.get("idLeilao").toString()));
-		m.setMsg(o.get("Msg").toString());
-		m.setTipoMsg(MsgTypes.valueOf(o.get("TipoMSG").toString()));
+		m.setMsg(o.get("msg").toString());
+		m.setTipoMsg(MsgTypes.valueOf(o.get("tipoMsg").toString()));
+		m.setUserName(o.getString("userName").toString());
 		
 		return m;
 	}

@@ -21,14 +21,6 @@ public class WebSocketController {
 	   public WebSocketController(){
 		   StorageLeilaoEnvironments.initialize();
 		   StorageLeilaoEnvironments.iniciarAmbienteLeilao( new Leilao(1));
-		   StorageLeilaoEnvironments.iniciarAmbienteLeilao( new Leilao(2));
-		   StorageLeilaoEnvironments.iniciarAmbienteLeilao( new Leilao(3));
-		   StorageLeilaoEnvironments.iniciarAmbienteLeilao( new Leilao(4));
-		   StorageLeilaoEnvironments.iniciarAmbienteLeilao( new Leilao(5));
-		   StorageLeilaoEnvironments.iniciarAmbienteLeilao( new Leilao(6));
-		   StorageLeilaoEnvironments.iniciarAmbienteLeilao( new Leilao(7));
-		   StorageLeilaoEnvironments.iniciarAmbienteLeilao( new Leilao(8));
-		   StorageLeilaoEnvironments.iniciarAmbienteLeilao( new Leilao(9));
 	   }; 
 	   
 	   //Em caso de uma mensagem do tipo HandShake, este método deve registrar a Session a variável peers. 
