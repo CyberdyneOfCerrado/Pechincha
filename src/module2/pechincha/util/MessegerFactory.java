@@ -49,7 +49,21 @@ public class MessegerFactory {
 		m.setMsg(o.get("msg").toString());
 		m.setTipoMsg(MsgTypes.valueOf(o.get("tipoMsg").toString()));
 		m.setUserName(o.getString("userName").toString());
-		
 		return m;
 	}
+	
+	public static Messeger createMessegerCallback(String data){
+		Messeger m = new Messeger(-1,-1,"Pechincha",MsgTypes.CALLBACK, data);
+		return m;
+	};
+	
+	public static Messeger createMessegerOnline( int size){
+		Messeger m = new Messeger(-1,-1,"Pechincha",MsgTypes.ONLINE, String.valueOf(size));
+		return m;
+	};
+	
+	public static Messeger createMessegerOffline(int size){
+		Messeger m = new Messeger(-1,-1,"Pechincha",MsgTypes.OFFLINE,String.valueOf(size));
+		return m;
+	};
 }

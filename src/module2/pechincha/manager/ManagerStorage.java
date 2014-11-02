@@ -10,7 +10,7 @@ import module2.pechincha.util.UserSession;
 
 public class ManagerStorage extends Thread{
 	private Hashtable<Integer, ManagerLeilao> managers; 
-	private final int TIME_DELAY = 2 * 1000;
+	private final int TIME_DELAY = 5 * 1000;
 	
 	//Retirará ManagerLeilao que já foram concluídos da memória da máquina. 
 	public void run(){

@@ -20,7 +20,8 @@ public class WebSocketController {
 	   
 	   public WebSocketController(){
 		   StorageLeilaoEnvironments.initialize();
-		   StorageLeilaoEnvironments.iniciarAmbienteLeilao( new Leilao(1));
+		   //public Leilao(int id, String etiqueta, int tempoLimite, int idLeiloeiro, double valorIncial)
+		   StorageLeilaoEnvironments.iniciarAmbienteLeilao( new Leilao(1,"Venda de Equipamentos Eletrônicos" ,50000, 1 ,200.34f) );
 	   }; 
 	   
 	   //Em caso de uma mensagem do tipo HandShake, este método deve registrar a Session a variável peers. 

@@ -7,6 +7,8 @@ public enum MsgTypes {
 	MENSAGEM,
 	MENSAGEM_MAIOR_LANCE,
 	MENSAGEM_LEILOEIRO,
-	LANCE_INVALIDO,
+	LANCE_INVALIDO, 
+	ONLINE, 
+	OFFLINE,
 	CALLBACK; //Usado para idendificar mensagem informativas do servidor para clientes. 
 }

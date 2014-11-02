@@ -15,6 +15,13 @@ public class UserSession {
 		this.idLeilao = idLeilao; 
 	}; 
 	
+	public UserSession(){
+		this.session = null; 
+		this.nickName = null;
+		this.idUser = 0; 
+		this.idLeilao = 0; 
+	}; 
+	
 	public Session getSession() {
 		return session;
 	}
