@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import module1.pechincha.controllers.UseCaseController;
 import module1.pechincha.util.ActionDone;
 import module1.pechincha.util.DoAction;
+import module1.pechincha.viewUseCases.AmbienteLeilaoView;
 import biz.source_code.miniTemplator.MiniTemplator;
 import biz.source_code.miniTemplator.MiniTemplator.TemplateSyntaxException;
 
@@ -28,7 +29,7 @@ public class ServletController {
 	
 	//Adicionar todas as classes de gerenciamento de conteúdo aqui.
 	private void initViews(){
-		//listViews.put("manterCliente", new ManterClienteView(servletContext,"manterCliente"));
+		listViews.put("ambienteLeilao", new AmbienteLeilaoView(servletContext,"ambienteLeilao"));
 
 	};
 	
@@ -61,17 +62,10 @@ public class ServletController {
 	private DoAction makeDoAction(HttpServletRequest request){
 		//1 pegando o nome do caso de uso e a respectiva ação.
 		//useCase e Action são atributos estáticos em qualquer formulário
-		String useCase = request.getParameter("useCase");
+		String useCase  = request.getParameter("useCase");
 		String action   = request.getParameter("action");
-		String security = (String) request.getAttribute("security");
 		DoAction da;
 		
-		//Casou houver alguma restrição de segurança
-		if(security.equals("true")){
-			da = new DoAction("security","acessBlock");
-			da.setData("redirect","true"); //informa se deve pegar o DA e processá-lo, falsa = processa, true = apenas redireciona
-			return da;
-		}
 				
 		da = new DoAction(useCase,action);
 		

@@ -3,6 +3,7 @@ package module1.pechincha.controllers;
 import java.lang.reflect.Method;
 import java.util.Hashtable;
 
+import module1.pechincha.useCases.AmbienteLeilao;
 import module1.pechincha.util.ActionDone;
 import module1.pechincha.util.DoAction;
 
@@ -14,7 +15,7 @@ public class UseCaseController {
 		listUserCase = new Hashtable<>(); 
 		
 		//Casos de uso novos devem ser adicionados aqui.
-		//listUserCase.put("manterCliente", new ManterCliente());
+		listUserCase.put("ambienteLeilao", new AmbienteLeilao());
 		
 	};
 	

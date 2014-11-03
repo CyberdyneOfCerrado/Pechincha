@@ -1,0 +1,217 @@
+div#ambienteLeilao{
+	height: 100%; 
+	width: 100%; 
+	background-color: transparent;
+}
+
+div#container-informacoes{
+    width:700px;
+	height:100%;
+	float: left;
+	background-color: transparent;
+}
+
+div#container-informacoes div#informacoes-header{
+	width:700px;
+	height: 20px;
+	
+	
+	float:left; 
+	background-color: #0080FF;
+}
+div#container-informacoes div#lance-footer{
+	width:700px;
+	height: 60px;
+	
+	float:left; 
+	background-color: #0080FF;
+}
+
+div#container-informacoes div#produto-center{
+	width:700px;
+	height: 401px;
+	
+	float:left; 
+	background-color: rgb(226,226,226);
+}
+
+div#ambienteLeilao div#container-chat{
+	width:300px;
+	height: 481px;
+	
+	float:left;
+}
+
+div#container-chat div#top-chat{
+	width:300px;
+	height: 421px;
+	
+	border-left-style: solid;
+	border-left-width:2px;
+	border-left-color: rgb(211,211,211); 
+	
+	float:left;
+	background-color: rgb(240,240,240);
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+div#container-chat div#bottom-chat{
+	width: 298px;
+	height: 60px;
+	
+	border-left-style: solid;
+	border-left-width:2px;
+	border-left-color:#005CB5; 
+	
+	float:left;
+	background-color: #0080FF;
+}
+
+div#informacoes-header  div#qtd-online{
+	width:60px;
+	height: auto; 
+	float:left;
+}
+
+div#informacoes-header  div#tempo-restante{
+	width:85px;
+	height: auto; 
+	margin-left:10px;
+	float:right;
+}
+
+div#informacoes-header  div#etiqueta-box{
+	width:300px;
+	height: auto; 
+	margin-left:160px;
+	float:left;
+}
+
+div#lance-footer-left{
+	width:450px;
+	height: 60px; 
+	float:left;
+	
+}
+
+div#lance-footer-right{
+	width:230px;
+	height: 60px; 
+	border-left-style: solid;
+	border-left-width:2px;
+	border-left-color:#005CB5; 
+	float:right;
+}
+
+.fixIcon{
+	color: white;
+	margin: 3px;
+}
+#lance-footer-right i {
+	margin:2px;
+	margin-right:250px;
+}
+
+#lance-footer-right i span {
+	margin:2px;
+	margin-right:250px;
+}
+
+div#container-chat div#top-chat ul{
+	margin:0;
+	padding:0;
+	list-style-type: none;
+}
+
+div#container-chat div#top-chat ul li{
+	border-bottom-style: solid;
+	border-bottom-width:1px;
+	border-bottom-color: rgb(211,211,211); 
+	margin-bottom: 4px;
+}
+
+.fixFont{
+	font-family: Tahoma, Helvetica; 
+	font-size:14px;
+}
+
+.fixFontChat{
+	font-family: Tahoma, Helvetica; 
+	font-size:3.5mm;
+}
+
+.hora{
+	font-style: italic;
+}
+
+.nickname{
+	font-weight: bold;
+	color: rgb(31,31,31);
+}
+
+.nicknameLeiloeiro{
+	font-weight: bold;
+	color: rgb(128,0,255);
+}
+
+.nicknameMaiorLance{
+	font-weight: bold;
+	color: rgb(210,210,0);
+}
+
+.online{
+	font-weight: bold;
+	color: green;
+}
+
+.offline{
+	font-weight: bold;
+	color: red;
+}
+
+#botao-aumentar{
+	float:left; 
+	margin-top:8px;
+	margin-left:5px;
+	font-size:6em;
+	color: white; 
+}
+#botao-aumentar:hover{
+	transition: 0,1s;
+	color:rgb(255, 215, 0); 
+}
+
+#botao-lance{
+	float:right; 
+	margin-top:8px;
+	font-size:6em;
+	color: white; 
+}
+
+#botao-lance:hover{
+	transition: 0,1s;
+	color:rgb(255, 215, 0); 
+}
+
+#valor-lance{
+	position:relative;
+	top:5px;
+	left:20px;
+	font-family: Tahoma, Helvetica; 
+	font-size:40px;
+	color: white;
+}
+
+textarea{
+	resize: none;
+	width: 286px;
+	height: 48px;
+	margin:3px;
+	
+	font-family: Tahoma, Helvetica; 
+	font-size:3.5mm;
+}
+
+
+

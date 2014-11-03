@@ -1,0 +1,92 @@
+<div id="ambienteLeilao">
+		<script src="templates/lib/js/jquery-1.11.1.min.js"></script>
+		<script src="templates/lib/js/ambiente-leilao-lib.js"></script>
+		<script src="templates/lib/js/app.js"></script>
+		
+		<!--informações essenciais -->
+		<input type='hidden' id='userName'  value='Allyson' />
+		<input type='hidden' id='idEmissor' value='454' />
+		<input type='hidden' id='idLeilao'  value='1' />
+
+		<div id="container-informacoes">
+			<!--cabeçalho-->
+			<div id="informacoes-header" >
+			
+				<div id="qtd-online">
+					<i class="fa fa-eye fa-2x fixIcon"><span class="fixFont" id="online">30</span></i>	
+				</div>
+				
+				<div id="etiqueta-box">
+					<i class="fa fa-gavel fa-2x fixIcon"><span class="fixFont" id="etiqueta" >Venda do Xonão da casa própria</span></i>	
+				</div>
+				
+				<div id="tempo-restante">
+					<i class="fa fa-clock-o fa-2x fixIcon"><span class="fixFont" id="tempo">24h:30m</span></i>	
+				</div>
+				
+			</div>
+			
+			<!--centro-->
+			<div id="produto-center">
+			</div>
+			
+			<!--barra inferior-->
+			<div id="lance-footer">
+				<div id="lance-footer-left">
+					<i class="fa fa-usd" id="botao-aumentar"></i>
+					<span id="valor-lance">Lance: 1.340,45R$</span>
+					<i class="fa fa-gavel" id="botao-lance"></i>
+				</div>
+				
+				<div id="lance-footer-right">
+					<i class="fa fa-user fa-2x fixIcon"><span class="fixFont " id="leiloeiro" >Leiloeiro: Marcos Andrade</span></i>
+					<i class="fa fa-trophy fa-2x fixIcon"><span class="fixFont" id="maiorLance">Maior Lance: Sacura</span></i>
+					<i class="fa fa-line-chart fa-2x fixIcon"><span class="fixFont" id="maiorLanceMontante">340,40R$</span></i>
+				</div>
+				
+			</div>
+			
+		</div>
+		
+		<div id="container-chat">
+			<div id="top-chat">
+				<ul id="ul-chat">
+					<!--outra mensagem-->
+					<li>
+						<span class="fixFontChat nicknameLeiloeiro" >Marcos <i class="fa fa-user fa-1x "> </i> </span>
+						<small>10:40 PM :</small>
+						<span class="fixFontChat" >Sábado de sol, eu aluguei um caminhão, para levar galera para comer feijão. Chegando lá, mas que vergonha, só tinha maconha. Os maconheiros estavam doidões, querendo os meus feijões.</span>
+					</li>
+					<!--outra mensagem-->
+					<li>
+						<span class="fixFontChat nicknameMaiorLance" >Sacura <i class="fa fa-trophy fa-1x "></i>   </span>
+						<small>10:40 PM :</small>
+						<span class="fixFontChat" >Essa merda já é minha. Leiloeiro, arremate isso logo, seu puto!</span>
+					</li>
+					<!--outra mensagem-->
+					<li>
+						<span class="fixFontChat nickname" >Jatobá  </span>
+						<small>10:40 PM :</small>
+						<span class="fixFontChat" >Sábado de sol, eu aluguei um caminhão, para levar galera para comer feijão. Chegando lá, mas que vergonha, </span>
+					</li>
+					<!--outra mensagem-->
+					<li>
+						<span class="fixFontChat online" >Pechincha  </span>
+						<small>10:40 PM :</small>
+						<span class="fixFontChat" >Sábado de sol, eu aluguei um caminhão, para levar galera para comer feijão. Chegando lá, mas que vergonha, </span>
+					</li>
+					<!--outra mensagem-->
+					<li>
+						<span class="fixFontChat offline" >Pechincha  </span>
+						<small>10:40 PM :</small>
+						<span class="fixFontChat" >Sábado de sol, eu aluguei um caminhão, para levar galera para comer feijão. Chegando lá, mas que vergonha, </span>
+					</li>
+				</ul>
+			</div>
+			
+			<div id="bottom-chat">
+				<textarea id="msg" 	maxlength="250">Write something here</textarea>
+			</div>
+		</div>
+		
+	</div>
