@@ -31,6 +31,7 @@ public class MessegerFactory {
 			m = createMenasgem(o);
 			break;
 		case LANCE: 
+			m = createMenasgem(o);
 			break;
 		case FINALIZAR: 
 			break;
@@ -54,6 +55,16 @@ public class MessegerFactory {
 	
 	public static Messeger createMessegerCallback(String data){
 		Messeger m = new Messeger(-1,-1,"Pechincha",MsgTypes.CALLBACK, data);
+		return m;
+	};
+	
+	public static Messeger createMessegerLance(String valor, String nickname){
+		Messeger m = new Messeger(-1,-1,"Pechincha",MsgTypes.LANCE, valor+";"+nickname);
+		return m;
+	};
+	
+	public static Messeger createMessegerLanceInvalido(){
+		Messeger m = new Messeger(-1,-1,"Pechincha",MsgTypes.LANCE_INVALIDO,"Seu lance foi invalidado.");
 		return m;
 	};
 	

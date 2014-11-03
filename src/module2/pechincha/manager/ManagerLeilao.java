@@ -58,7 +58,7 @@ public class ManagerLeilao extends Thread {
 				 	generateCallback(peers.get(messeger.getIdEmissor()), messeger);
 				break;
 			case LANCE: 
-				
+					lance(peers.get(messeger.getIdEmissor()), messeger);
 				break;
 			case FINALIZAR: 
 				
@@ -103,6 +103,18 @@ public class ManagerLeilao extends Thread {
 	
 	private void chat ( UserSession userSession, Messeger messeger){
 		msgBroadcast(messeger); 
+	};
+	
+	private void lance( UserSession userSession, Messeger messeger){
+		float temp = Float.parseFloat(messeger.getMsg());
+		
+		if( temp > this.lanceCorrente){
+				lanceCorrente = temp;
+				this.maiorLance = userSession;
+				msgBroadcast( MessegerFactory.createMessegerLance(String.valueOf(lanceCorrente),userSession.getNickName()));
+		}else{
+			msgUnicast(userSession,MessegerFactory.createMessegerLanceInvalido());
+		}	
 	};
 	
 	private void generateCallback(UserSession userSession, Messeger messeger){
