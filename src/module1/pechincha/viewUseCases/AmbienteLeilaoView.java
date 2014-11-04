@@ -24,8 +24,12 @@ public class AmbienteLeilaoView extends ViewController {
 
 	private String ambiente(ActionDone ad) {
 		String resul = "";
-		if(ad.isProcessed()){
+		if(!ad.isProcessed()){
 			MiniTemplator temp = super.startMiniTemplator(super.getTemplate(ad));
+			
+			temp.setVariable("userName", (String) ad.getData("userName"));
+			temp.setVariable("idEmissor", (String) ad.getData("idEmissor"));
+			temp.setVariable("idLeilao", (String) ad.getData("idLeilao"));
 			resul = temp.generateOutput();
 		}else{
 			MiniTemplator temp;

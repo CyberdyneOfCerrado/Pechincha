@@ -26,7 +26,6 @@ public abstract class ViewController {
 			System.out.println(path);
 			mi = new MiniTemplator(path);
 		} catch (TemplateSyntaxException | IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return mi;

@@ -10,7 +10,7 @@ const MENSAGEM_LEILOEIRO   = 'MENSAGEM_LEILOEIRO';
 const LANCE_INVALIDO       = 'LANCE_INVALIDO';
 const CALLBACK             = 'CALLBACK';
 
-const WS_SOCKET            = 'ws://localhost:8080/Pechinchas/server';
+const WS_SOCKET            = 'wss://'+ location.hostname +':'+location.port+'/Pechinchas/server';
 //'ws://localhost:8080/Pechinchas/server'
 //Variáveis de execução
 var idEmissor; 
@@ -121,7 +121,7 @@ function formatarHora( segundos ){
 
 //Inicializa os componentes do ambiente de leilão conforme uma message do tipo CALLBACK; 
 function inicializarAmbiente( message ){
-		//Lista de coisas que eu devo mandar no callback
+		//Lista de coisas que eu devo pegar no callback
 		//1 TempoCorrente; 
 		//2 Etiqueta; 
 		//3 Quantidade de pessoas online; 

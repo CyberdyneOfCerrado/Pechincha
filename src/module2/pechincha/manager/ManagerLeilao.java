@@ -80,8 +80,6 @@ public class ManagerLeilao extends Thread {
 		System.err.println("Clientes conectados adicionando "+peers.size()+" Leilao " + leilao.getId());
 		feedOnline( peers.size()+1);
 		peers.put(userSession.getIdUser(), userSession); 
-		
-		
 	}; 
 	 
 	private void msgBroadcast( Messeger messeger){//Arrumar isso.
@@ -106,10 +104,10 @@ public class ManagerLeilao extends Thread {
 	};
 	
 	private void lance( UserSession userSession, Messeger messeger){
-		float temp = Float.parseFloat(messeger.getMsg());
+		float novoLance = Float.parseFloat(messeger.getMsg());
 		
-		if( temp > this.lanceCorrente){
-				lanceCorrente = temp;
+		if( novoLance > this.lanceCorrente){
+				lanceCorrente = novoLance;
 				this.maiorLance = userSession;
 				msgBroadcast( MessegerFactory.createMessegerLance(String.valueOf(lanceCorrente),userSession.getNickName()));
 		}else{

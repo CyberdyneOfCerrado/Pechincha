@@ -21,7 +21,7 @@ public class ServletController {
 	
 	public ServletController( String servletContext){
         separador = System.getProperty("file.separator");
-		this.servletContext = servletContext+"templates"+separador;
+		this.servletContext = servletContext+separador+"templates"+separador;
 		this.ucc = new UseCaseController();
 		this.listViews = new Hashtable<>();
 		initViews();
