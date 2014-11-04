@@ -6,6 +6,7 @@ import java.util.Hashtable;
 import javax.websocket.Session;
 
 import module1.pechincha.model.Leilao;
+import module2.pechincha.useCases.Chat;
 import module2.pechincha.util.Messeger;
 import module2.pechincha.util.MessegerFactory;
 import module2.pechincha.util.UserSession;
@@ -19,7 +20,7 @@ public class ManagerLeilao extends Thread {
 	private int tempoCorrente; 
 	private UserSession maiorLance; 
 	private boolean done; 
-	
+	private Chat chat;
 	@Override
 	public void run(){
 		while(tempoCorrente >= 0){
@@ -41,6 +42,7 @@ public class ManagerLeilao extends Thread {
 		this.done = false;
 		this.maiorLance = new UserSession();
 		peers = new Hashtable<>(); 
+		chat = new Chat();
 	};
 	
 	public void startManager(){
@@ -100,7 +102,12 @@ public class ManagerLeilao extends Thread {
 	};
 	
 	private void chat ( UserSession userSession, Messeger messeger){
-		msgBroadcast(messeger); 
+		boolean valida = chat.validarMensagem(messeger); 
+		
+		if(valida){
+			messeger = chat.diferenciarUsuario(messeger, userSession, maiorLance);
+			msgBroadcast(messeger);
+		}
 	};
 	
 	private void lance( UserSession userSession, Messeger messeger){

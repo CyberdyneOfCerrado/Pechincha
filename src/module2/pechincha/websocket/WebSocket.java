@@ -20,6 +20,7 @@ public class WebSocket {
    private static WebSocketController wsc; 
    public WebSocket(){
 	   if( wsc == null){
+		   //Essa inicialização causa alguns problemas. 
 		   wsc = new WebSocketController();
 		   System.out.println("Toasty, Tô tendo da webSocket"); 
 	   }

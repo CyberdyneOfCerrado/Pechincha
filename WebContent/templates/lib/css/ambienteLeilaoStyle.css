@@ -104,6 +104,17 @@ div#lance-footer-right{
 	float:right;
 }
 
+div#alertas{
+	position:relative;
+	margin-top:-30px;
+	margin-left:-150px;
+	top:100%;
+	left:50%;
+	width:300px;
+	height:30px; 
+	background-color:#005CB5;
+}
+
 .fixIcon{
 	color: white;
 	margin: 3px;
@@ -136,14 +147,17 @@ div#container-chat div#top-chat ul li{
 	font-size:14px;
 }
 
+.fixFontAlerta{
+	font-family: Tahoma, Helvetica; 
+	color:white;
+	font-size:14px;
+}
+
 .fixFontChat{
 	font-family: Tahoma, Helvetica; 
 	font-size:3.5mm;
 }
 
-.hora{
-	font-style: italic;
-}
 
 .nickname{
 	font-weight: bold;

@@ -4,12 +4,11 @@ $('document').ready(function(){
 	initWebSocket();
 	implementsWebSocket(); 
 	
+	
 	//Tratando Eventos de teclado.
 	$( '#msg' ).keyup(function( event ) {
 		  if ( event.which == 13 ) {
-			 var temp = JSONtoString(new Messeger(idEmissor,idLeilao,MENSAGEM, userName, $('#msg').val()))
-			 websocketConnection.send(temp);
-			 $('#msg').val('');
+			  validaMensagem();
 		  }
 	  });
 	  
@@ -21,9 +20,25 @@ $('document').ready(function(){
 	  
 	  //Clicando no botão de aumentar
 	  $('#botao-aumentar').click(function(){
-			incrementLance( );
+			incrementLance();
 	  });
 		
+	  $('html').hover(function(){
+		  //Em foco
+		  console.log('Foco');
+		  onFocoPage = true;
+		  msgUnRead();
+	  },function(){
+		  //Fora de foco
+		  console.log('Fora de foco');
+		  onFocoPage = false;
+	  });
+	  
+	  $('html').click(function(){
+		  alertaDown();
+	  });
+	  
+	  alertaDown();
 	  //Seção de loops.
 	  setInterval(function(){manterConexao()},1000);
 	  setInterval(function(){updateHora()},1000 * 60 );
@@ -49,20 +64,36 @@ function implementsWebSocket(){
 }
 
 
-var conectado = false;
+var handshake = false;
 function manterConexao(){
-	 if(websocketConnection.readyState != 0 && !conectado){
-		console.log("Efetuando Aperto de mão.");
-		var temp = JSONtoString(new Messeger(idEmissor,idLeilao,HANDSHAKE,userName,' '));
-		websocketConnection.send(temp);
-		conectado = true;
-	 }
-	 if(websocketConnection.readyState == 3 ){
+	console.log('Status: '+websocketConnection.readyState+" conectado: "+handshake);
+	
+	if( websocketConnection.readyState != 1){
 		initWebSocket();
 		implementsWebSocket(); 
-		conection = false;
+		handshake = false;
+	 }
+	
+	 if(websocketConnection.readyState == 1 && !handshake){
+		var temp = JSONtoString(new Messeger(idEmissor,idLeilao,HANDSHAKE,userName,' '));
+		websocketConnection.send(temp);
+		handshake = true;
+		alertaDown();
 	 }
 }
 
-
+function validaMensagem(){
+	var mensagem = $('#msg').val();
+	mensagem = mensagem.trim();
+	
+	if( mensagem.length <=  0){
+		alertaUp('Você não pode mandar mensagem em branco.');
+		$('#msg').val('');
+		return;
+	}
+	
+	var temp = JSONtoString(new Messeger(idEmissor,idLeilao,MENSAGEM, userName,mensagem))
+	 websocketConnection.send(temp);
+	$('#msg').val('');
+}
 

@@ -10,7 +10,7 @@ const MENSAGEM_LEILOEIRO   = 'MENSAGEM_LEILOEIRO';
 const LANCE_INVALIDO       = 'LANCE_INVALIDO';
 const CALLBACK             = 'CALLBACK';
 
-const WS_SOCKET            = 'wss://'+ location.hostname +':'+location.port+'/Pechinchas/server';
+const WS_SOCKET            = 'ws://'+ location.hostname +':'+location.port+'/Pechinchas/server';
 //'ws://localhost:8080/Pechinchas/server'
 //Variáveis de execução
 var idEmissor; 
@@ -19,6 +19,9 @@ var userName;
 
 var tempoRestante; 
 var lanceCorrente; 
+
+var contUnRead = 0; 
+var onFocoPage; 
 
 var websocketConnection; 
 /*-----------Seção de Objetos------------*/
@@ -43,6 +46,7 @@ function getInformations(){
 
 //Incicia o WebSocket do programa. 
 function initWebSocket(){
+	alertaUp('Conectando ao servidor...');
 	websocketConnection = new WebSocket(WS_SOCKET);
 }
 
@@ -53,6 +57,7 @@ function JSONtoString(json){
 
 //Inseri uma mensagem no box-chat.
 function putmessage( message ){
+	
 	var iconLeiloeiro  = '<i class="fa fa-user fa-1x "</i>'; 
 	var iconMaiorLance = '<i class="fa fa-trophy fa-1x "></i>'; 
 	var ul =  $('#ul-chat');
@@ -121,36 +126,44 @@ function formatarHora( segundos ){
 
 //Inicializa os componentes do ambiente de leilão conforme uma message do tipo CALLBACK; 
 function inicializarAmbiente( message ){
-		//Lista de coisas que eu devo pegar no callback
-		//1 TempoCorrente; 
-		//2 Etiqueta; 
-		//3 Quantidade de pessoas online; 
-		//4 LanceCorrente; 
-		//5 Nome do usuário com o maior lance; 
-		//6 Nome do leiloeiro;
+	//Lista de coisas que eu devo pegar no callback
+	//1 TempoCorrente; 
+	//2 Etiqueta; 
+	//3 Quantidade de pessoas online; 
+	//4 LanceCorrente; 
+	//5 Nome do usuário com o maior lance; 
+	//6 Nome do leiloeiro;
 	var string = new String(message);
 	var data = string.split(';'); 
 	
 	tempoRestante = parseInt(data[0]); 
 	lanceCorrente = parseFloat(data[3]);
+	contUnRead = 0;
 	
-	$('#valor-lance').text('Lance: '+lanceCorrente+'R$');
+	$('#valor-lance').text('Lance: R$'+lanceCorrente);
 	
 	$('#tempo').text(formatarHora( data[0])); 
 	$('#etiqueta').text(data[1]);
 	$('#online').text(data[2]);
-	$('#maiorLanceMontante').text(data[3]+'R$');
+	$('#maiorLanceMontante').text('R$'+data[3]);
 	$('#maiorLance').text('Maior lance: '+data[4]);
 	$('#leiloeiro').text('Leiloeiro: '+data[5]);
 }
 
 //Invoca o função mais adequada para o tipo de mensagem em específico.
 function resolverMessage( message ){
+	msgUnRead(); 
 	switch(message.tipoMsg){
 		case CALLBACK:
 			inicializarAmbiente(message.msg);
 		break;
 		case MENSAGEM:
+			putmessage(message); 
+		break;
+		case MENSAGEM_MAIOR_LANCE:
+			putmessage(message); 
+		break;
+		case MENSAGEM_LEILOEIRO:
 			putmessage(message); 
 		break;
 		case ONLINE:
@@ -189,10 +202,10 @@ function updateLance(message){
 	
 	lanceCorrente = parseFloat(data[0]);
 	
-	console.log( data[0] + data[0] );
+	alertaUp(data[1]+' acabou de dar um lance de R$'+lanceCorrente);
 	
-	$('#valor-lance').text('Lance: '+lanceCorrente+'R$');
-	$('#maiorLanceMontante').text(lanceCorrente+'R$');
+	$('#valor-lance').text('Lance: R$'+lanceCorrente);
+	$('#maiorLanceMontante').text('R$'+lanceCorrente);
 	$('#maiorLance').text('Maior lance: '+data[1]);
 }
 
@@ -204,6 +217,28 @@ function updateHora(){
 function incrementLance( ){
 	//Tem uma regra de negócio que rege isso. 
 	lanceCorrente += 0.5;
-	$('#valor-lance').text('Lance: '+lanceCorrente+'R$');
+	$('#valor-lance').text('Lance: R$'+lanceCorrente);
+}
+
+function msgUnRead(){
+	if( !onFocoPage ){
+		$('title').text('Pechicha  ['+ ++contUnRead +']'); 
+	}else{
+		$('title').text('Pechicha');
+		contUnRead = 0; 
+	}
+}
+
+function alertaUp( mensagem ){
+	$('#alertas-temp').text(mensagem);
+	if ( $('#alertas').is( ":hidden" ) ) {
+	    $('#alertas').slideDown( "slow" );
+	}
+}
+
+function alertaDown(){
+	if(!$('#alertas').is( ":hidden" ) ){
+		$('#alertas').slideUp( "slow" );
+	}
 }
 //Lixos

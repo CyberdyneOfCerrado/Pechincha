@@ -63,6 +63,16 @@ public class MessegerFactory {
 		return m;
 	};
 	
+	public static Messeger createMessegerMaiorLance(String nickname, String msg){
+		Messeger m = new Messeger(-1,-1,nickname,MsgTypes.MENSAGEM_MAIOR_LANCE,msg);
+		return m;
+	};
+	
+	public static Messeger createMessegerLeiloeiro(String nickname, String msg){
+		Messeger m = new Messeger(-1,-1,nickname,MsgTypes.MENSAGEM_LEILOEIRO,msg);
+		return m;
+	};
+	
 	public static Messeger createMessegerLanceInvalido(){
 		Messeger m = new Messeger(-1,-1,"Pechincha",MsgTypes.LANCE_INVALIDO,"Seu lance foi invalidado.");
 		return m;
