@@ -5,6 +5,8 @@ import java.util.Hashtable;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
+
 import module1.pechincha.controllers.UseCaseController;
 import module1.pechincha.util.ActionDone;
 import module1.pechincha.util.DoAction;
@@ -66,10 +68,11 @@ public class ServletController {
 		String useCase  = request.getParameter("useCase");
 		String action   = request.getParameter("action");
 		DoAction da;
-		
 				
 		da = new DoAction(useCase,action);
-		
+		if ( ServletFileUpload.isMultipartContent(request)){
+			da.setData("request", request);
+		}
 		//Pegando todos os parâmetros adicionados, exceto pelo useCase e action;
 		Enumeration<String> valuesName = request.getParameterNames();
 		
