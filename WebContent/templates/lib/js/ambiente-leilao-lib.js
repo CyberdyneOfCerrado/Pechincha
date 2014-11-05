@@ -10,7 +10,7 @@ const MENSAGEM_LEILOEIRO   = 'MENSAGEM_LEILOEIRO';
 const LANCE_INVALIDO       = 'LANCE_INVALIDO';
 const CALLBACK             = 'CALLBACK';
 
-const WS_SOCKET            = 'ws://'+ location.hostname +':'+location.port+'/Pechinchas/server';
+const WS_SOCKET            = 'wss://'+ location.hostname +':'+location.port+'/Pechinchas/server';
 //'ws://localhost:8080/Pechinchas/server'
 //Variáveis de execução
 var idEmissor; 
