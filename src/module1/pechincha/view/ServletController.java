@@ -70,9 +70,7 @@ public class ServletController {
 		DoAction da;
 				
 		da = new DoAction(useCase,action);
-		if ( ServletFileUpload.isMultipartContent(request)){
-			da.setData("request", request);
-		}
+
 		//Pegando todos os parâmetros adicionados, exceto pelo useCase e action;
 		Enumeration<String> valuesName = request.getParameterNames();
 		
@@ -86,6 +84,10 @@ public class ServletController {
 		//Pegando dados de Sessão
 		da.setData("Session", request.getSession());
 		
+		if ( ServletFileUpload.isMultipartContent(request)){
+			da.setData("request", request);
+			da.setData("imageStorageContext", this.servletContext + separador + "imagens");
+		}
 		return da;
 	};
 	
