@@ -9,6 +9,7 @@ import module1.pechincha.controllers.UseCaseController;
 import module1.pechincha.util.ActionDone;
 import module1.pechincha.util.DoAction;
 import module1.pechincha.viewUseCases.AmbienteLeilaoView;
+import module1.pechincha.viewUseCases.ManterGalinhaView;
 import biz.source_code.miniTemplator.MiniTemplator;
 import biz.source_code.miniTemplator.MiniTemplator.TemplateSyntaxException;
 
@@ -30,7 +31,7 @@ public class ServletController {
 	//Adicionar todas as classes de gerenciamento de conteúdo aqui.
 	private void initViews(){
 		listViews.put("ambienteLeilao", new AmbienteLeilaoView(servletContext,"ambienteLeilao"));
-
+		listViews.put("manterGalinha", new ManterGalinhaView(servletContext,"manterGalinha"));
 	};
 	
 	private String init() throws TemplateSyntaxException, IOException{
