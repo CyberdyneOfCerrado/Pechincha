@@ -60,7 +60,7 @@ function JSONtoString(json){
 //Inseri uma mensagem no box-chat.
 function putmessage( message ){
 	
-	var iconLeiloeiro  = '<i class="fa fa-user fa-1x "</i>'; 
+	var iconLeiloeiro  = '<i class="fa fa-user fa-1x "></i>'; 
 	var iconMaiorLance = '<i class="fa fa-trophy fa-1x "></i>'; 
 	var ul =  $('#ul-chat');
 	var temp = '<li>';
