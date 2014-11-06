@@ -8,15 +8,17 @@ public class Produto extends ReflectiveModel {
 	private String descricao = null;
 	private float preco = 0;
 	private int quantidade = 0;
+	private int fkusuario = 0;
 	
 	public Produto(){
 		
 	}
-	public Produto(String titulo, String descricao, float preco, int quantidade){
+	public Produto(String titulo, String descricao, float preco, int quantidade, int fkusuario){
 		this.titulo = titulo; 
 		this.descricao = descricao;
 		this.preco = preco;
 		this.quantidade = quantidade;
+		this.fkusuario = fkusuario;
 	};
 	
 	public int getPk(){
@@ -37,6 +39,9 @@ public class Produto extends ReflectiveModel {
 	public int getQuantidade() {
 		return this.quantidade;
 	}
+	public int getFkUsuario(){
+		return this.fkusuario;
+	}
 	public void setPk(int pk){
 		this.pk = pk;
 	}
@@ -53,5 +58,8 @@ public class Produto extends ReflectiveModel {
 	}
 	public void setQuantidade(int quantidade) {
 		this.quantidade = quantidade;
+	}
+	public void setFkUsuario(int fk){
+		this.fkusuario = fk;
 	}
 }

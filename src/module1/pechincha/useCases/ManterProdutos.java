@@ -3,6 +3,7 @@
 package module1.pechincha.useCases;
 
 import module1.pechincha.controllers.ModelController;
+import module1.pechincha.model.Produto;
 import module1.pechincha.util.ActionDone;
 import module1.pechincha.util.DoAction;
 
@@ -13,6 +14,16 @@ public class ManterProdutos  extends ModelController{
 		//Identificando o pacote
 		ad.setAction(da.getAction());
 		ad.setUseCase(da.getUseCase());
+		
+		Produto prod = new Produto();
+		prod.setTitulo((String)da.getData("titulo"));
+		prod.setDescricao((String)da.getData("descricao"));
+		try{
+			prod.setPreco(Float.valueOf((String)da.getData("preco")));
+			prod.setQuantidade(Integer.valueOf((String)da.getData("quantidade")));
+		}
+		catch(Exception e){
+		}
 		ad.setMessage("O Lula só tem quatro dedos em uma das mãos.");
 		ad.setStatus(true);
 		ad.setProcessed(true);
