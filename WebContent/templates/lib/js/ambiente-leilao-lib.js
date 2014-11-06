@@ -11,6 +11,8 @@ const LANCE_INVALIDO       = 'LANCE_INVALIDO';
 const CALLBACK             = 'CALLBACK';
 
 const WS_SOCKET            = 'wss://'+ location.hostname +':'+location.port+'/Pechinchas/server';
+// Protótipo para enviar um objeto em string sem chamar o método stringify
+WebSocket.prototype.msg = function(a){if (this.readyState == 1) this.send(JSON.stringify(a));};	
 //'ws://localhost:8080/Pechinchas/server'
 //Variáveis de execução
 var idEmissor; 

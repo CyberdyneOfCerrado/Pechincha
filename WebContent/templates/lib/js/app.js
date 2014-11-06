@@ -14,15 +14,16 @@ $('document').ready(function(){
 	  
 	  //Clicando no botão de dar lance
 	  $('#botao-lance').click(function(){
-			var temp = JSONtoString(new Messeger(idEmissor,idLeilao,LANCE, userName,lanceCorrente));
-			 websocketConnection.send(temp);
+			var temp = new Messeger(idEmissor,idLeilao,LANCE, userName,lanceCorrente);
+			 websocketConnection.msg(temp);
 	   });
 	  
 	  //Clicando no botão de aumentar
-	  $('#botao-aumentar').click(function(){
+/*	  $('#botao-aumentar').click(function(){
 			incrementLance();
 	  });
-		
+*/		$('#botao-aumentar').click(incrementLance);
+	  
 	  $('html').hover(function(){
 		  //Em foco
 		  console.log('Foco');
@@ -33,38 +34,53 @@ $('document').ready(function(){
 		  console.log('Fora de foco');
 		  onFocoPage = false;
 	  });
-	  
+/*	  
 	  $('html').click(function(){
 		  alertaDown();
 	  });
-	  
+*/	  $('html').click(alertaDown);
+
 	  alertaDown();
 	  //Seção de loops.
-	  setInterval(function(){manterConexao()},1000);
-	  setInterval(function(){updateHora()},1000 * 60 );
+//	  setInterval(manterConexao,1000);
+	  setInterval(updateHora,1000 * 60 );
 });
 
+var handshake = false;
 
 function implementsWebSocket(){
 	websocketConnection.onopen = function(){
 		console.log('Tô dentro');
+		console.log('Status: '+websocketConnection.readyState+" conectado: "+handshake);
+		if (!handshake){
+			var temp = new Messeger(idEmissor,idLeilao,HANDSHAKE,userName,' ');
+			websocketConnection.msg(temp);
+			handshake = true;
+			alertaDown();
+		}
 	}
 
 	websocketConnection.onclose = function(){
 		console.log('Tô fora');
+		initWebSocket();
+		implementsWebSocket(); 
+		handshake = false;
 	}
 
 	websocketConnection.onerror = function(error){
 		console.log('Deu treta');
+		if (websocketConnection.readyState > 1){
+			initWebSocket();
+			implementsWebSocket(); 
+			handshake = false;
+		}
 	}
 	
 	websocketConnection.onmessage = function(e){
 	   resolverMessage(JSON.parse(e.data)); 
 	}
 }
-
-
-var handshake = false;
+/*
 function manterConexao(){
 	console.log('Status: '+websocketConnection.readyState+" conectado: "+handshake);
 	
@@ -75,16 +91,15 @@ function manterConexao(){
 	 }
 	
 	 if(websocketConnection.readyState == 1 && !handshake){
-		var temp = JSONtoString(new Messeger(idEmissor,idLeilao,HANDSHAKE,userName,' '));
-		websocketConnection.send(temp);
+		var temp = new Messeger(idEmissor,idLeilao,HANDSHAKE,userName,' ');
+		websocketConnection.msg(temp);
 		handshake = true;
 		alertaDown();
 	 }
 }
-
+*/
 function validaMensagem(){
-	var mensagem = $('#msg').val();
-	mensagem = mensagem.trim();
+	var mensagem = $('#msg').val().trim();
 	
 	if( mensagem.length <=  0){
 		alertaUp('Você não pode mandar mensagem em branco.');
@@ -92,8 +107,8 @@ function validaMensagem(){
 		return;
 	}
 	
-	var temp = JSONtoString(new Messeger(idEmissor,idLeilao,MENSAGEM, userName,mensagem))
-	 websocketConnection.send(temp);
+	var temp = new Messeger(idEmissor,idLeilao,MENSAGEM, userName,mensagem);
+	 websocketConnection.msg(temp);
 	$('#msg').val('');
 }
 
