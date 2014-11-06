@@ -106,12 +106,13 @@ public class ServletController {
 		// Pegando dados de Sessão
 		da.setData("Session", request.getSession());
 
+		// Check that we have a file upload request
 		if (ServletFileUpload.isMultipartContent(request)) {
 			try {
 				DiskFileItemFactory factory = new DiskFileItemFactory();
 
 				factory.setSizeThreshold(this.maxMemSize);
-				// Location to save data that is larger than maxMemSize.
+				// Location to temporary save data that is larger than maxMemSize.
 				factory.setRepository(new File(this.servletContext + separador + "tmp"));
 
 				// Create a new file upload handler
@@ -126,9 +127,9 @@ public class ServletController {
 				Iterator<FileItem> i = fileItems.iterator();
 
 				da.setData("fileItem", i);
-				da.setData("imageStorageContext", this.servletContext);
+				da.setData("storageContext", this.servletContext);
 			} catch (Exception e) {
-
+				e.printStackTrace();
 			}
 		}
 		return da;

@@ -15,7 +15,7 @@ public class JDBCLanceDAO extends DAOBehavior<Lance>{
 	private Connection c; 
 	
 	public JDBCLanceDAO(){
-		c = ConnectionFactory.getConnection(); 
+		c = ConnectionFactory.getConnection();
 	};
 	
 	@Override
@@ -37,7 +37,7 @@ public class JDBCLanceDAO extends DAOBehavior<Lance>{
 	@Override
 	public void delete(int pk) {
 		try {
-			PreparedStatement ps = c.prepareStatement("delete from lance where idlance =  ?");
+			PreparedStatement ps = c.prepareStatement("delete from lance where pk = ?");
 			ps.setInt(1,pk);
 			ps.execute();
 			ps.close();
