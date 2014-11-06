@@ -49,7 +49,7 @@ public class ManagerStorage extends Thread{
 	
 	public void createNewManagerLeilao( Leilao leilao){
 		ManagerLeilao ml = new ManagerLeilao(leilao); 
-		managers.put(leilao.getId(),ml); 
+		managers.put(leilao.getIdLeilao(),ml); 
 		ml.startManager();
 	}; 
 	

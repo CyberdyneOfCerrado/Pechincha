@@ -28,6 +28,14 @@ public class Leilao extends ReflectiveModel {
 		this.ativo=ativo;
 	};
 	
+	public Leilao(int idLeilao, String etiqueta, int tempoLimite, int idLeiloeiro, float lanceInicial){
+		this.idLeilao = idLeilao; 
+		this.etiqueta = etiqueta;
+		this.tempoLimite = tempoLimite; 
+		this.setLanceInicial(lanceInicial);
+		this.idLeiloeiro = idLeiloeiro;
+	};	
+	
 	public Leilao(int idLeilao){
 		this.idLeilao = idLeilao;
 	}

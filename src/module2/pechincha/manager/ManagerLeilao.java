@@ -72,14 +72,14 @@ public class ManagerLeilao extends Thread {
 	
 	public synchronized void removeSession( UserSession userSession ){
 		if(!peers.containsKey(userSession.getIdUser()))return; 
-		System.err.println("Clientes conectados removendo "+peers.size()+" Leilao " + leilao.getId()); 
+		System.err.println("Clientes conectados removendo "+peers.size()+" Leilao " + leilao.getIdLeilao()); 
 		peers.remove(userSession.getIdUser());  
 		this.feedOffline(peers.size());
 	}; 
 	
 	public synchronized void addSession( UserSession userSession ){
 		if(peers.containsKey(userSession.getIdUser())) return; 
-		System.err.println("Clientes conectados adicionando "+peers.size()+" Leilao " + leilao.getId());
+		System.err.println("Clientes conectados adicionando "+peers.size()+" Leilao " + leilao.getIdLeilao());
 		feedOnline( peers.size()+1);
 		peers.put(userSession.getIdUser(), userSession); 
 	}; 
