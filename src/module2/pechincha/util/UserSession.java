@@ -4,20 +4,20 @@ import javax.websocket.Session;
 
 public class UserSession {
 	private Session session;
-	private String nickName;
+	private String nickname;
 	private int idUser; 
 	private int idLeilao; 
 	
-	public UserSession( String nickName , Session session, int idUser, int idLeilao){
+	public UserSession( String nickname , Session session, int idUser, int idLeilao){
 		this.session = session; 
-		this.nickName = nickName;
-		this.idUser = idUser; 
+		this.nickname = nickname;
+		this.idUser =  idUser; 
 		this.idLeilao = idLeilao; 
 	}; 
 	
 	public UserSession(){
 		this.session = null; 
-		this.nickName = null;
+		this.nickname = null;
 		this.idUser = 0; 
 		this.idLeilao = 0; 
 	}; 
@@ -30,12 +30,12 @@ public class UserSession {
 		this.session = session;
 	}
 
-	public String getNickName() {
-		return nickName;
+	public String getNickname() {
+		return nickname;
 	}
 
-	public void setNickName(String nickName) {
-		this.nickName = nickName;
+	public void setNickName(String nickname) {
+		this.nickname = nickname;
 	}
 
 	public int getIdLeilao() {
