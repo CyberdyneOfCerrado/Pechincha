@@ -96,4 +96,11 @@ public class JDBCLanceDAO extends DAOBehavior<Lance>{
 	public void update(Lance arg) {
 		
 	};
+	public boolean validar(Lance lance){
+		float valor = lance.getLance();
+		if ( valor < 0 || valor > 1000000){
+			return false;
+		}
+		return true;
+	}
 }

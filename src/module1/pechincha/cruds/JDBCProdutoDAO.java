@@ -58,11 +58,11 @@ public class JDBCProdutoDAO extends DAOBehavior<Produto>{
 			ResultSet result = ps.executeQuery();
 			while(result.next()){
 				Produto temp = new Produto();
-				ps.setString(1,result.getString("titulo"));
-				ps.setString(2,result.getString("descricao"));
-				ps.setFloat(3, result.getFloat("preco"));
-				ps.setInt(4, result.getInt("quantidade"));
-				ps.setInt(5, result.getInt("fkusuario"));
+				temp.setTitulo(result.getString("titulo"));
+				temp.setDescricao(result.getString("descricao"));
+				temp.setPreco(result.getFloat("preco"));
+				temp.setQuantidade(result.getInt("quantidade"));
+				temp.setFkUsuario(result.getInt("fkusuario"));
 				list.add(temp);
 			}
 			result.close();
@@ -83,18 +83,18 @@ public class JDBCProdutoDAO extends DAOBehavior<Produto>{
 			ResultSet result = ps.executeQuery();
 			while(result.next()){
 				Produto temp = new Produto();
-				ps.setString(1,result.getString("titulo"));
-				ps.setString(2,result.getString("descricao"));
-				ps.setFloat(3, result.getFloat("preco"));
-				ps.setInt(4, result.getInt("quantidade"));
-				ps.setInt(5, result.getInt("fkusuario"));
+				temp.setTitulo(result.getString("titulo"));
+				temp.setDescricao(result.getString("descricao"));
+				temp.setPreco(result.getFloat("preco"));
+				temp.setQuantidade(result.getInt("quantidade"));
+				temp.setFkUsuario(result.getInt("fkusuario"));
 				list.add(temp);
 			}
 			result.close();
 			ps.close();
 		
 		} catch (SQLException e) {
-			throw new RuntimeException("Erro ao listar dados. Classe JDBCLanceDAO", e); 
+			throw new RuntimeException("Erro ao listar dados. Classe JDBCProdutoDAO", e); 
 		}
 		return list;
 	};
@@ -103,7 +103,7 @@ public class JDBCProdutoDAO extends DAOBehavior<Produto>{
 	public Produto search(int pk) {
 		Produto temp = null;
 		try {
-			PreparedStatement ps = c.prepareStatement("select * from lance where idleilao = ? and lance = (select max(lance) from lance where idleilao = ?");
+			PreparedStatement ps = c.prepareStatement("select * from produto where pk = ?");
 			ps.setInt(1,pk);
 			ResultSet result = ps.executeQuery();
 			temp = new Produto(); 
@@ -118,7 +118,7 @@ public class JDBCProdutoDAO extends DAOBehavior<Produto>{
 			ps.close();
 		
 		} catch (SQLException e) {
-			throw new RuntimeException("Erro ao procurar dados. Classe JDBCLanceDAO", e); 
+			throw new RuntimeException("Erro ao procurar dados. Classe JDBCProdutoDAO", e); 
 		}
 		return temp;
 	};
@@ -127,4 +127,24 @@ public class JDBCProdutoDAO extends DAOBehavior<Produto>{
 	public void update(Produto arg) {
 		
 	};
+	
+	public boolean validar(Produto produto){
+		String test = produto.getDescricao();
+		float preco = produto.getPreco();
+		int quantidade = produto.getQuantidade();
+		if ( test != null && test.length() > 2000){
+			return false;
+		}
+		test = produto.getTitulo();
+		if ( test != null && (test.length() < 5 || test.length() > 50)){
+			return false;
+		}
+		if ( preco < 0 || preco > 1000000){
+			return false;
+		}
+		if ( quantidade < 1 || quantidade > 100){
+			return false;
+		}
+		return true;
+	}
 }
