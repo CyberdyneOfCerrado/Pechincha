@@ -5,6 +5,7 @@ import java.util.Hashtable;
 import java.util.Map;
 
 
+
 import javax.websocket.Session;
 
 import module1.pechincha.model.Leilao;
@@ -19,8 +20,8 @@ public class WebSocketController {
 	   
 	   public WebSocketController(){
 		   StorageLeilaoEnvironments.initialize();
-		   //public Leilao(int id, String etiqueta, int tempoLimite, int idLeiloeiro, double valorIncial)
-		   StorageLeilaoEnvironments.iniciarAmbienteLeilao( new Leilao(1,"Venda de Equipamentos Eletrônicos" ,50000, 1 ,2000.00f) );
+		   //public Leilao(int idLeilao, String etiqueta, int tempoLimite, int idLeiloeiro, float lanceInicial,String descricao,int comprador, ArrayList<LoteProduto> produto,String nickname,boolean ativo){
+		   StorageLeilaoEnvironments.iniciarAmbienteLeilao( new Leilao(1,"Venda de Equipamentos Eletrônicos" ,50000, 1 ,2000.00f,"nada",33,null,"Allyson",false) );
 	   }; 
 	   
 	   //Em caso de uma mensagem do tipo HandShake, este método deve registrar a Session a variável peers. 

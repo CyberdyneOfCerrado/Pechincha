@@ -84,8 +84,7 @@ public class ManagerLeilao extends Thread {
 		peers.put(userSession.getIdUser(), userSession); 
 	}; 
 	 
-	private void msgBroadcast( Messeger messeger){//Arrumar isso.
-		//Enviar para todos os cliente, exceto para o emissor. 
+	private void msgBroadcast( Messeger messeger){
 		Collection<UserSession> c = peers.values();
 		
 		for(UserSession us : c){
@@ -97,26 +96,23 @@ public class ManagerLeilao extends Thread {
 	}; 
 	
 	private void msgUnicast( UserSession userSession, Messeger messeger){
-		//Criar um método na MessegerFactory para converter messeger em JsonString.
 		userSession.getSession().getAsyncRemote().sendText(MessegerFactory.MessegerToJSONString(messeger));
 	};
 	
 	private void chat ( UserSession userSession, Messeger messeger){
 		boolean valida = chat.validarMensagem(messeger); 
-		
 		if(valida){
-			messeger = chat.diferenciarUsuario(messeger, userSession, maiorLance);
+			messeger = chat.diferenciarUsuario(messeger, userSession, maiorLance, leilao);
 			msgBroadcast(messeger);
 		}
 	};
 	
 	private void lance( UserSession userSession, Messeger messeger){
 		float novoLance = Float.parseFloat(messeger.getMsg());
-		
 		if( novoLance > this.lanceCorrente){
-				lanceCorrente = novoLance;
-				this.maiorLance = userSession;
-				msgBroadcast( MessegerFactory.createMessegerLance(String.valueOf(lanceCorrente),userSession.getNickName()));
+			lanceCorrente = novoLance;
+			this.maiorLance = userSession;
+			msgBroadcast( MessegerFactory.createMessegerLance(String.valueOf(lanceCorrente),userSession.getNickname()));
 		}else{
 			msgUnicast(userSession,MessegerFactory.createMessegerLanceInvalido());
 		}	
@@ -137,8 +133,8 @@ public class ManagerLeilao extends Thread {
 		msg += leilao.getEtiqueta()+";";
 		msg += peers.size()+";";
 		msg += lanceCorrente +";";
-		msg += (maiorLance.getNickName() != null) ? maiorLance.getNickName()+";" : "Ninguém ainda" +";";
-		msg += "MacGayver"+";";
+		msg += (maiorLance.getNickname() != null) ? maiorLance.getNickname()+";" : "Ninguém ainda" +";";
+		msg += leilao.getNickname()+";";
 		
 		msgUnicast(userSession, MessegerFactory.createMessegerCallback(msg)); 
 	}; 
