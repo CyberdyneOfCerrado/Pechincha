@@ -93,18 +93,13 @@ public class ServletController {
 		while (valuesName.hasMoreElements()) {
 			String temp = valuesName.nextElement();
 			if (!temp.equals("useCase") && !temp.equals("action")) {
-				da.setData(temp, request.getParameter(temp));// setando o nome
-																// do parametro
-																// como chave na
-																// hashtable
-																// setando o
-																// nome do
-																// parametro
-																// como valor
+				// setando o nome do parametro como chave na hashtable setando o nome do parametro como valor
+				da.setData(temp, request.getParameter(temp));
 			}
 		}
 		// Pegando dados de Sessão
 		da.setData("Session", request.getSession());
+		da.setData("request", request);
 
 		// Check that we have a file upload request
 		if (ServletFileUpload.isMultipartContent(request)) {
@@ -128,6 +123,7 @@ public class ServletController {
 
 				da.setData("fileItem", i);
 				da.setData("storageContext", this.servletContext);
+				da.setData("pathSeparador", separador);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

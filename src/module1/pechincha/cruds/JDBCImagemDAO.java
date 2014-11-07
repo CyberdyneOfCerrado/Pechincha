@@ -20,13 +20,32 @@ public class JDBCImagemDAO extends DAOBehavior<Imagem>{
 	
 	@Override
 	public void insert(Imagem arg) {
-		String sql = "Insert into "+arg.getTableName()+" ("+arg.getColumnName()+") values ( ? )"; 
+		String sql = "Insert into "+arg.getTableName()+" ("+arg.getColumnName()+") values ( ? ) returning pk"; 
 		try {
 			PreparedStatement ps = c.prepareStatement(sql);
 			ps.setInt(1,arg.getFkProduto());
-			ps.execute(); 
+			ps.execute();
 			ps.close();
-			
+		} catch (SQLException e) {
+			throw new RuntimeException("Erro ao inserir dados. Classe JDBCImagemDAO", e); 
+		}
+	};
+	
+	public int insertReturningPk(Imagem arg) {
+		String sql = "Insert into "+arg.getTableName()+" ("+arg.getColumnName()+") values ( ?, ? ) returning pk"; 
+		try {
+			PreparedStatement ps = c.prepareStatement(sql);
+			ps.setInt(1,arg.getFkProduto());
+			ps.setString(2, arg.getFormato());
+			ResultSet result = ps.executeQuery();
+			int pk = 0;
+			while(result.next()){
+				pk = result.getInt("pk");
+				break;
+			}
+			result.close();
+			ps.close();
+			return pk;			
 		} catch (SQLException e) {
 			throw new RuntimeException("Erro ao inserir dados. Classe JDBCImagemDAO", e); 
 		}
@@ -56,6 +75,7 @@ public class JDBCImagemDAO extends DAOBehavior<Imagem>{
 				Imagem temp = new Imagem();
 				temp.setPk(result.getInt("pk"));
 				temp.setFkProduto(result.getInt("fkproduto"));
+				temp.setFormato(result.getString("formato"));
 				list.add(temp);
 			}
 			result.close();
@@ -78,6 +98,7 @@ public class JDBCImagemDAO extends DAOBehavior<Imagem>{
 				Imagem temp = new Imagem();
 				temp.setPk(result.getInt("pk"));
 				temp.setFkProduto(result.getInt("fkproduto"));
+				temp.setFormato(result.getString("formato"));
 				list.add(temp);
 			}
 			result.close();
@@ -100,6 +121,7 @@ public class JDBCImagemDAO extends DAOBehavior<Imagem>{
 			while(result.next()){
 				temp.setPk(result.getInt("pk"));
 				temp.setFkProduto(result.getInt("fkproduto"));
+				temp.setFormato(result.getString("formato"));
 			}
 			result.close();
 			ps.close();
