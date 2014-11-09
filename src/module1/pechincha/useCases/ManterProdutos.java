@@ -2,6 +2,7 @@
 
 package module1.pechincha.useCases;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 import org.apache.commons.fileupload.FileItemStream;
@@ -24,6 +25,11 @@ public class ManterProdutos  extends ModelController{
 		ad.setUseCase(da.getUseCase());
 		ad.setStatus(true);
 		ad.setProcessed(true);
+		
+		String confirm = (String)da.getData("confirm");
+		if ( confirm != null){
+			return ad;
+		}
 	
 		Produto prod = new Produto();
 		prod.setTitulo((String)da.getData("titulo"));
@@ -46,12 +52,12 @@ public class ManterProdutos  extends ModelController{
 				fup.setSeparador(separador);
 				int cont=0;
 				
-				ArrayList<FileItemStream> imagens = new ArrayList<FileItemStream>();
+				ArrayList<DoAction> imagens = new ArrayList<DoAction>();
 				for (int i = 1; i <= 5; i++){
-					FileItemStream img = (FileItemStream)da.getData("imagem" + i);
+					FileItemStream img = (FileItemStream)((DoAction)da.getData("imagem" + i)).getData("file");
 					
-					if (img != null && !img.isFormField() && !img.getName().isEmpty()){
-						imagens.add(img);
+					if (img != null && !img.getName().isEmpty()){
+						imagens.add((DoAction)da.getData("imagem" + i));
 					}
 				}
 				
@@ -61,9 +67,11 @@ public class ManterProdutos  extends ModelController{
 					return ad;
 				}
 				
-				for (FileItemStream img : imagens){
-					System.out.println(img.getName());
-					String formato = img.getName().substring(img.getName().lastIndexOf(".")+1);
+				for (DoAction img : imagens){
+					ByteArrayOutputStream baos = (ByteArrayOutputStream)img.getData("data");
+					FileItemStream fis = (FileItemStream)img.getData("file");
+					String name = fis.getName();
+					String formato = name.substring(name.lastIndexOf(".")+1);
 					System.out.println(formato);
 					Imagem imag = new Imagem(0, pkprodinsert, formato);
 					JDBCImagemDAO insimg = new JDBCImagemDAO();
@@ -72,7 +80,7 @@ public class ManterProdutos  extends ModelController{
 					
 					System.out.println("PK da imagem: " + pknewimg);
 					
-					long sizeread = fup.saveFile(img, Integer.toString(pknewimg) + "." + formato);
+					long sizeread = fup.saveFile(baos, Integer.toString(pknewimg) + "." + formato);
 					if ( sizeread == -1 || sizeread > fup.getMaxSizeAllowed()){
 						insimg.delete(pknewimg);
 					}else{

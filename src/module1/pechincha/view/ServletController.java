@@ -1,15 +1,14 @@
 package module1.pechincha.view;
 
-import java.util.List;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.Hashtable;
-import java.util.Iterator;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -127,8 +126,22 @@ public class ServletController {
 				FileItemIterator iter = upload.getItemIterator(request);
 				while ( iter.hasNext () ){
 					FileItemStream fi = iter.next();
-					System.out.println(fi.getFieldName() + ": " + fi.getName());
-					da.setData(fi.getFieldName(), (fi.isFormField() ? Streams.asString(fi.openStream()) : fi));
+					InputStream is = fi.openStream();
+					if (fi.isFormField()){
+						da.setData(fi.getFieldName(), Streams.asString(is));
+					}else{
+						ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
+			            int len;
+			            byte[] buffer = new byte[8192];
+			            while ((len = is.read(buffer, 0, buffer.length)) != -1) {
+			              byteOut.write(buffer, 0, len);
+			            }
+			            System.out.println("Leu!");
+			            DoAction file = new DoAction(null, null);
+			            file.setData("file", fi);
+			            file.setData("data", byteOut);
+			            da.setData(fi.getFieldName(), file);
+					}
 				}
 				da.setData("storageContext", this.servletContext);
 				da.setData("pathSeparador", separador);

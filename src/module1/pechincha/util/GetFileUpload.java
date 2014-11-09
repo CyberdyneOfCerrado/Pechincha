@@ -1,44 +1,31 @@
 package module1.pechincha.util;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-
-import org.apache.commons.fileupload.FileItemStream;
 
 public class GetFileUpload {
 	private String path = null, separador = null;
 	private long maxSizeAllowed = 5 * 1024 * 1024;
-
-	public long saveFile(FileItemStream fis, String name) {
-		long lido = 0;
-		if (!fis.isFormField()) {
-			// Get the uploaded file parameters
-			InputStream fs;
+	
+	public long saveFile(ByteArrayOutputStream baos, String name) {
+		long tam = baos.size();
+		
+		if ( tam > this.maxSizeAllowed){
+			return tam;
+		}
 			try {
-				fs = fis.openStream();
-				
 				FileOutputStream out = new FileOutputStream(new File(path + separador + name));
-				int read = 0;
-		        final byte[] bytes = new byte[1024];
-
-		        while ((read = fs.read(bytes)) != -1) {
-		            out.write(bytes, 0, read);
-		            lido += read;
-		        }
-		        fs.close();
+	            out.write(baos.toByteArray(), 0, baos.size());
 		        out.close();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 				return -1;
 			}			
-		}
-		else{
-			return -1;
-		}
-		return lido;
+
+		return tam;
 	}
 	public void setPath(String path){
 		this.path = path;
