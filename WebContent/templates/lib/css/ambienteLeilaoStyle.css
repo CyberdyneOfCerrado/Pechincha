@@ -227,5 +227,20 @@ textarea{
 	font-size:3.5mm;
 }
 
+#finalizar{
+	position:relative;
+	top:5px;
+	left:180px;
+	font-family: Tahoma, Helvetica; 
+	font-size:40px;
+	color: white;
+}
+#finalizar:hover{
+	transition: 0,1s;
+	color:rgb(255, 215, 0); 
+}
+#finalizar:active{
+	color:rgb(255, 115, 0); 
+}
 
 

@@ -8,6 +8,14 @@ public class AmbienteLeilao extends ModelController {
 	
 	public ActionDone ambiente( DoAction da ){
 	ActionDone ad = new ActionDone();
+	//Verificar aqui se o usuário que requisita a o ambiente é o leiloeiro da mesma; 
+	
+	System.out.println(da.getData("userName"));
+	ad.setData("userName", da.getData("userName")); 
+	ad.setData("idEmissor", da.getData("idEmissor")); 
+	ad.setData("idLeilao", da.getData("idLeilao"));			
+			
+	ad.setData("isLeiloeiro", true);
 	
 	//Por enquanto eu não vou fazer nada aqui. 
 	//Identificando o pacote

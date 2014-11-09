@@ -30,6 +30,7 @@ public class ManagerLeilao extends Thread {
 		}
 		done = true;
 		//Provavelmente terei que chamar o método de finalizar aqui. 
+		finalizar();
 	}; 
 	
 	public ManagerLeilao( Leilao leilao){
@@ -63,7 +64,7 @@ public class ManagerLeilao extends Thread {
 					lance(peers.get(messeger.getIdEmissor()), messeger);
 				break;
 			case FINALIZAR: 
-				
+					finalizar();
 				break;
 			default:
 				break;
@@ -116,6 +117,10 @@ public class ManagerLeilao extends Thread {
 		}else{
 			msgUnicast(userSession,MessegerFactory.createMessegerLanceInvalido());
 		}	
+	};
+	
+	private void finalizar(){
+		System.out.println("Finalizando....");
 	};
 	
 	private void generateCallback(UserSession userSession, Messeger messeger){

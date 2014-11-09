@@ -13,18 +13,19 @@ $('document').ready(function(){
 	  });
 	  
 	  //Clicando no botão de dar lance
-	  $('#botao-lance').click(function(){
+	 $('#botao-lance').click(function(){
 			var temp = new Messeger(idEmissor,idLeilao,LANCE, userName,lanceCorrente);
 			 websocketConnection.msg(temp);
-	   });
+	 });
 	  
-	  //Clicando no botão de aumentar
-/*	  $('#botao-aumentar').click(function(){
-			incrementLance();
-	  });
-*/		$('#botao-aumentar').click(incrementLance);
+	 $('#finalizar').click(function(){
+		 var temp = new Messeger(idEmissor,idLeilao,FINALIZAR,userName,' ');
+		 websocketConnection.msg(temp);
+	 });
+	 
+	 $('#botao-aumentar').click(incrementLance);
 	  
-	  $('html').hover(function(){
+	 $('html').hover(function(){
 		  //Em foco
 		  console.log('Foco');
 		  onFocoPage = true;
@@ -34,15 +35,10 @@ $('document').ready(function(){
 		  console.log('Fora de foco');
 		  onFocoPage = false;
 	  });
-/*	  
-	  $('html').click(function(){
-		  alertaDown();
-	  });
-*/	  $('html').click(alertaDown);
+
+	  $('html').click(alertaDown);
 
 	  alertaDown();
-	  //Seção de loops.
-//	  setInterval(manterConexao,1000);
 	  setInterval(updateHora,1000 * 60 );
 });
 
@@ -80,24 +76,7 @@ function implementsWebSocket(){
 	   resolverMessage(JSON.parse(e.data)); 
 	}
 }
-/*
-function manterConexao(){
-	console.log('Status: '+websocketConnection.readyState+" conectado: "+handshake);
-	
-	if( websocketConnection.readyState != 1){
-		initWebSocket();
-		implementsWebSocket(); 
-		handshake = false;
-	 }
-	
-	 if(websocketConnection.readyState == 1 && !handshake){
-		var temp = new Messeger(idEmissor,idLeilao,HANDSHAKE,userName,' ');
-		websocketConnection.msg(temp);
-		handshake = true;
-		alertaDown();
-	 }
-}
-*/
+
 function validaMensagem(){
 	var mensagem = $('#msg').val().trim();
 	

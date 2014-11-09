@@ -34,6 +34,7 @@ public class MessegerFactory {
 			m = createMenasgem(o);
 			break;
 		case FINALIZAR: 
+			m = createMenasgem(o);
 			break;
 		case LANCE_INVALIDO: 
 			break;
