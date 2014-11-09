@@ -10,7 +10,10 @@ import java.util.Iterator;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileItemIterator;
+import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.fileupload.util.Streams;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 
 import module1.pechincha.controllers.UseCaseController;
@@ -102,7 +105,6 @@ public class ServletController {
 		}
 		// Pegando dados de Sessão
 		da.setData("Session", request.getSession());
-		da.setData("request", request);
 
 		// Check that we have a file upload request
 		if (ServletFileUpload.isMultipartContent(request)) {
@@ -119,12 +121,15 @@ public class ServletController {
 				upload.setSizeMax(this.maxFileSize);
 
 				// Parse the request to get file items.
-				List<FileItem> fileItems = upload.parseRequest(request);
+//				List<FileItem> fileItems = upload.parseRequest(request);
 
 				// Process the uploaded file items
-				Iterator<FileItem> i = fileItems.iterator();
-
-				da.setData("fileItem", i);
+				FileItemIterator iter = upload.getItemIterator(request);
+				while ( iter.hasNext () ){
+					FileItemStream fi = iter.next();
+					System.out.println(fi.getFieldName() + ": " + fi.getName());
+					da.setData(fi.getFieldName(), (fi.isFormField() ? Streams.asString(fi.openStream()) : fi));
+				}
 				da.setData("storageContext", this.servletContext);
 				da.setData("pathSeparador", separador);
 			} catch (Exception e) {

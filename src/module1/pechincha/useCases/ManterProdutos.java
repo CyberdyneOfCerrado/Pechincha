@@ -2,82 +2,101 @@
 
 package module1.pechincha.useCases;
 
-import java.util.Iterator;
+import java.util.ArrayList;
 
-import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileItemStream;
 
 import module1.pechincha.controllers.ModelController;
-import module1.pechincha.cruds.JDBCCategoriaProdutoDAO;
 import module1.pechincha.cruds.JDBCImagemDAO;
 import module1.pechincha.cruds.JDBCProdutoDAO;
-import module1.pechincha.model.CategoriaProduto;
 import module1.pechincha.model.Imagem;
 import module1.pechincha.model.Produto;
 import module1.pechincha.util.ActionDone;
 import module1.pechincha.util.DoAction;
-import module2.pechincha.util.GetFileUpload;
+import module1.pechincha.util.GetFileUpload;
 
 public class ManterProdutos  extends ModelController{
 	public ActionDone novo ( DoAction da ){
 		ActionDone ad = new ActionDone();
 		
 		//Identificando o pacote
-		ad.setAction("resultado");
+		ad.setAction(da.getAction());
 		ad.setUseCase(da.getUseCase());
-		
+		ad.setStatus(true);
+		ad.setProcessed(true);
+	
 		Produto prod = new Produto();
 		prod.setTitulo((String)da.getData("titulo"));
 		prod.setDescricao((String)da.getData("descricao"));
+		
 		try{
 			prod.setPreco(Float.valueOf((String)da.getData("preco")));
 			prod.setQuantidade(Integer.valueOf((String)da.getData("quantidade")));
 			prod.setFkUsuario(Integer.valueOf((String)da.getData("idusuario")));
+			
+			JDBCProdutoDAO manterproduto = new JDBCProdutoDAO();
+			if ( manterproduto.validar(prod)){
+				int pkprodinsert = manterproduto.insertReturningPk(prod);
+				
+				GetFileUpload fup = new GetFileUpload();
+				String path = (String)da.getData("storageContext"),
+						separador = (String)da.getData("pathSeparador");
+				path += separador + "imagens";
+				fup.setPath(path);
+				fup.setSeparador(separador);
+				int cont=0;
+				
+				ArrayList<FileItemStream> imagens = new ArrayList<FileItemStream>();
+				for (int i = 1; i <= 5; i++){
+					FileItemStream img = (FileItemStream)da.getData("imagem" + i);
+					
+					if (img != null && !img.isFormField() && !img.getName().isEmpty()){
+						imagens.add(img);
+					}
+				}
+				
+				if ( imagens.size() == 0){
+					manterproduto.delete(pkprodinsert);
+					ad.setMessage("Nenhuma imagem.");
+					return ad;
+				}
+				
+				for (FileItemStream img : imagens){
+					System.out.println(img.getName());
+					String formato = img.getName().substring(img.getName().lastIndexOf(".")+1);
+					System.out.println(formato);
+					Imagem imag = new Imagem(0, pkprodinsert, formato);
+					JDBCImagemDAO insimg = new JDBCImagemDAO();
+					int pknewimg = insimg.insertReturningPk(imag);
+					imag.setPk(pknewimg);
+					
+					System.out.println("PK da imagem: " + pknewimg);
+					
+					long sizeread = fup.saveFile(img, Integer.toString(pknewimg) + "." + formato);
+					if ( sizeread == -1 || sizeread > fup.getMaxSizeAllowed()){
+						insimg.delete(pknewimg);
+					}else{
+						cont++;
+					}
+					if ( cont == 5){
+						break;
+					}
+				}
+			
+				if ( cont == 0 ){
+					manterproduto.delete(pkprodinsert);
+					ad.setMessage("Nenhuma imagem.");
+					return ad;
+				}
+			}
 		}
 		catch(Exception e){
+			e.printStackTrace();
+			ad.setMessage("Erro desconhecido ou erro ao converter valores.");
+			return ad;
 		}
-		JDBCProdutoDAO manterproduto = new JDBCProdutoDAO();
-		if ( manterproduto.validar(prod)){
-			int pkprodinsert = manterproduto.insertReturningPk(prod);
-			
-			@SuppressWarnings("unchecked")
-			Iterator<FileItem> files = (Iterator<FileItem>)da.getData("fileItem");
-			GetFileUpload fup = new GetFileUpload();
-			String path = (String)da.getData("storageContext"),
-					separador = (String)da.getData("pathSeparador");
-			path += separador + "imagens";
-			fup.setPath(path);
-			fup.setSeparador(separador);
-			int cont=0;
-			while ( files.hasNext () ){
-				FileItem fi = files.next();
-				if ( fi.getSize() > fup.getMaxSizeAllowed()){
-					//erro
-					break;
-				}
-				String formato = fi.getName().substring(fi.getName().lastIndexOf("."));
-				Imagem img = new Imagem(0, pkprodinsert, formato);
-				JDBCImagemDAO insimg = new JDBCImagemDAO();
-				int pknewimg = insimg.insertReturningPk(img);
-				img.setPk(pknewimg);
-				long sizeread = fup.saveFile(files.next(), Integer.toString(pknewimg));
-				if ( sizeread == -1 || sizeread > fup.getMaxSizeAllowed()){
-					insimg.delete(pknewimg);
-					break;
-				}
-				cont++;
-				if ( cont == 5){
-					break;
-				}
-			}
-			if ( cont == 0 ){
-				manterproduto.delete(pkprodinsert);
-				//erro
-			}
-		}
-		ad.setMessage("Processado");
-		ad.setStatus(true);
-		ad.setProcessed(true);
-
+		
+		ad.setMessage("Ocorreu tudo bem.");
 		return ad;
 	};
 	
@@ -89,75 +108,7 @@ public class ManterProdutos  extends ModelController{
 		ad.setUseCase(da.getUseCase());
 		ad.setStatus(true);
 		ad.setProcessed(true);
-		
-		Produto prod = new Produto();
-		prod.setTitulo((String)da.getData("titulo"));
-		prod.setDescricao((String)da.getData("descricao"));
-		try{
-			prod.setPreco(Float.valueOf((String)da.getData("preco")));
-			prod.setQuantidade(Integer.valueOf((String)da.getData("quantidade")));
-			prod.setFkUsuario(Integer.valueOf((String)da.getData("idusuario")));
-			
-			JDBCProdutoDAO manterproduto = new JDBCProdutoDAO();
-			if ( manterproduto.validar(prod)){
-				int pkprodinsert = manterproduto.insertReturningPk(prod);
-				
-				String[] cats = (String[])da.getData("categorias");
-				
-				if ( cats.length == 0 ){
-					ad.setMessage("Nenhuma categoria.");
-					return ad;
-				}
-				JDBCCategoriaProdutoDAO catprod = new JDBCCategoriaProdutoDAO();
-				for (String str : cats){
-					catprod.insert(new CategoriaProduto(0, Integer.valueOf(str), pkprodinsert));
-				}
-				
-				@SuppressWarnings("unchecked")
-				Iterator<FileItem> files = (Iterator<FileItem>)da.getData("fileItem");
-				GetFileUpload fup = new GetFileUpload();
-				String path = (String)da.getData("storageContext"),
-						separador = (String)da.getData("pathSeparador");
-				path += separador + "imagens";
-				fup.setPath(path);
-				fup.setSeparador(separador);
-				int cont=0;
-				while ( files.hasNext () ){
-					FileItem fi = files.next();
-					if ( fi.getSize() > fup.getMaxSizeAllowed()){
-						ad.setMessage("Arquivo maior do que o tamanho permitido.");
-						return ad;
-					}
-					String formato = fi.getName().substring(fi.getName().lastIndexOf("."));
-					Imagem img = new Imagem(0, pkprodinsert, formato);
-					JDBCImagemDAO insimg = new JDBCImagemDAO();
-					int pknewimg = insimg.insertReturningPk(img);
-					img.setPk(pknewimg);
-					long sizeread = fup.saveFile(files.next(), Integer.toString(pknewimg) + "." + formato);
-					if ( sizeread == -1 || sizeread > fup.getMaxSizeAllowed()){
-						insimg.delete(pknewimg);
-						ad.setMessage("Erro ao realizar upload.");
-						return ad;
-					}
-					cont++;
-					if ( cont == 5){
-						break;
-					}
-				}
-				if ( cont == 0 ){
-					manterproduto.delete(pkprodinsert);
-					ad.setMessage("Erro (nenhuma imagem adicionada)");
-					return ad;
-					//erro
-				}
-			}
-		}
-		catch(Exception e){
-			ad.setMessage("Falha ao converter valores.");
-			return ad;
-		}
-		
-		ad.setMessage("Foi.");
+
 		return ad;
 	};
 	
