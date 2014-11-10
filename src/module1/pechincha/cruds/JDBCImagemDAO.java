@@ -1,11 +1,16 @@
 package module1.pechincha.cruds;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.imageio.ImageIO;
 
 import module1.pechincha.interf.DAOBehavior;
 import module1.pechincha.model.Imagem;
@@ -20,7 +25,7 @@ public class JDBCImagemDAO extends DAOBehavior<Imagem>{
 	
 	@Override
 	public void insert(Imagem arg) {
-		String sql = "Insert into "+arg.getTableName()+" ("+arg.getColumnName()+") values ( ? ) returning pk"; 
+		String sql = "Insert into "+arg.getTableName()+" ("+arg.getColumnName().substring(0, arg.getColumnName().lastIndexOf(","))+") values ( ? ) returning pk"; 
 		try {
 			PreparedStatement ps = c.prepareStatement(sql);
 			ps.setInt(1,arg.getFkProduto());
@@ -32,7 +37,7 @@ public class JDBCImagemDAO extends DAOBehavior<Imagem>{
 	};
 	
 	public int insertReturningPk(Imagem arg) {
-		String sql = "Insert into "+arg.getTableName()+" ("+arg.getColumnName()+") values ( ?, ? ) returning pk"; 
+		String sql = "Insert into "+arg.getTableName()+" ("+arg.getColumnName().substring(0, arg.getColumnName().lastIndexOf(","))+") values ( ?, ? ) returning pk"; 
 		try {
 			PreparedStatement ps = c.prepareStatement(sql);
 			ps.setInt(1,arg.getFkProduto());
@@ -136,4 +141,28 @@ public class JDBCImagemDAO extends DAOBehavior<Imagem>{
 	public void update(Imagem arg) {
 		
 	};
+	
+	public boolean validar(Imagem img){
+		ArrayList<String> formatos = new ArrayList<String>();
+		formatos.add("jpg");
+		formatos.add("png");
+		formatos.add("gif");
+		
+		if ( !formatos.contains(img.getFormato().toLowerCase())){
+			return false;
+		}
+		try {
+			BufferedImage img1 = ImageIO.read(new ByteArrayInputStream(img.getBytes()));
+			int height = img1.getHeight(), width = img1.getWidth();
+			
+			if ( height < 360 || height > 1080 || width < 480 || width > 1920){
+				return false;
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}  
+		return true;
+	}
 }

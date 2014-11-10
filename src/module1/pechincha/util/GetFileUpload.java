@@ -18,6 +18,7 @@ public class GetFileUpload {
 			try {
 				FileOutputStream out = new FileOutputStream(new File(path + separador + name));
 	            out.write(baos.toByteArray(), 0, baos.size());
+	            baos.close();
 		        out.close();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block

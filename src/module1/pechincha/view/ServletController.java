@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
+import org.apache.commons.fileupload.FileUploadBase.SizeLimitExceededException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.fileupload.util.Streams;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -35,7 +36,8 @@ public class ServletController {
 
 	public ServletController(String servletContext) {
 		separador = System.getProperty("file.separator");
-		this.servletContext = servletContext + separador + "templates" + separador;
+		this.servletContext = servletContext + separador + "templates"
+				+ separador;
 		this.ucc = new UseCaseController();
 		this.listViews = new Hashtable<>();
 		initViews();
@@ -98,7 +100,8 @@ public class ServletController {
 		while (valuesName.hasMoreElements()) {
 			String temp = valuesName.nextElement();
 			if (!temp.equals("useCase") && !temp.equals("action")) {
-				// setando o nome do parametro como chave na hashtable setando o nome do parametro como valor
+				// setando o nome do parametro como chave na hashtable setando o
+				// nome do parametro como valor
 				da.setData(temp, request.getParameter(temp));
 			}
 		}
@@ -111,8 +114,10 @@ public class ServletController {
 				DiskFileItemFactory factory = new DiskFileItemFactory();
 
 				factory.setSizeThreshold(this.maxMemSize);
-				// Location to temporary save data that is larger than maxMemSize.
-				factory.setRepository(new File(this.servletContext + separador + "tmp"));
+				// Location to temporary save data that is larger than
+				// maxMemSize.
+				factory.setRepository(new File(this.servletContext + separador
+						+ "tmp"));
 
 				// Create a new file upload handler
 				ServletFileUpload upload = new ServletFileUpload(factory);
@@ -120,31 +125,35 @@ public class ServletController {
 				upload.setSizeMax(this.maxFileSize);
 
 				// Parse the request to get file items.
-//				List<FileItem> fileItems = upload.parseRequest(request);
+				// List<FileItem> fileItems = upload.parseRequest(request);
 
 				// Process the uploaded file items
 				FileItemIterator iter = upload.getItemIterator(request);
-				while ( iter.hasNext () ){
+
+				while (iter.hasNext()) {
 					FileItemStream fi = iter.next();
 					InputStream is = fi.openStream();
-					if (fi.isFormField()){
+					if (fi.isFormField()) {
 						da.setData(fi.getFieldName(), Streams.asString(is));
-					}else{
+					} else {
 						ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
-			            int len;
-			            byte[] buffer = new byte[8192];
-			            while ((len = is.read(buffer, 0, buffer.length)) != -1) {
-			              byteOut.write(buffer, 0, len);
-			            }
-			            System.out.println("Leu!");
-			            DoAction file = new DoAction(null, null);
-			            file.setData("file", fi);
-			            file.setData("data", byteOut);
-			            da.setData(fi.getFieldName(), file);
+						int len;
+						byte[] buffer = new byte[8192];
+						while ((len = is.read(buffer, 0, buffer.length)) != -1) {
+							byteOut.write(buffer, 0, len);
+						}
+						DoAction file = new DoAction(null, null);
+						file.setData("file", fi);
+						file.setData("data", byteOut);
+						da.setData(fi.getFieldName(), file);
 					}
 				}
+
 				da.setData("storageContext", this.servletContext);
 				da.setData("pathSeparador", separador);
+			} catch (SizeLimitExceededException e) {
+				da.setData("exception", "Tamanho máximo excedido");
+				return da;
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

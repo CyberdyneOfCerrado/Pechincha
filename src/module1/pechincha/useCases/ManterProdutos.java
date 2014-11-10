@@ -27,13 +27,18 @@ public class ManterProdutos  extends ModelController{
 		ad.setProcessed(true);
 		
 		String confirm = (String)da.getData("confirm");
-		if ( confirm != null){
+		if ( confirm == null){
 			return ad;
 		}
-	
+		String exception = (String)da.getData("exception");
+		if ( exception != null){
+			ad.setMessage(exception);
+		}
 		Produto prod = new Produto();
 		prod.setTitulo((String)da.getData("titulo"));
 		prod.setDescricao((String)da.getData("descricao"));
+		
+		String resp = "";
 		
 		try{
 			prod.setPreco(Float.valueOf((String)da.getData("preco")));
@@ -69,12 +74,24 @@ public class ManterProdutos  extends ModelController{
 				
 				for (DoAction img : imagens){
 					ByteArrayOutputStream baos = (ByteArrayOutputStream)img.getData("data");
+					
+					if ( baos.size() > fup.getMaxSizeAllowed()){
+						baos.close();
+						continue;
+					}
+					
 					FileItemStream fis = (FileItemStream)img.getData("file");
 					String name = fis.getName();
 					String formato = name.substring(name.lastIndexOf(".")+1);
 					System.out.println(formato);
-					Imagem imag = new Imagem(0, pkprodinsert, formato);
+					Imagem imag = new Imagem(0, pkprodinsert, formato, baos.toByteArray());
 					JDBCImagemDAO insimg = new JDBCImagemDAO();
+					
+					if ( !insimg.validar(imag)){
+						ad.setMessage("Dados inconsistentes.");
+						manterproduto.delete(pkprodinsert);
+						return ad;
+					}
 					int pknewimg = insimg.insertReturningPk(imag);
 					imag.setPk(pknewimg);
 					
@@ -84,6 +101,8 @@ public class ManterProdutos  extends ModelController{
 					if ( sizeread == -1 || sizeread > fup.getMaxSizeAllowed()){
 						insimg.delete(pknewimg);
 					}else{
+						
+						resp += "<br/><a href=\"templates/imagens/" + pknewimg + "." + formato + "\" target=\"_blank\">Clique aqui para visualizar a imagem.</a>";
 						cont++;
 					}
 					if ( cont == 5){
@@ -96,6 +115,11 @@ public class ManterProdutos  extends ModelController{
 					ad.setMessage("Nenhuma imagem.");
 					return ad;
 				}
+				ad.setMessage("Ocorreu tudo bem." + resp);
+			}
+			else{
+				ad.setMessage("Dados inconsistentes.");
+				return ad;
 			}
 		}
 		catch(Exception e){
@@ -104,7 +128,6 @@ public class ManterProdutos  extends ModelController{
 			return ad;
 		}
 		
-		ad.setMessage("Ocorreu tudo bem.");
 		return ad;
 	};
 	
