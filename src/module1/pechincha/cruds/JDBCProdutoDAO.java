@@ -83,6 +83,7 @@ public class JDBCProdutoDAO extends DAOBehavior<Produto>{
 			ResultSet result = ps.executeQuery();
 			while(result.next()){
 				Produto temp = new Produto();
+				temp.setPk(result.getInt("pk"));
 				temp.setTitulo(result.getString("titulo"));
 				temp.setDescricao(result.getString("descricao"));
 				temp.setPreco(result.getFloat("preco"));
