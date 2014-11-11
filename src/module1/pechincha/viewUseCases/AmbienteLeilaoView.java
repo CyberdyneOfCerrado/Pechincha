@@ -33,6 +33,9 @@ public class AmbienteLeilaoView extends ViewController {
 		
 			boolean isLeiloeiro = Boolean.valueOf( ad.getData("isLeiloeiro").toString());
 			
+
+			for(int a = 0 ; a < 10 ; a++ )temp.addBlock("ImagemProduto");
+			
 			String url = super.getTemplate(ad);
 			
 			url = url.substring(0,url.lastIndexOf(super.getSeparador())+1);

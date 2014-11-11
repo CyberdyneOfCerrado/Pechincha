@@ -37,7 +37,20 @@ $('document').ready(function(){
 	  });
 
 	  $('html').click(alertaDown);
-
+	  
+	  $('#owl').owlCarousel({
+		  
+	        autoPlay : 3000,
+			stopOnHover : true,
+			navigation:true,
+			paginationSpeed : 1000,
+			goToFirstSpeed : 2000,
+			singleItem : true,
+			autoHeight : true,
+			transitionStyle:'fade',
+			pagination: false
+	  });
+	  
 	  alertaDown();
 	  setInterval(updateHora,1000 * 60 );
 });
