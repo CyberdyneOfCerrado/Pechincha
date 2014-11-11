@@ -14,7 +14,9 @@ public class LoteProduto extends ReflectiveModel {
 		this.produto=produto;
 		this.unidades=unidades;
 	}
-
+	
+	public LoteProduto(){}
+	
 	public Produto getProduto() {
 		return produto;
 	}
