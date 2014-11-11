@@ -243,4 +243,16 @@ textarea{
 	color:rgb(255, 115, 0); 
 }
 
+#owl .item img{
+    display: block;
+    width: 500px;
+    height: 250px;
+}
+
+#owl {
+	width: 500px;
+    height: 250px;
+	margin-left: 100px;
+}
+
 
