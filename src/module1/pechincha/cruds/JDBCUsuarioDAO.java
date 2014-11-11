@@ -40,7 +40,8 @@ public class JDBCUsuarioDAO extends DAOBehavior<Usuario> {
 	public Usuario search(int pk) {
 		Usuario temp=null;
 		try {
-			PreparedStatement ps = c.prepareStatement("select * from usuario where pk="+pk);
+			PreparedStatement ps = c.prepareStatement("select * from usuario where pk = ?");
+			ps.setInt(1,pk);
 			ResultSet result = ps.executeQuery();
 			temp = new Usuario();
 			if(result != null){
