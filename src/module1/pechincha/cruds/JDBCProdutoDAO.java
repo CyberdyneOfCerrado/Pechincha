@@ -151,7 +151,24 @@ public class JDBCProdutoDAO extends DAOBehavior<Produto>{
 
 	@Override
 	public void update(Produto arg) {
+		String sql = "Update " + arg.getTableName() + " set " +
+				"titulo = ?, descricao = ?, preco = ?, quantidade = ?, fkusuario = ? " +
+				"where pk = ?";
 		
+		try {
+			PreparedStatement ps = c.prepareStatement(sql);
+			ps.setString(1,arg.getTitulo());
+			ps.setString(2,arg.getDescricao());
+			ps.setFloat(3,arg.getPreco());
+			ps.setInt(4,arg.getQuantidade());
+			ps.setInt(5,arg.getFkUsuario());
+			ps.setInt(6,arg.getPk());
+			ps.execute();
+			ps.close();
+		
+		} catch (SQLException e) {
+			throw new RuntimeException("Erro ao deletar dados. Classe JDBCProdutoDAO", e); 
+		}
 	};
 	
 	public boolean validar(Produto produto){

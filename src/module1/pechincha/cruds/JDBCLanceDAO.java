@@ -56,6 +56,31 @@ public class JDBCLanceDAO extends DAOBehavior<Lance>{
 			ResultSet result = ps.executeQuery();
 			while(result.next()){
 				Lance temp = new Lance();
+				temp.setPk(result.getInt("pk"));
+				temp.setIdLeilao(result.getInt("idleilao"));
+				temp.setIdusuario(result.getInt("idusuario"));
+				temp.setLance(result.getFloat("lance"));
+				list.add(temp);
+			}
+			result.close();
+			ps.close();
+		
+		} catch (SQLException e) {
+			throw new RuntimeException("Erro ao listar dados. Classe JDBCLanceDAO", e); 
+		}
+		return list;
+	};
+	
+	public List<Lance> list(int pkleilao) {
+		List<Lance> list = new ArrayList<Lance>();
+		
+		try {
+			PreparedStatement ps = c.prepareStatement("select * from lance where idleilao = ?");
+			ResultSet result = ps.executeQuery();
+			ps.setInt(1,pkleilao);
+			while(result.next()){
+				Lance temp = new Lance();
+				temp.setPk(result.getInt("pk"));
 				temp.setIdLeilao(result.getInt("idleilao"));
 				temp.setIdusuario(result.getInt("idusuario"));
 				temp.setLance(result.getFloat("lance"));
@@ -74,11 +99,34 @@ public class JDBCLanceDAO extends DAOBehavior<Lance>{
 	public Lance search(int pk) {
 		Lance temp = null;
 		try {
-			PreparedStatement ps = c.prepareStatement("select * from lance where idleilao = ? and lance = (select max(lance) from lance where idleilao = ?");
+			PreparedStatement ps = c.prepareStatement("select * from lance where pk = ?");
 			ps.setInt(1,pk);
 			ResultSet result = ps.executeQuery();
 			temp = new Lance(); 
 			while(result.next()){
+				temp.setPk(result.getInt("pk"));
+				temp.setIdLeilao(result.getInt("idleilao"));
+				temp.setIdusuario(result.getInt("idusuario"));
+				temp.setLance(result.getFloat("lance"));
+			}
+			result.close();
+			ps.close();
+		
+		} catch (SQLException e) {
+			throw new RuntimeException("Erro ao procurar dados. Classe JDBCLanceDAO", e); 
+		}
+		return temp;
+	};
+	
+	public Lance searchMaxLanceByLeilao(int pkleilao) {
+		Lance temp = null;
+		try {
+			PreparedStatement ps = c.prepareStatement("select * from lance where idleilao = ? and lance = (select max(lance) from lance where idleilao = ?");
+			ps.setInt(1,pkleilao);
+			ResultSet result = ps.executeQuery();
+			temp = new Lance(); 
+			while(result.next()){
+				temp.setPk(result.getInt("pk"));
 				temp.setIdLeilao(result.getInt("idleilao"));
 				temp.setIdusuario(result.getInt("idusuario"));
 				temp.setLance(result.getFloat("lance"));
@@ -94,7 +142,22 @@ public class JDBCLanceDAO extends DAOBehavior<Lance>{
 
 	@Override
 	public void update(Lance arg) {
+		String sql = "Update " + arg.getTableName() + " set " +
+				"idleilao = ?, idusuario = ?, lance = ? " +
+				"where pk = ?";
 		
+		try {
+			PreparedStatement ps = c.prepareStatement(sql);
+			ps.setInt(1,arg.getIdLeilao());
+			ps.setInt(2,arg.getIdUsuario());
+			ps.setFloat(3,arg.getLance());
+			ps.setInt(4, arg.getPk());
+			ps.execute();
+			ps.close();
+		
+		} catch (SQLException e) {
+			throw new RuntimeException("Erro ao atualizar dados. Classe JDBCLanceDAO", e); 
+		}
 	};
 	public boolean validar(Lance lance){
 		float valor = lance.getLance();
