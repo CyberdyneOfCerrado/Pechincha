@@ -1,12 +1,11 @@
 package module2.pechincha.useCases;
 
-import module1.pechincha.controllers.ModelController;
 import module1.pechincha.cruds.JDBCLanceDAO;
 import module1.pechincha.model.Lance;
 import module1.pechincha.util.ActionDone;
 import module1.pechincha.util.DoAction;
 
-public class ManterLance extends ModelController {
+public class ManterLance {
 	public synchronized ActionDone novoLance(DoAction da){
 		ActionDone ad = new ActionDone();
 		
@@ -40,17 +39,4 @@ public class ManterLance extends ModelController {
 		
 		return ad;
 	}
-	@Override
-	public String[] getActions() {
-		String[] actions = {
-				"novoLance"
-			}; 
-		return actions;
-	}
-
-	@Override
-	public String getUserCase() {
-		return "lance";
-	}
-
 }

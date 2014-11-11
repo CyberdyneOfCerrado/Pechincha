@@ -19,11 +19,20 @@ public class ManterProdutosView extends ViewController {
 		case "novo":
 				retorno = novo(ad); 
 			break;
+		case "visualizar":
+			retorno = visualizar(ad);
+			break;
 		}
 		return retorno;
 	}
 
 	private String novo(ActionDone ad) {
+		
+		MiniTemplator temp = super.startMiniTemplator(super.getTemplate(ad)); 
+		temp.setVariable("resultado",ad.getMessage());
+		return temp.generateOutput();
+	}
+	private String visualizar(ActionDone ad){
 		
 		MiniTemplator temp = super.startMiniTemplator(super.getTemplate(ad)); 
 		temp.setVariable("resultado",ad.getMessage());
