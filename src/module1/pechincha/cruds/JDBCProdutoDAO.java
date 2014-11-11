@@ -109,6 +109,7 @@ public class JDBCProdutoDAO extends DAOBehavior<Produto>{
 			ResultSet result = ps.executeQuery();
 			while(result.next()){
 				Produto temp = new Produto();
+				temp.setPk(result.getInt("pk"));
 				temp.setTitulo(result.getString("titulo"));
 				temp.setDescricao(result.getString("descricao"));
 				temp.setPreco(result.getFloat("preco"));
@@ -132,13 +133,15 @@ public class JDBCProdutoDAO extends DAOBehavior<Produto>{
 			PreparedStatement ps = c.prepareStatement("select * from produto where pk = ?");
 			ps.setInt(1,pk);
 			ResultSet result = ps.executeQuery();
-			temp = new Produto(); 
 			while(result.next()){
+				temp = new Produto(); 
+				temp.setPk(result.getInt("pk"));
 				temp.setTitulo(result.getString("titulo"));
 				temp.setDescricao(result.getString("descricao"));
 				temp.setPreco(result.getFloat("preco"));
 				temp.setQuantidade(result.getInt("quantidade"));
 				temp.setFkUsuario(result.getInt("fkusuario"));
+				break;
 			}
 			result.close();
 			ps.close();

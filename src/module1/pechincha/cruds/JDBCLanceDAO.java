@@ -159,9 +159,21 @@ public class JDBCLanceDAO extends DAOBehavior<Lance>{
 			throw new RuntimeException("Erro ao atualizar dados. Classe JDBCLanceDAO", e); 
 		}
 	};
-	public boolean validar(Lance lance){
-		float valor = lance.getLance();
-		if ( valor < 0 || valor > 1000000){
+	public boolean validar(Lance atual, Lance novo){
+		if ( novo == null){
+			return false;
+		}
+		if ( atual == null){
+			return isValidValue(novo.getLance());
+		}
+		if ( !isValidValue(novo.getLance()) || !isValidValue(atual.getLance()) ||
+				atual.getLance() + 0.5 > novo.getLance()){
+			return false;
+		}
+		return true;
+	}
+	public boolean isValidValue(float val){
+		if ( val < 0 || val > 1000000 ){
 			return false;
 		}
 		return true;

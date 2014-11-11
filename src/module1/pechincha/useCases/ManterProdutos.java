@@ -4,6 +4,7 @@ package module1.pechincha.useCases;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.fileupload.FileItemStream;
 
@@ -149,13 +150,23 @@ public class ManterProdutos  extends ModelController{
 		//Identificando o pacote
 		ad.setAction(da.getAction());
 		ad.setUseCase(da.getUseCase());
-		ad.setMessage("O Lula só tem quatro dedos em uma das mãos.");
 		ad.setStatus(true);
 		ad.setProcessed(true);
+		
+		try{
+			int idprod = Integer.valueOf((String)da.getData("idproduto"));
+			JDBCImagemDAO delimgs = new JDBCImagemDAO();
+			delimgs.deleteFromFKProduto(idprod);
+			
+			JDBCProdutoDAO manterproduto = new JDBCProdutoDAO();
+			manterproduto.delete(idprod);
+		}catch(Exception e){
+			
+		}				
 		return ad;
 	};
 	
-	public ActionDone buscar ( DoAction da ){
+	public ActionDone listar ( DoAction da ){
 		ActionDone ad = new ActionDone();
 		
 		//Identificando o pacote
@@ -167,13 +178,51 @@ public class ManterProdutos  extends ModelController{
 		return ad;
 	};
 	
+	public ActionDone visualizar ( DoAction da ){
+		ActionDone ad = new ActionDone();
+		
+		//Identificando o pacote
+		ad.setAction(da.getAction());
+		ad.setUseCase(da.getUseCase());
+		ad.setStatus(true);
+		ad.setProcessed(true);
+		
+		try{
+			int idusuario = Integer.valueOf((String)da.getData("idusuario")),
+				idproduto = Integer.valueOf((String)da.getData("idusuario"));
+			
+			JDBCProdutoDAO daoprod = new JDBCProdutoDAO();
+			Produto prod =  daoprod.search(idproduto);
+			if ( prod != null){
+				if ( prod.getFkUsuario() != idusuario){
+					return ad;
+				}
+				ad.setData("titulo", prod.getTitulo());
+				ad.setData("descricao", prod.getDescricao());
+				ad.setData("preco", prod.getPreco());
+				ad.setData("quantidade", prod.getQuantidade());
+				JDBCImagemDAO img = new JDBCImagemDAO();
+				List<Imagem> imagens = img.list(idproduto);
+				
+				for (int i = 0; i < imagens.size(); i++){
+					ad.setData("img" + (i+1), imagens.get(i).getPk() + "." + imagens.get(i).getFormato());
+				}
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			ad.setMessage("Erro.");
+		}
+		return ad;
+	};
+	
 	@Override
 	public String[] getActions() {
 		String[] actions = {
 			"novo",
 			"editar",
 			"remover",
-			"buscar"
+			"listar",
+			"visualizar"
 		}; 
 		return actions;
 	}

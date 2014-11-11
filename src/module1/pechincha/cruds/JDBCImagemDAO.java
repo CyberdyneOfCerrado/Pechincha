@@ -68,7 +68,19 @@ public class JDBCImagemDAO extends DAOBehavior<Imagem>{
 			throw new RuntimeException("Erro ao deletar dados. Classe JDBCImagemDAO", e); 
 		}
 	};
-
+	
+	public void deleteFromFKProduto(int pk) {
+		try {
+			PreparedStatement ps = c.prepareStatement("delete from imagem where fkproduto = ?");
+			ps.setInt(1,pk);
+			ps.execute();
+			ps.close();
+		
+		} catch (SQLException e) {
+			throw new RuntimeException("Erro ao deletar dados. Classe JDBCImagemDAO", e); 
+		}
+	};
+	
 	public List<Imagem> list(int fkproduto) {
 		List<Imagem> list = new ArrayList<Imagem>();
 		
