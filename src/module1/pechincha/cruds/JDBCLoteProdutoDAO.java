@@ -13,8 +13,17 @@ public class JDBCLoteProdutoDAO extends DAOBehavior<LoteProduto> {
 	private Connection c; 
 	@Override
 	public void insert(LoteProduto arg) {
-		// TODO Auto-generated method stub
-		
+		String sql = "Insert into "+arg.getTableName()+" ("+arg.getColumnName()+") values ( ?, ?, ? )"; 
+		try {
+			PreparedStatement ps = c.prepareStatement(sql);
+			ps.setInt(1,arg.getFkleilao());
+			ps.setInt(2, arg.getFkproduto());
+			ps.setInt(3, arg.getUnidades());
+			ps.execute();
+			ps.close();
+		} catch (SQLException e) {
+			throw new RuntimeException("Erro ao inserir dados. Classe JDBCLoteProdutoDAO", e); 
+		}
 	}
 
 	@Override

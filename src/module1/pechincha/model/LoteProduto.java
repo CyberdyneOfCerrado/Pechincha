@@ -7,16 +7,34 @@ import module1.pechincha.util.ReflectiveModel;
 public class LoteProduto extends ReflectiveModel {
 	private Produto produto;
 	private int unidades;
-	private float precoLote;
+	private int fkleilao;
+	private int fkproduto;
 	
-	public LoteProduto(Produto produto,int unidades,float precoLote){
-		this.precoLote=precoLote;
+	public LoteProduto(Produto produto,int unidades,float precoLote, int fkleilao,int fkproduto){
 		this.produto=produto;
 		this.unidades=unidades;
+		this.fkleilao=fkleilao;
+		this.fkproduto=fkproduto;
 	}
 	
 	public LoteProduto(){}
 	
+	public int getFkleilao() {
+		return fkleilao;
+	}
+
+	public void setFkleilao(int fkleilao) {
+		this.fkleilao = fkleilao;
+	}
+
+	public int getFkproduto() {
+		return fkproduto;
+	}
+
+	public void setFkproduto(int fkproduto) {
+		this.fkproduto = fkproduto;
+	}
+
 	public Produto getProduto() {
 		return produto;
 	}
@@ -30,11 +48,5 @@ public class LoteProduto extends ReflectiveModel {
 	}
 	public void setUnidades(int unidades) {
 		this.unidades = unidades;
-	}
-	public float getPrecoLote() {
-		return precoLote;
-	}
-	public void setPrecoLote(float precoLote) {
-		this.precoLote = precoLote;
 	}
 }

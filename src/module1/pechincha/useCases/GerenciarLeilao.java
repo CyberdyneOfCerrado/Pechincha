@@ -16,6 +16,7 @@ import module1.pechincha.model.LoteProduto;
 import module1.pechincha.model.Usuario;
 import module1.pechincha.model.Produto;
 import module1.pechincha.util.DoAction;
+import module2.pechincha.manager.StorageLeilaoEnvironments;
 
 public class GerenciarLeilao extends ModelController {
 
@@ -33,16 +34,36 @@ public class GerenciarLeilao extends ModelController {
 	}
 	public void criarLeilão(DoAction action){
 		Produto produto;
-		LoteProduto lote = new LoteProduto();
+		StorageLeilaoEnvironments storage = new StorageLeilaoEnvironments();
+		float preco=0;
+		Leilao le;
+		LoteProduto lote=new LoteProduto();;
 		JDBCProdutoDAO crudpr = new JDBCProdutoDAO();
-		
+		JDBCLeilaoDAO leilao = new JDBCLeilaoDAO();
+		int idleilao= leilao.insertReturningPk((Leilao) action.getData("leilao"));
 		Hashtable temp=(Hashtable) action.getData("produtos");
 		while(temp.keys().hasMoreElements()){
 			int pk=(int) temp.keys().nextElement();
+			int unidade=(int) temp.get(pk);
 			produto=crudpr.search(pk);
-			produto.setQuantidade((int) temp.get(pk));
+			produto.setQuantidade(unidade);
 			crudpr.update(produto);
+			lote.setFkleilao(idleilao);
+			lote.setFkproduto(pk);
+			lote.setUnidades((int) temp.get(pk));
+			preco+=(unidade*produto.getPreco());
 		}
+		if(action.getData("val")!=null){
+			preco=(float) action.getData("val");
+			le=leilao.search(idleilao);
+			le.setPrecolote(preco);
+			leilao.update(le);
+		}else{
+			le=leilao.search(idleilao);
+			le.setPrecolote(preco);
+			leilao.update(le);
+		}
+		StorageLeilaoEnvironments.iniciarAmbienteLeilao(le);
 	}
 	// os metodos vao abaixo
 	
