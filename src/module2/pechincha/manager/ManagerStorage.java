@@ -19,7 +19,10 @@ public class ManagerStorage extends Thread{
 			Enumeration<Integer> keys = managers.keys(); 
 			while(keys.hasMoreElements()){
 				int key = keys.nextElement(); 
-				if(managers.get(key).isDone())managers.remove(key);
+				if(managers.get(key).isDone()){
+					managers.remove(key);
+					System.out.println("Limpando leilão "+key+" da memória. "); 
+				}
 			}
 			System.out.println("Storege fazendo a limpeza."); 
 		}

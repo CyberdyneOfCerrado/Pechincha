@@ -7,11 +7,20 @@
 		<script src="templates/lib/js/ambiente-leilao-lib.js"></script>
 		<script src="templates/lib/js/app.js"></script>
 		
+		 <link rel="stylesheet" href="templates/lib/css/jquery-ui.min.css">
+		<script src="templates/lib/js/jquery-ui.min.js"></script>
+  
 		<!--informações essenciais -->
 		<input type='hidden' id='userName'  value='${userName}' />
 		<input type='hidden' id='idEmissor' value='${idEmissor}' />
 		<input type='hidden' id='idLeilao'  value='${idLeilao}' />
-
+		
+			<!--Modal-->
+		<div id="dialog" title="Finalização do leilao." style="display:none">
+			  <p id='texto'></p>
+			  <button> olá</button>
+		</div>
+		
 		<div id="container-informacoes">
 			<!--cabeçalho-->
 			<div id="informacoes-header" >
