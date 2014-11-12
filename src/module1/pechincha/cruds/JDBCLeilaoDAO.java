@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import module1.pechincha.interf.DAOBehavior;
@@ -74,15 +75,39 @@ public class JDBCLeilaoDAO extends DAOBehavior<Leilao>{
 
 	@Override
 	public List<Leilao> list() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Leilao> list = new ArrayList<Leilao>();
+		Leilao temp;
+		try {
+			PreparedStatement ps = c.prepareStatement("select * from leilao");
+			ResultSet result = ps.executeQuery();
+			while(result.next()){
+				temp = new Leilao(); 
+				temp.setIdLeilao(result.getInt("idleilao"));
+				temp.setEtiqueta(result.getString("etiqueta"));
+				temp.setTempoLimite(result.getInt("tempolimite"));
+				temp.setDescricao(result.getString("descricao"));
+				temp.setComprador(result.getInt("comprador"));
+				temp.setAtivo(result.getBoolean("ativo"));
+				temp.setIdLeiloeiro(result.getInt("idleiloeiro"));
+				temp.setLanceInicial(result.getFloat("lanceinicial"));
+				temp.setNickname(result.getString("nickname"));
+				temp.setPrecolote(result.getFloat("pecolote"));
+				list.add(temp);
+			}
+			result.close();
+			ps.close();
+		
+		} catch (SQLException e) {
+			throw new RuntimeException("Erro ao listar dados. Classe JDBCLeilaoDAO", e); 
+		}
+		return list;
 	}
 
 	@Override
 	public Leilao search(int pk) {
 		Leilao temp = null;
 		try {
-			PreparedStatement ps = c.prepareStatement("select * from leilao where pk = ?");
+			PreparedStatement ps = c.prepareStatement("select * from leilao where idleilao = ?");
 			ps.setInt(1,pk);
 			ResultSet result = ps.executeQuery();
 			while(result.next()){
@@ -108,6 +133,65 @@ public class JDBCLeilaoDAO extends DAOBehavior<Leilao>{
 		return temp;
 	}
 
+	public List<Leilao> getHistorico(int pk) {
+		List<Leilao> list = new ArrayList<Leilao>();
+		Leilao temp;
+		try {
+			PreparedStatement ps = c.prepareStatement("select * from leilao where idleilao = ? and ativo=false");
+			ps.setInt(1,pk);
+			ResultSet result = ps.executeQuery();
+			while(result.next()){
+				temp = new Leilao(); 
+				temp.setIdLeilao(result.getInt("idleilao"));
+				temp.setEtiqueta(result.getString("etiqueta"));
+				temp.setTempoLimite(result.getInt("tempolimite"));
+				temp.setDescricao(result.getString("descricao"));
+				temp.setComprador(result.getInt("comprador"));
+				temp.setAtivo(result.getBoolean("ativo"));
+				temp.setIdLeiloeiro(result.getInt("idleiloeiro"));
+				temp.setLanceInicial(result.getFloat("lanceinicial"));
+				temp.setNickname(result.getString("nickname"));
+				temp.setPrecolote(result.getFloat("pecolote"));
+				list.add(temp);
+			}
+			result.close();
+			ps.close();
+		
+		} catch (SQLException e) {
+			throw new RuntimeException("Erro ao listar dados. Classe JDBCLeilaoDAO", e); 
+		}
+		return list;
+	}
+	
+	public Leilao searchEtiqueta(String etiqueta) {
+		Leilao temp = null;
+		try {
+			PreparedStatement ps = c.prepareStatement("select * from leilao where etiqueta=' ? '");
+			ps.setString(1,etiqueta);
+			ResultSet result = ps.executeQuery();
+			while(result.next()){
+				temp = new Leilao(); 
+				temp.setIdLeilao(result.getInt("idleilao"));
+				temp.setEtiqueta(result.getString("etiqueta"));
+				temp.setTempoLimite(result.getInt("tempolimite"));
+				temp.setDescricao(result.getString("descricao"));
+				temp.setComprador(result.getInt("comprador"));
+				temp.setAtivo(result.getBoolean("ativo"));
+				temp.setIdLeiloeiro(result.getInt("idleiloeiro"));
+				temp.setLanceInicial(result.getFloat("lanceinicial"));
+				temp.setNickname(result.getString("nickname"));
+				temp.setPrecolote(result.getFloat("pecolote"));
+				break;
+			}
+			result.close();
+			ps.close();
+		
+		} catch (SQLException e) {
+			throw new RuntimeException("Erro ao procurar dados. Classe JDBCLeilaoDAO", e); 
+		}
+		return temp;
+	}
+	
 	@Override
 	public void update(Leilao arg) {
 			String sql = "Update " + arg.getTableName() + " set " +
