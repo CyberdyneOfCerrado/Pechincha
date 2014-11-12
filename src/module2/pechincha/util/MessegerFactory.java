@@ -88,4 +88,9 @@ public class MessegerFactory {
 		Messeger m = new Messeger(-1,-1,"Pechincha",MsgTypes.OFFLINE,String.valueOf(size));
 		return m;
 	};
+	
+	public static Messeger createMessegerFinalizar(String msg){
+		Messeger m = new Messeger(-1,-1,"Pechincha",MsgTypes.FINALIZAR,msg);
+		return m;
+	};
 }

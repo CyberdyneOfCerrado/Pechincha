@@ -7,6 +7,7 @@ import module1.pechincha.util.DoAction;
 public class AmbienteLeilao extends ModelController {
 	
 	public ActionDone ambiente( DoAction da ){
+		
 	ActionDone ad = new ActionDone();
 	//Verificar aqui se o usuário que requisita a o ambiente é o leiloeiro da mesma; 
 	

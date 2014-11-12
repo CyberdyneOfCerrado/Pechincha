@@ -6,6 +6,7 @@ import java.util.Hashtable;
 import javax.websocket.Session;
 
 import module1.pechincha.model.Leilao;
+import module1.pechincha.useCases.GerenciarLeilao;
 import module2.pechincha.useCases.Chat;
 import module2.pechincha.util.Messeger;
 import module2.pechincha.util.MessegerFactory;
@@ -21,6 +22,7 @@ public class ManagerLeilao extends Thread {
 	private UserSession maiorLance; 
 	private boolean done; 
 	private Chat chat;
+	private GerenciarLeilao gl;
 	@Override
 	public void run(){
 		while(tempoCorrente >= 0){
@@ -44,6 +46,7 @@ public class ManagerLeilao extends Thread {
 		this.maiorLance = new UserSession();
 		peers = new Hashtable<>(); 
 		chat = new Chat();
+		gl   = new GerenciarLeilao(); 
 	};
 	
 	public void startManager(){
@@ -64,7 +67,7 @@ public class ManagerLeilao extends Thread {
 					lance(peers.get(messeger.getIdEmissor()), messeger);
 				break;
 			case FINALIZAR: 
-					finalizar();
+					finalizar(peers.get(messeger.getIdEmissor()));
 				break;
 			default:
 				break;
@@ -106,22 +109,73 @@ public class ManagerLeilao extends Thread {
 			messeger = chat.diferenciarUsuario(messeger, userSession, maiorLance, leilao);
 			msgBroadcast(messeger);
 		}
-	}
+	};
 
 	private void lance( UserSession userSession, Messeger messeger){
 		float novoLance = Float.parseFloat(messeger.getMsg());
 		if( novoLance > this.lanceCorrente){
 			lanceCorrente = novoLance;
 			this.maiorLance = userSession;
+			//Essa parte é vital para o caso o método finalizar do Erick funcionar 
+			leilao.setComprador(maiorLance.getIdUser());
+			
 			msgBroadcast( MessegerFactory.createMessegerLance(String.valueOf(lanceCorrente),userSession.getNickname()));
 		}else{
 			msgUnicast(userSession,MessegerFactory.createMessegerLanceInvalido());
 		}	
 	};
 	
-	private void finalizar(){
-		System.out.println("Finalizando....");
+	private void finalizar(UserSession userSession){
+		boolean result = gl.finalizarLeilao(this.leilao);
+		
+		if( result ){
+			//Pegar a sessão do maior lance e do leiloeiro; 
+			//Preparar mensagem para ambos. 
+			//Enviar mensagem de acordo de compra unicast. 
+			//Replicar anúncio de termino de leilão para os participantes conectados.
+			
+			String msg     ="Os dados de acordo de comprar foram eviados para o seu email.";
+			String msgDone = "O leilão foi encerrado."; 
+			
+			if(maiorLance.getSession().isOpen()){
+				msgUnicast(maiorLance, MessegerFactory.createMessegerFinalizar(msg));
+				peers.remove(maiorLance.getIdUser());
+			}
+			
+			if(userSession.getSession().isOpen()){
+				msgUnicast(userSession, MessegerFactory.createMessegerFinalizar(msg)); 
+				peers.remove(userSession.getIdUser()); 
+			}
+			
+			msgBroadcast(MessegerFactory.createMessegerFinalizar(msgDone)); 
+			this.done = true;
+			
+		}else{
+			msgUnicast(userSession, MessegerFactory.createMessegerFinalizar("Você não pode finalizar o leilão neste momento.")); 
+		}
 	};
+	
+	private void finalizar(){
+			gl.finalizarLeilao(this.leilao);
+		
+			UserSession leiloeiro = peers.get( this.leilao.getIdLeilao()); 
+			
+			String msg     ="Os dados de acordo de comprar foram eviados para o seu email.";
+			String msgDone = "O leilão foi encerrado."; 
+			
+			if(maiorLance.getSession().isOpen()){
+				msgUnicast(maiorLance, MessegerFactory.createMessegerFinalizar(msg));
+				peers.remove(maiorLance.getIdUser());
+			}
+			
+			if(leiloeiro != null && leiloeiro.getSession().isOpen()){
+				msgUnicast(leiloeiro, MessegerFactory.createMessegerFinalizar(msg)); 
+				peers.remove(leiloeiro.getIdUser()); 
+			}
+			
+			msgBroadcast(MessegerFactory.createMessegerFinalizar(msgDone)); 
+			this.done = true;
+	}; 
 	
 	private void generateCallback(UserSession userSession, Messeger messeger){
 		//Lista de coisas que eu devo mandar no callback
