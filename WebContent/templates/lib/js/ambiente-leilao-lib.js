@@ -24,6 +24,7 @@ var lanceCorrente;
 
 var contUnRead = 0; 
 var onFocoPage; 
+var finalizado = false;
 
 var websocketConnection; 
 /*-----------Seção de Objetos------------*/
@@ -48,6 +49,7 @@ function getInformations(){
 
 //Incicia o WebSocket do programa. 
 function initWebSocket(){
+	if(finalizado) return;
 	alertaUp('Conectando ao servidor...');
 	websocketConnection = new WebSocket(WS_SOCKET);
 }
@@ -118,7 +120,7 @@ function formatarHora( segundos ){
 	var horas   = Math.floor(segundos / 3600);
 	var minutos = Math.floor(segundos % 3600);
 	minutos = Math.floor( minutos / 60  );
-		
+	
 	var retorno = ( horas < 10   ) ?  '0'+horas   : horas;
 	retorno   += 'h:';  
 	retorno   +=  ( minutos < 10 ) ? '0'+minutos  : minutos;
@@ -177,7 +179,22 @@ function resolverMessage( message ){
 		case LANCE:
 			updateLance(message);
 		break;
+		case FINALIZAR:
+			finalizar(message);
+		break;
 	}
+}
+
+function finalizar(message){
+   $('#texto').text(message.msg);
+   
+   $( "#dialog" ).dialog({ 
+	 width: 500, 
+	 height: 200,
+	 close: function( event, ui ) { console.log('merda'); }
+	});
+   
+   finalizado = true;
 }
 
 function feedOnline(message){
@@ -212,6 +229,7 @@ function updateLance(message){
 }
 
 function updateHora(){
+	if(finalizado || tempoRestante <= 0) return; 
 	if( tempoRestante > 0 ) tempoRestante -= 60; 
 	$('#tempo').text(formatarHora( tempoRestante) ); 
 }
