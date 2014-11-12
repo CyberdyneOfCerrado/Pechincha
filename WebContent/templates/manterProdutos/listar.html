@@ -1,0 +1,51 @@
+<table style="position: absolute; left: 10px; width: 15%;">
+	<tbody>
+		<tr>
+			<th>Filtro</th>
+		</tr>
+		<tr>
+			<td>
+				<div id="categorias">	
+					<form method = "get">						
+						<div id="painel_categorias" style="overflow-y: scroll; height:370px; ">
+						<!-- $BeginBlock Categoria -->
+							<input type="checkbox" name="categoria" value="${pk}">${descricao}<br>
+						<!-- $EndBlock Categoria -->
+						<input id="uc" type="hidden" name="idusuario" value="${idusuario}">
+						<div id="botaobusca" align="center">
+							<button type="submit">Buscar</button>
+						</div>
+					</form>
+				</div>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<table style="position: absolute; right: 10px; width: 83%;" >
+		<tr>
+			<th>Produtos</th>
+		</tr>
+		<tr>
+			<td>
+				<div id="produtos"  style="overflow-y: scroll; height:422px;">
+					<div class="table-responsive">
+					<table  class="table table-bordered" align="center">
+						<!-- $BeginBlock Produto -->
+						<tr>
+							<img src="templates/imagens/${img}"height="240" width="320"></br>
+							<a href="q?useCase=manterProdutos&action=visualizar&idusuario=${idusuario}&idproduto=${idproduto}&redirect=false"><h1>${titulo}</h1></a></br>
+							<h2>R$ ${preco}</h2></td>
+								<form method = "get">
+									<input type="submit" value="Editar" />									
+								</form>
+								<form method = "get">
+									<input type="submit" value="Remover" />											
+								</form><br/></br></br>
+						</tr>
+						<!-- $EndBlock produto -->
+					</table>
+				</div>
+			</div>
+			</td>
+		</tr>			
+</table>

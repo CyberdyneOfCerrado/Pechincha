@@ -9,8 +9,12 @@ import java.util.List;
 import org.apache.commons.fileupload.FileItemStream;
 
 import module1.pechincha.controllers.ModelController;
+import module1.pechincha.cruds.JDBCCategoriaDAO;
+import module1.pechincha.cruds.JDBCCategoriaProdutoDAO;
 import module1.pechincha.cruds.JDBCImagemDAO;
 import module1.pechincha.cruds.JDBCProdutoDAO;
+import module1.pechincha.model.Categoria;
+import module1.pechincha.model.CategoriaProduto;
 import module1.pechincha.model.Imagem;
 import module1.pechincha.model.Produto;
 import module1.pechincha.util.ActionDone;
@@ -27,6 +31,9 @@ public class ManterProdutos  extends ModelController{
 		ad.setStatus(true);
 		ad.setProcessed(true);
 		
+		List<Categoria> listcats = new JDBCCategoriaDAO().list();
+		ad.setData("categorias", listcats);
+		
 		String confirm = (String)da.getData("confirm");
 		if ( confirm == null){
 			return ad;
@@ -37,15 +44,21 @@ public class ManterProdutos  extends ModelController{
 		}
 		Produto prod = new Produto();
 		prod.setTitulo((String)da.getData("titulo"));
-		prod.setDescricao((String)da.getData("descricao"));
+		prod.setDescricao((String)da.getData("descricao"));		
 		
+		String cat = ((String)da.getData("categoria"));
+		
+		if ( cat == null ){
+			ad.setMessage("Nenhuma categoria.");
+			return ad;
+		}
 		String resp = "";
 		
 		try{
 			prod.setPreco(Float.valueOf((String)da.getData("preco")));
 			prod.setQuantidade(Integer.valueOf((String)da.getData("quantidade")));
 			prod.setFkUsuario(Integer.valueOf((String)da.getData("idusuario")));
-			
+					
 			JDBCProdutoDAO manterproduto = new JDBCProdutoDAO();
 			if ( manterproduto.validar(prod)){
 				int pkprodinsert = manterproduto.insertReturningPk(prod);
@@ -116,6 +129,11 @@ public class ManterProdutos  extends ModelController{
 					ad.setMessage("Nenhuma imagem.");
 					return ad;
 				}
+				JDBCCategoriaProdutoDAO daoprod = new JDBCCategoriaProdutoDAO(); 
+				String[] cats = cat.split(",");
+				for(String i : cats){
+					daoprod.insert(new CategoriaProduto(0,Integer.valueOf(i),pkprodinsert));
+				}
 				ad.setMessage("Ocorreu tudo bem." + resp);
 			}
 			else{
@@ -172,9 +190,33 @@ public class ManterProdutos  extends ModelController{
 		//Identificando o pacote
 		ad.setAction(da.getAction());
 		ad.setUseCase(da.getUseCase());
-		ad.setMessage("O Lula só tem quatro dedos em uma das mãos.");
 		ad.setStatus(true);
 		ad.setProcessed(true);
+		
+		try{
+			int usuario = Integer.valueOf((String)da.getData("idusuario"));
+			List<Produto> prods = new JDBCProdutoDAO().list(usuario);
+			
+			List<Categoria> listcats = new JDBCCategoriaDAO().list();
+			ad.setData("categorias", listcats);
+			
+			ArrayList<DoAction> list = new ArrayList<DoAction>();
+			for (Produto pr : prods){
+				DoAction prod = new DoAction(null, null);
+				prod.setData("idusuario", usuario);
+				prod.setData("idproduto", pr.getPk());
+				prod.setData("titulo", pr.getTitulo());
+				prod.setData("descricao", pr.getDescricao());
+				prod.setData("preco", pr.getPreco());
+				
+				Imagem img = new JDBCImagemDAO().list(pr.getPk()).get(0);
+				prod.setData("img", img.getPk() + "." + img.getFormato());
+				list.add(prod);
+			}
+			ad.setData("produtos", list);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 		return ad;
 	};
 	
@@ -189,7 +231,7 @@ public class ManterProdutos  extends ModelController{
 		
 		try{
 			int idusuario = Integer.valueOf((String)da.getData("idusuario")),
-				idproduto = Integer.valueOf((String)da.getData("idusuario"));
+				idproduto = Integer.valueOf((String)da.getData("idproduto"));
 			
 			JDBCProdutoDAO daoprod = new JDBCProdutoDAO();
 			Produto prod =  daoprod.search(idproduto);
@@ -207,6 +249,15 @@ public class ManterProdutos  extends ModelController{
 				for (int i = 0; i < imagens.size(); i++){
 					ad.setData("img" + (i+1), imagens.get(i).getPk() + "." + imagens.get(i).getFormato());
 				}
+				String categoria = "";
+				List<CategoriaProduto> catprod = new JDBCCategoriaProdutoDAO().list(idproduto);
+				
+				JDBCCategoriaDAO cat = new JDBCCategoriaDAO();
+				for (CategoriaProduto cp : catprod){
+					categoria += cat.search(cp.getFkCategoria()).getDescricao() + ", ";
+				}
+				ad.setData("categorias", categoria.substring(0, categoria.lastIndexOf(",")));
+				System.out.println("Processou.");
 			}
 		}catch(Exception e){
 			e.printStackTrace();

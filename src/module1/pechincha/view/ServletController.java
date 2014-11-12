@@ -129,12 +129,18 @@ public class ServletController {
 
 				// Process the uploaded file items
 				FileItemIterator iter = upload.getItemIterator(request);
-
+				
 				while (iter.hasNext()) {
 					FileItemStream fi = iter.next();
 					InputStream is = fi.openStream();
 					if (fi.isFormField()) {
-						da.setData(fi.getFieldName(), Streams.asString(is));
+						System.out.println(fi.getContentType());
+						
+						if (da.getData(fi.getFieldName()) != null){
+							da.setData(fi.getFieldName(), ((String)da.getData(fi.getFieldName())) + "," + Streams.asString(is));
+						}else{
+							da.setData(fi.getFieldName(), Streams.asString(is));
+						}
 					} else {
 						ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
 						int len;

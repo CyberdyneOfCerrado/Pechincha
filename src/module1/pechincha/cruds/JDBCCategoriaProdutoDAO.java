@@ -45,20 +45,30 @@ public class JDBCCategoriaProdutoDAO extends DAOBehavior<CategoriaProduto>{
 			throw new RuntimeException("Erro ao deletar dados. Classe JDBCCategoriaProdutoDAO", e); 
 		}
 	};
+	public void deleteFromFKProduto(int pk) {
+		try {
+			PreparedStatement ps = c.prepareStatement("delete from categoriaproduto where fkproduto = ?");
+			ps.setInt(1,pk);
+			ps.execute();
+			ps.close();
+		
+		} catch (SQLException e) {
+			throw new RuntimeException("Erro ao deletar dados. Classe JDBCCategoriaProdutoDAO", e); 
+		}
+	};
 
-	public List<CategoriaProduto> list(int fkcategoria, int fkusuario) {
+	public List<CategoriaProduto> list(int fkproduto) {
 		List<CategoriaProduto> list = new ArrayList<CategoriaProduto>();
 		
 		try {
-			PreparedStatement ps = c.prepareStatement("select * from categoriaproduto, produto where fkcategoria = ? " +
-														"and fkproduto = produto.pk and produto.fkusuario = ?");
-			ps.setInt(1,fkcategoria);
-			ps.setInt(2,fkusuario);
+			PreparedStatement ps = c.prepareStatement("select * from categoriaproduto where fkproduto = ?");
+			ps.setInt(1,fkproduto);
 			ResultSet result = ps.executeQuery();
 			while(result.next()){
 				CategoriaProduto temp = new CategoriaProduto();
 				temp.setPk(result.getInt("pk"));
 				temp.setFkProduto(result.getInt("fkproduto"));
+				temp.setFkCategoria(result.getInt("fkcategoria"));
 				list.add(temp);
 			}
 			result.close();
@@ -75,7 +85,7 @@ public class JDBCCategoriaProdutoDAO extends DAOBehavior<CategoriaProduto>{
 		List<CategoriaProduto> list = new ArrayList<CategoriaProduto>();
 		
 		try {
-			PreparedStatement ps = c.prepareStatement("select * from CategoriaProduto");
+			PreparedStatement ps = c.prepareStatement("select * from categoriaproduto");
 			ResultSet result = ps.executeQuery();
 			while(result.next()){
 				CategoriaProduto temp = new CategoriaProduto();
@@ -96,7 +106,7 @@ public class JDBCCategoriaProdutoDAO extends DAOBehavior<CategoriaProduto>{
 	public CategoriaProduto search(int pk) {
 		CategoriaProduto temp = null;
 		try {
-			PreparedStatement ps = c.prepareStatement("select * from CategoriaProduto where pk = ?");
+			PreparedStatement ps = c.prepareStatement("select * from categoriaproduto where pk = ?");
 			ps.setInt(1,pk);
 			ResultSet result = ps.executeQuery();
 			temp = new CategoriaProduto(); 
