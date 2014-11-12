@@ -61,7 +61,7 @@ public class JDBCLoteProdutoDAO extends DAOBehavior<LoteProduto> {
 			ps.close();
 		
 		} catch (SQLException e) {
-			throw new RuntimeException("Erro ao listar dados. Classe JDBCLanceDAO", e); 
+			throw new RuntimeException("Erro ao listar dados. Classe JDBCLoteProdutoDAO", e); 
 		}
 		return list;
 	}
