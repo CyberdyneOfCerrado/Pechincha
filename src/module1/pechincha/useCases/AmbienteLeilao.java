@@ -7,6 +7,7 @@ import module1.pechincha.util.DoAction;
 public class AmbienteLeilao extends ModelController {
 	
 	public ActionDone ambiente( DoAction da ){
+		
 	ActionDone ad = new ActionDone();
 	//Verificar aqui se o usuário que requisita a o ambiente é o leiloeiro da mesma; 
 	
@@ -15,7 +16,7 @@ public class AmbienteLeilao extends ModelController {
 	ad.setData("idEmissor", da.getData("idEmissor")); 
 	ad.setData("idLeilao", da.getData("idLeilao"));			
 			
-	ad.setData("isLeiloeiro", true);
+	ad.setData("isLeiloeiro", false);
 	
 	//Por enquanto eu não vou fazer nada aqui. 
 	//Identificando o pacote
