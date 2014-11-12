@@ -106,8 +106,8 @@ public class ManagerLeilao extends Thread {
 			messeger = chat.diferenciarUsuario(messeger, userSession, maiorLance, leilao);
 			msgBroadcast(messeger);
 		}
-	};
-	
+	}
+
 	private void lance( UserSession userSession, Messeger messeger){
 		float novoLance = Float.parseFloat(messeger.getMsg());
 		if( novoLance > this.lanceCorrente){
