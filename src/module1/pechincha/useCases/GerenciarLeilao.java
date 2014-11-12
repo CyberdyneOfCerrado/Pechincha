@@ -46,7 +46,8 @@ public class GerenciarLeilao extends ModelController {
 			int pk=(int) temp.keys().nextElement();
 			int unidade=(int) temp.get(pk);
 			produto=crudpr.search(pk);
-			produto.setQuantidade(unidade);
+			int tempUnidade=produto.getQuantidade();
+			produto.setQuantidade(tempUnidade-unidade);
 			crudpr.update(produto);
 			lote.setFkleilao(idleilao);
 			lote.setFkproduto(pk);
