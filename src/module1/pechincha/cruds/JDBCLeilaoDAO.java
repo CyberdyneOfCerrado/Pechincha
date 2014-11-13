@@ -104,7 +104,7 @@ public class JDBCLeilaoDAO extends DAOBehavior<Leilao>{
 	}
 
 	@Override
-	public Leilao search(int pk) {
+	public Leilao select(int pk) {
 		Leilao temp = null;
 		try {
 			PreparedStatement ps = c.prepareStatement("select * from leilao where idleilao = ?");

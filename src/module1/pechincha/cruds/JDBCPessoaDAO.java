@@ -75,7 +75,7 @@ public class JDBCPessoaDAO extends DAOBehavior<Pessoa>{
 	};
 
 	@Override
-	public Pessoa search(int pk) {
+	public Pessoa select(int pk) {
 		Pessoa temp = null;
 		try {
 			PreparedStatement ps = c.prepareStatement("select * from pessoa where id =  ?");

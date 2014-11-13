@@ -67,7 +67,7 @@ private Connection c;
 	}
 
 	@Override
-	public Categoria search(int pk) {
+	public Categoria select(int pk) {
 		Categoria temp = null;
 		try {
 			PreparedStatement ps = c.prepareStatement("select * from categoria where pk = ?");

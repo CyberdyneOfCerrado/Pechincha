@@ -55,7 +55,7 @@ public class GerenciarLeilao extends ModelController {
 		while(temp.keys().hasMoreElements()){
 			int pk=(int) temp.keys().nextElement();
 			int unidade=(int) temp.get(pk);
-			produto=crudpr.search(pk);
+			produto=crudpr.select(pk);
 			int tempUnidade=produto.getQuantidade();
 			produto.setQuantidade(tempUnidade-unidade);
 			crudpr.update(produto);
@@ -66,11 +66,11 @@ public class GerenciarLeilao extends ModelController {
 		}
 		if(action.getData("val")!=null){
 			preco=(float) action.getData("val");
-			le=leilao.search(idleilao);
+			le=leilao.select(idleilao);
 			le.setPrecolote(preco);
 			leilao.update(le);
 		}else{
-			le=leilao.search(idleilao);
+			le=leilao.select(idleilao);
 			le.setPrecolote(preco);
 			leilao.update(le);
 		}
@@ -124,7 +124,7 @@ public class GerenciarLeilao extends ModelController {
 		ActionDone done = new ActionDone();
 		Leilao leilao = null;
 		JDBCLeilaoDAO leilaoDao = new JDBCLeilaoDAO();
-		leilao=leilaoDao.search((int) action.getData("idleilao"));
+		leilao=leilaoDao.select((int) action.getData("idleilao"));
 		if(leilao==null){
 			done.setProcessed(true);
 			done.setStatus(false);
@@ -181,8 +181,8 @@ public class GerenciarLeilao extends ModelController {
 		String destino="";
 		JDBCUsuarioDAO search = new JDBCUsuarioDAO();
 		Leilao leilao=(Leilao) action.getData("leilao");
-		Usuario leiloeiro = search.search(leilao.getIdLeiloeiro());
-		Usuario comprador = search.search(leilao.getComprador());
+		Usuario leiloeiro = search.select(leilao.getIdLeiloeiro());
+		Usuario comprador = search.select(leilao.getComprador());
 		if(comprador==null){
 		nome=leiloeiro.getNomeCompleto();
 		msg="Informamos que seu leilão não obteve vendas, que tal anunciar novamente!";

@@ -96,7 +96,7 @@ public class JDBCLanceDAO extends DAOBehavior<Lance>{
 	};
 
 	@Override
-	public Lance search(int pk) {
+	public Lance select(int pk) {
 		Lance temp = null;
 		try {
 			PreparedStatement ps = c.prepareStatement("select * from lance where pk = ?");

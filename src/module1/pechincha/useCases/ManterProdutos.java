@@ -234,7 +234,7 @@ public class ManterProdutos  extends ModelController{
 				idproduto = Integer.valueOf((String)da.getData("idproduto"));
 			
 			JDBCProdutoDAO daoprod = new JDBCProdutoDAO();
-			Produto prod =  daoprod.search(idproduto);
+			Produto prod =  daoprod.select(idproduto);
 			if ( prod != null){
 				if ( prod.getFkUsuario() != idusuario){
 					return ad;
@@ -254,7 +254,7 @@ public class ManterProdutos  extends ModelController{
 				
 				JDBCCategoriaDAO cat = new JDBCCategoriaDAO();
 				for (CategoriaProduto cp : catprod){
-					categoria += cat.search(cp.getFkCategoria()).getDescricao() + ", ";
+					categoria += cat.select(cp.getFkCategoria()).getDescricao() + ", ";
 				}
 				ad.setData("categorias", categoria.substring(0, categoria.lastIndexOf(",")));
 				System.out.println("Processou.");

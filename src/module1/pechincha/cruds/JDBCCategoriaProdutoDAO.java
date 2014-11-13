@@ -103,7 +103,7 @@ public class JDBCCategoriaProdutoDAO extends DAOBehavior<CategoriaProduto>{
 	};
 
 	@Override
-	public CategoriaProduto search(int pk) {
+	public CategoriaProduto select(int pk) {
 		CategoriaProduto temp = null;
 		try {
 			PreparedStatement ps = c.prepareStatement("select * from categoriaproduto where pk = ?");

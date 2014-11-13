@@ -38,7 +38,7 @@ public class JDBCLoteProdutoDAO extends DAOBehavior<LoteProduto> {
 	}
 
 	@Override
-	public LoteProduto search(int pk) {
+	public LoteProduto select(int pk) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -37,7 +37,7 @@ public class JDBCUsuarioDAO extends DAOBehavior<Usuario> {
 	}
 
 	@Override
-	public Usuario search(int pk) {
+	public Usuario select(int pk) {
 		Usuario temp=null;
 		try {
 			PreparedStatement ps = c.prepareStatement("select * from usuario where pk = ?");

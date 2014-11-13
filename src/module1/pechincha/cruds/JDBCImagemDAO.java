@@ -128,7 +128,7 @@ public class JDBCImagemDAO extends DAOBehavior<Imagem>{
 	};
 
 	@Override
-	public Imagem search(int pk) {
+	public Imagem select(int pk) {
 		Imagem temp = null;
 		try {
 			PreparedStatement ps = c.prepareStatement("select * from imagem where pk = ?");
