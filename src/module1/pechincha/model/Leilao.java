@@ -6,16 +6,16 @@ import module1.pechincha.util.ReflectiveModel;
 
 public class Leilao extends ReflectiveModel {
 	private int idLeilao;
-	private String etiqueta; 
-	private int tempoLimite;
-	private int idLeiloeiro; 
-	private float lanceInicial;
+	private String etiqueta;
 	private String descricao;
 	private int comprador;
-	private ArrayList<LoteProduto> produto;
-	private String nickname;
 	private boolean ativo;
+	private int idLeiloeiro;
+	private float lanceInicial;
+	private int tempoLimite;
+	private String nickname;
 	private float precolote;
+	private ArrayList<LoteProduto> produto;
 	
 	public Leilao(int idLeilao, String etiqueta, int tempoLimite, int idLeiloeiro, float lanceInicial,String descricao,int comprador, ArrayList<LoteProduto> produto,String nickname,boolean ativo,int precolote){
 		this.idLeilao = idLeilao; 

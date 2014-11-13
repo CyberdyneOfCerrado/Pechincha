@@ -9,8 +9,14 @@ import java.util.List;
 import module1.pechincha.interf.DAOBehavior;
 import module1.pechincha.model.LoteProduto;
 import module1.pechincha.model.Produto;
+import module1.pechincha.util.ConnectionFactory;
 public class JDBCLoteProdutoDAO extends DAOBehavior<LoteProduto> {
-	private Connection c; 
+	private Connection c;
+	
+	public JDBCLoteProdutoDAO(){
+		  c = ConnectionFactory.getConnection();
+		 };
+
 	@Override
 	public void insert(LoteProduto arg) {
 		String sql = "Insert into "+arg.getTableName()+" ("+arg.getColumnName()+") values ( ?, ?, ? )"; 
