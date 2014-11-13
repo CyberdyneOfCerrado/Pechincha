@@ -1,0 +1,17 @@
+	<h1>Deseja realmente remover este produto da lista?</h1>
+	<!-- $BeginBlock Imagem -->
+		<img src="templates/imagens/${img}"height="240" width="320">
+	<!-- $EndBlock Imagem -->
+	<h2>${titulo}</h2><br>
+	<h2>${descricao}</h2><br>
+	<p>Quantidade: ${quantidade} unidade(s)</p><br>
+	<p>Preço: R$ ${preco}</p><br>
+	<form method = "get">
+		<input id="uc" type="hidden" name=useCase value="manterProdutos">
+			<input id="uc" type="hidden" name="action" value="remover">
+			<input id="uc" type="hidden" name="idusuario" value="${idusuario}">
+			<input id="uc" type="hidden" name="idproduto" value="${idproduto}">
+			<input id="uc" type="hidden" name="confirm" value="true">
+			<input id="uc" type="hidden" name="redirect" value="false">		
+			<input type="submit" value="Remover" />											
+		</form><br/>
