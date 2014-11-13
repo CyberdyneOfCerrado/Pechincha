@@ -217,12 +217,12 @@ div#container-chat div#top-chat ul li{
 	color: white;
 }
 
-textarea{
+#msg{
 
-	resize: none !important;
-	width: 279px !important;
-	height: 44px !important;
-	margin:3px !important;
+	resize: none ;
+	width: 279px ;
+	height: 44px ;
+	margin:3px ;
 	
 	font-family: Tahoma, Helvetica; 
 	font-size:3.5mm;
