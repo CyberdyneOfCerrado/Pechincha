@@ -88,13 +88,17 @@ public class ManterProdutosView extends ViewController {
 		
 		@SuppressWarnings("unchecked")
 		ArrayList<DoAction> listprods = (ArrayList<DoAction>)ad.getData("produtos");
-		for (DoAction p : listprods){
-			temp.setVariable("titulo",(String)p.getData("titulo"));
-			temp.setVariable("img",(String)p.getData("img"));
-			temp.setVariable("preco",Float.toString((float)p.getData("preco")));
-			temp.setVariable("idusuario",Integer.toString((int)p.getData("idusuario")));
-			temp.setVariable("idproduto",Integer.toString((int)p.getData("idproduto")));
-			temp.addBlock("Produto");
+		if ( listprods.size() == 0){
+			temp.setVariable("resultado", "Nenhum produto encontrado.");
+		}else{
+			for (DoAction p : listprods){
+				temp.setVariable("titulo",(String)p.getData("titulo"));
+				temp.setVariable("img",(String)p.getData("img"));
+				temp.setVariable("preco",Float.toString((float)p.getData("preco")));
+				temp.setVariable("idusuario",Integer.toString((int)p.getData("idusuario")));
+				temp.setVariable("idproduto",Integer.toString((int)p.getData("idproduto")));
+				temp.addBlock("Produto");
+			}
 		}
 		return temp.generateOutput();
 	}

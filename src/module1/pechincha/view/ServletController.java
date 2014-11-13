@@ -105,8 +105,13 @@ public class ServletController {
 			if (!temp.equals("useCase") && !temp.equals("action")) {
 				// setando o nome do parametro como chave na hashtable setando o
 				// nome do parametro como valor
-				da.setData(temp, request.getParameter(temp));
-				da.setData(temp + "_array", request.getParameterValues(temp));
+				String[] par = request.getParameterValues(temp);
+				if ( par.length > 0){
+					da.setData(temp, par[par.length-1]);
+				}else{
+					da.setData(temp, request.getParameter(temp));
+				}
+				da.setData(temp + "_array", par);
 			}
 		}
 		// Pegando dados de Sessão

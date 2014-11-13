@@ -185,7 +185,8 @@ public class ManterProdutos  extends ModelController{
 			}
 			
 			if ( conf ){
-				new JDBCImagemDAO().deleteFromFKProduto(idproduto);				
+				JDBCImagemDAO imgs = new JDBCImagemDAO();
+				imgs.deleteFromFKProduto(idproduto);				
 				new JDBCCategoriaProdutoDAO().deleteFromFKProduto(idproduto);
 				daoprod.delete(idproduto);
 				ad.setMessage("Produto excluído.");
