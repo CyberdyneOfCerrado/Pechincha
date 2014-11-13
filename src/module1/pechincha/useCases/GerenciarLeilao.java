@@ -23,8 +23,7 @@ public class GerenciarLeilao extends ModelController {
 
 	@Override
 	public String[] getActions() {
-		String[] actions = { "criarLeilao", "reenviarEmail", "getHistorico",
-				"getTodosLeiloes", "entrarLeilao", "enviarEmail",
+		String[] actions = { "criarLeilao", "reenviarEmail",
 				"pesquisarLeilao", "finalizarLeilao" };
 		return actions;
 	}
@@ -33,91 +32,65 @@ public class GerenciarLeilao extends ModelController {
 	public String getUserCase() {
 		return "gerenciarLeilao";
 	}
-	public ActionDone criarLeilão(DoAction action){
-		ValidaLeilao valida = new ValidaLeilao((Leilao) action.getData("leilao"));
+	public ActionDone criarLeilao(DoAction action){
+		ValidaLeilao valida = new ValidaLeilao();
 		ActionDone done = new ActionDone();
-		done=valida.validar();
-		if(done.isStatus()==false){
-			done.setProcessed(true);
-			done.setStatus(false);
+		Leilao le=new Leilao();
+		JDBCLeilaoDAO leilao = new JDBCLeilaoDAO();
+		JDBCUsuarioDAO us = new JDBCUsuarioDAO();
+		Usuario user;
+		String etapa=(String) action.getData("etapa");
+		switch(etapa){
+		case "leilaop1":
+				le.setEtiqueta((String) action.getData("etiqueta"));
+				le.setDescricao((String) action.getData("descricao"));
+				String temp=(String) action.getData("tempolimite");
+				int segundos=0;
+				if(temp.length()==4){
+					String s=temp.substring(0,1);
+					int tempo=Integer.parseInt(s);
+					segundos=tempo*60*60;
+					s=temp.substring(2,4);
+					segundos+=tempo*60;
+				}
+				le.setTempoLimite(segundos);
+				le.setAtivo(false);
+				le.setIdLeiloeiro((int)action.getData("idleiloeiro"));
+				user=us.select((int)action.getData("idleiloeiro"));
+				le.setNickname(user.getNickname());
+				if(valida.validar(le)){
+					leilao.insert(le);
+					done.setUseCase(action.getUseCase());
+					done.setAction(action.getAction());
+					done.setProcessed(true);
+					done.setStatus(true);
+					done.setData("idleiloeiro", (int)action.getData("idleiloeiro"));
+					return done;
+				}else{
+					done.setUseCase(action.getUseCase());
+					done.setAction(action.getAction());
+					done.setProcessed(true);
+					done.setStatus(false);
+					done.setData("idleiloeiro", (int)action.getData("idleiloeiro"));
+					return done;
+				}
+		case "leilaop0":
+			done.setAction("leilaop0");
 			done.setUseCase(action.getUseCase());
-			done.setAction(action.getAction());
+			done.setData("idleiloeiro",action.getData("idleiloeiro"));
+			done.setProcessed(true);
+			done.setStatus(true);
 			return done;
 		}
-		Produto produto;
-		float preco=0;
-		Leilao le;
-		LoteProduto lote=new LoteProduto();;
-		JDBCProdutoDAO crudpr = new JDBCProdutoDAO();
-		JDBCLeilaoDAO leilao = new JDBCLeilaoDAO();
-		int idleilao= leilao.insertReturningPk((Leilao) action.getData("leilao"));
-		Hashtable temp=(Hashtable) action.getData("produtos");
-		while(temp.keys().hasMoreElements()){
-			int pk=(int) temp.keys().nextElement();
-			int unidade=(int) temp.get(pk);
-			produto=crudpr.select(pk);
-			int tempUnidade=produto.getQuantidade();
-			produto.setQuantidade(tempUnidade-unidade);
-			crudpr.update(produto);
-			lote.setFkleilao(idleilao);
-			lote.setFkproduto(pk);
-			lote.setUnidades((int) temp.get(pk));
-			preco+=(unidade*produto.getPreco());
-		}
-		if(action.getData("val")!=null){
-			preco=(float) action.getData("val");
-			le=leilao.select(idleilao);
-			le.setPrecolote(preco);
-			leilao.update(le);
-		}else{
-			le=leilao.select(idleilao);
-			le.setPrecolote(preco);
-			leilao.update(le);
-		}
-		StorageLeilaoEnvironments.iniciarAmbienteLeilao(le);
-		done.setProcessed(true);
-		done.setStatus(true);
-		done.setUseCase(action.getUseCase());
-		done.setAction(action.getAction());
 		return done;
 	}
 	
-	public ActionDone getHistorico(DoAction action){
+	public List<Leilao> getHistorico(DoAction action){
 		ActionDone done=new ActionDone();
 		JDBCLeilaoDAO leilao = new JDBCLeilaoDAO();
 		List<Leilao> list = null;
 		list=leilao.getHistorico((int) action.getData("idleilao"));
-		if(list==null){
-			done.setProcessed(true);
-			done.setStatus(false);
-			done.setMessage("Houve algum erro!");
-			return done;
-		}else{
-			if(list.isEmpty()){
-				done.setProcessed(true);
-				done.setStatus(true);
-				done.setMessage("Nada encontrado!");
-				return done;
-			}else{
-				done.setProcessed(true);
-				done.setStatus(true);
-				done.setData("getHistorico",list);
-				return done;
-			}
-		}
-	}
-	
-	public ActionDone getTodosLeiloes(){
-		ActionDone done = new ActionDone();
-		ArrayList<Leilao> array = new ArrayList<Leilao>();
-		JDBCLeilaoDAO leilao = new JDBCLeilaoDAO();
-		array=(ArrayList<Leilao>) leilao.list();
-		done.setData("getTodosLeiloes", array);
-		done.setStatus(true);
-		done.setProcessed(true);
-		done.setUseCase(this.getUserCase());
-		done.setAction("getTodosLeiloes");
-		return done;
+		return list;
 	}
 	
 	public ActionDone reenviarEmail(DoAction action){
@@ -125,62 +98,24 @@ public class GerenciarLeilao extends ModelController {
 		Leilao leilao = null;
 		JDBCLeilaoDAO leilaoDao = new JDBCLeilaoDAO();
 		leilao=leilaoDao.select((int) action.getData("idleilao"));
-		if(leilao==null){
-			done.setProcessed(true);
-			done.setStatus(false);
-			done.setMessage("Houve um erro interno");
-			return done;
-		}
-		DoAction act = new DoAction(this.getUserCase(),"enviarEmail");
-		act.setData("leilao", leilao);
-		enviarEmail(act);
+		enviarEmail(leilao);
 		done.setProcessed(true);
 		done.setStatus(true);
 		return done;
 	}
 	
-	public ActionDone finalizarLeilao(DoAction action){
-		ActionDone done = new ActionDone();
-		DoAction act = new DoAction(this.getUserCase(),"enviarEmail");
-		done.setProcessed(true);
-		done.setStatus(true);
-		done.setUseCase(action.getUseCase());
-		done.setAction(action.getAction());
+	public void finalizarLeilao(Leilao leilao){
 		JDBCLeilaoDAO update =new JDBCLeilaoDAO();
-		Leilao leilao=(Leilao) action.getData("leilao");
 		leilao.setAtivo(false);
 		update.update(leilao);
-		act.setData("leilao", leilao);
-		enviarEmail(act);
-		return done;
+		enviarEmail(leilao);
 	}
 	
-	public ActionDone pesquisarLeilao(DoAction action){
-		ActionDone done = new ActionDone();
-		done.setAction(action.getAction());
-		done.setUseCase(action.getUseCase());
-		done.setProcessed(true);
-		JDBCLeilaoDAO leilaoDao = new JDBCLeilaoDAO();
-		Leilao leilao = null;
-		leilao=leilaoDao.searchEtiqueta((String) action.getData("etiqueta"));
-		if(leilao==null){
-			done.setStatus(false);
-			done.setMessage("Nada encontrado");
-			return done;
-		}else{
-			done.setStatus(true);
-			done.setData("pesquisarLeilao", leilao);
-			return done;
-		}
-	}
-	
-	public ActionDone enviarEmail(DoAction action) {
-		ActionDone done = new ActionDone();
+	public void enviarEmail(Leilao leilao) {
 		String nome="";
 		String msg="";
 		String destino="";
 		JDBCUsuarioDAO search = new JDBCUsuarioDAO();
-		Leilao leilao=(Leilao) action.getData("leilao");
 		Usuario leiloeiro = search.select(leilao.getIdLeiloeiro());
 		Usuario comprador = search.select(leilao.getComprador());
 		if(comprador==null){
@@ -198,11 +133,6 @@ public class GerenciarLeilao extends ModelController {
 			destino=comprador.getEmailPrincipal();
 			mail(nome,msg,destino);
 		}
-		done.setProcessed(true);
-		done.setStatus(true);
-		done.setUseCase(this.getUserCase());
-		done.setAction("enviarEmail");
-		return done;
 	}
 	private synchronized void  mail(String nome,String msg,String destino){
 		HtmlEmail email = new HtmlEmail();

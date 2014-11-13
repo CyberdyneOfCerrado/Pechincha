@@ -20,6 +20,7 @@ import module1.pechincha.controllers.UseCaseController;
 import module1.pechincha.util.ActionDone;
 import module1.pechincha.util.DoAction;
 import module1.pechincha.viewUseCases.AmbienteLeilaoView;
+import module1.pechincha.viewUseCases.GerenciarLeilaoView;
 import module1.pechincha.viewUseCases.ManterGalinhaView;
 import module1.pechincha.viewUseCases.ManterProdutosView;
 import biz.source_code.miniTemplator.MiniTemplator;
@@ -47,6 +48,8 @@ public class ServletController {
 	private void initViews() {
 		listViews.put("ambienteLeilao", new AmbienteLeilaoView(servletContext,
 				"ambienteLeilao"));
+		listViews.put("gerenciarLeilao", new GerenciarLeilaoView(servletContext,
+				"gerenciarLeilao"));
 		listViews.put("manterGalinha", new ManterGalinhaView(servletContext,
 				"manterGalinha"));
 		listViews.put("manterProdutos", new ManterProdutosView(servletContext,

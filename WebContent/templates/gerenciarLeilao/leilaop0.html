@@ -1,0 +1,168 @@
+<div>
+<style type="text/css">
+body
+{
+   background-color: #FFFFFF;
+   background-image: url(images/index_bkgrnd.png);
+   color: #000000;
+   font-family: Arial;
+   font-size: 13px;
+   margin: 0;
+   padding: 0;
+}
+</style>
+<style type="text/css">
+a
+{
+   color: #0000FF;
+   text-decoration: underline;
+}
+a:visited
+{
+   color: #800080;
+}
+a:active
+{
+   color: #FF0000;
+}
+a:hover
+{
+   color: #0000FF;
+   text-decoration: underline;
+}
+</style>
+<style type="text/css">
+#Layer1
+{
+   background-color: transparent;
+   background-image: url(images/index_bkgrnd.png);
+   background-repeat: repeat;
+   background-position: center top;
+}
+#wb_Text1 
+{
+   background-color: transparent;
+   border: 0px #000000 solid;
+   padding: 0;
+   text-align: left;
+}
+#wb_Text1 div
+{
+   text-align: left;
+}
+#wb_Form1
+{
+   background-color: transparent;
+   border: 0px #000000 solid;
+   -moz-box-shadow: 3px 3px 3px #000000;
+   -webkit-box-shadow: 3px 3px 3px #000000;
+   box-shadow: 3px 3px 3px #000000;
+}
+#wb_Text2 
+{
+   background-color: transparent;
+   border: 0px #000000 solid;
+   padding: 0;
+   text-align: left;
+}
+#wb_Text2 div
+{
+   text-align: left;
+}
+#wb_Text3 
+{
+   background-color: transparent;
+   border: 0px #000000 solid;
+   padding: 0;
+   text-align: left;
+}
+#wb_Text3 div
+{
+   text-align: left;
+}
+#descricao
+{
+   border: 1px #A9A9A9 solid;
+   background-color: #FFFFFF;
+   color :#000000;
+   font-family: Arial;
+   font-size: 13px;
+   text-align: left;
+   resize: none;
+}
+#wb_Text4 
+{
+   background-color: transparent;
+   border: 0px #000000 solid;
+   padding: 0;
+   text-align: left;
+}
+#wb_Text4 div
+{
+   text-align: left;
+}
+#etiqueta
+{
+   border: 1px #A9A9A9 solid;
+   background-color: #FFFFFF;
+   color :#000000;
+   font-family: Arial;
+   font-size: 13px;
+   text-align: left;
+   resize: none;
+}
+#tempolimite
+{
+   border: 1px #A9A9A9 solid;
+   background-color: #FFFFFF;
+   color :#000000;
+   font-family: Arial;
+   font-size: 13px;
+   text-align: left;
+   resize: none;
+}
+#Button2
+{
+   border: 1px #A9A9A9 solid;
+   background-color: #F0F0F0;
+   color: #000000;
+   font-family: Arial;
+   font-size: 13px;
+   -moz-box-shadow: 3px 3px 3px #000000;
+   -webkit-box-shadow: 3px 3px 3px #000000;
+   box-shadow: 3px 3px 3px #000000;
+}
+#Button3
+{
+   border: 1px #A9A9A9 solid;
+   background-color: #F0F0F0;
+   color: #000000;
+   font-family: Arial;
+   font-size: 13px;
+   -moz-box-shadow: 3px 3px 3px #000000;
+   -webkit-box-shadow: 3px 3px 3px #000000;
+   box-shadow: 3px 3px 3px #000000;
+}
+</style>
+<div id="Layer1" style="position:absolute;text-align:left;left:155px;top:4px;width:898px;height:564px;z-index:18;" title="">
+<div id="wb_Text1" style="position:absolute;left:338px;top:34px;width:252px;height:33px;z-index:8;text-align:left;">
+<span style="color:#000000;font-family:Arial;font-size:29px;">Criar um leilão</span></div>
+<div id="wb_Form1" style="position:absolute;left:74px;top:92px;width:750px;height:445px;z-index:9;">
+<form method="post" action="servlet" enctype="text/plain" id="Form1" name="form">
+<div id="wb_Text2" style="position:absolute;left:23px;top:31px;width:243px;height:19px;z-index:0;text-align:left;">
+<span style="color:#000000;font-family:Arial;font-size:17px;"><strong>Entre com a etiqueta do leilão:</strong></span></div>
+<div id="wb_Text3" style="position:absolute;left:24px;top:83px;width:264px;height:19px;z-index:1;text-align:left;">
+<span style="color:#000000;font-family:Arial;font-size:17px;"><strong>Entre com a descrição do leilão:</strong></span></div>
+<textarea name="descricao" id="descricao" style="position:absolute;left:26px;top:121px;width:695px;height:151px;z-index:2;" rows="8" cols="110"></textarea>
+<div id="wb_Text4" style="position:absolute;left:24px;top:292px;width:324px;height:19px;z-index:3;text-align:left;">
+<span style="color:#000000;font-family:Arial;font-size:17px;"><strong>Entre com o tempo de duração: (hh:mm)</strong></span></div>
+<textarea name="etiqueta" id="etiqueta" style="position:absolute;left:265px;top:29px;width:454px;height:24px;z-index:4;" rows="0" cols="70"></textarea>
+<textarea name="tempolimite" id="tempolimite" style="position:absolute;left:361px;top:290px;width:359px;height:24px;z-index:5;" rows="0" cols="54"></textarea>
+<input type="hidden" id="etapa" name="etapa" value="leilaoetapa1"/>
+<input type="hidden" id="idleiloeiro" name="idleiloeiro" value="${idleiloeiro}"/>
+<input type="submit" id="Button2" name="" value="Cancelar" style="position:absolute;left:279px;top:369px;width:95px;height:37px;z-index:6;">
+<input type="submit" id="Button3" name="" value="Criar Leilao" onclick="confirmBox();" style="position:absolute;left:410px;top:369px;width:95px;height:37px;z-index:7;">
+</form>
+</div>
+</div>
+</div>

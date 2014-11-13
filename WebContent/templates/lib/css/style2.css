@@ -1,0 +1,10 @@
+/* dispositivo no formato paisagem e abaixos */
+@media (max-width: 480px) {
+.topo { .... }
+}
+/* Dispositivos em paisagem até os Tablets em formato porta-retrato */
+@media (max-width: 767px) { ... }
+/* Tablets em formato porta retrato até os desktos no formato paisagem */
+@media (min-width: 768px) and (max-width: 979px) { ... }
+/* Desktop maiores */
+@media (min-width: 1200px) { ... }
