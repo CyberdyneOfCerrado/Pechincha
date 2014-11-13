@@ -1,20 +1,39 @@
 <form enctype="multipart/form-data" method="post">
-	<span>Mensagem: ${resultado}</span>
-	<p>Usuário: <input type="text" name="idusuario" size="102" value="1"></p>
-	<p>Título: <input type="text" name="titulo" size="102" ></p>
-	<p>Descrição: <input type="text" name="descricao" size="102" ></p>
-	Imagem 1: <input name="imagem1" type="file" /></br>
-	Imagem 2: <input name="imagem2" type="file" /></br>
-	Imagem 3: <input name="imagem3" type="file" /></br>
-	Imagem 4: <input name="imagem4" type="file" /></br>
-	Imagem 5: <input name="imagem5" type="file" /></br>
+	<p>${resultado}</p>
+	<h1>Parte 1 - Título do produto</h1>
+<!--<p>Usuário: <input type="text" name="idusuario" size="102" value="1"></p> -->
+	<p><input type="text" name="titulo" size="102" ></p><br>
+	
+	<h1>Parte 2 - Selecione imagem(s) do produto (min: 1; máx: 5)</h1>
+	<h3><input name="imagem1" type="file" /></h3>
+	<h3><input name="imagem2" type="file" /></h3>
+	<h3><input name="imagem3" type="file" /></h3>
+	<h3><input name="imagem4" type="file" /></h3>
+	<h3><input name="imagem5" type="file" /></h3>
+	<br>
+	<h1>Parte 3 - Informe a(s) categoria(s) relacionada(s)</h1>
+		
+	<table style="left: 10px; width: 18%;">
+		<tbody>
+			<tr>
+				<td>
+					<div id="painel_categorias" style="overflow-y: auto; max-height:370px; ">
+						<!-- $BeginBlock Categoria -->
+							<h2><input type="checkbox" name="categoria" value="${pk}">${descricao}</h2>
+						<!-- $EndBlock Categoria -->
+					</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>	
 	
 	<br>
-	<!-- $BeginBlock Categoria -->
-		<input type="checkbox" name="categoria" value="${pk}">${descricao}<br>
-	<!-- $EndBlock Categoria -->
-	<p>Quantidade: <input type="text" name="quantidade" size="10" ></p>
-	<p>Preço: <input type="text" name="preco" size="20" ></p>
+	<h1>Parte 4 - Descrição do produto</h1>
+	<textarea rows="200" cols="1000" name="descricao"></textarea><br>
+	<h1>Parte 5 - Valor unitário do produto (min: R$ 0,10; máx: R$1.000.000,00)</h1>
+	<h2>O valor do produto é: R$ <input type="number" name="preco" min="0.1" max="1000000" value="0.1" step="0.1"></h3><br>
+	<h1>Parte 6 - Quantidade de produtos (min: 1; máx: 100)</h1>
+	<h2>Este cadastro contém <input type="number" name="quantidade" min="1" max="100" value="1"> unidade(s)</h3><br/>
 	<input type="hidden" name="confirm" value="true" />
 	<input type="submit" value="Novo Produto" />
 </form>
