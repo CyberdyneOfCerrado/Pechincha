@@ -9,6 +9,7 @@ import org.apache.commons.mail.HtmlEmail;
 
 import module1.pechincha.controllers.ModelController;
 import module1.pechincha.cruds.JDBCLeilaoDAO;
+import module1.pechincha.cruds.JDBCLoteProdutoDAO;
 import module1.pechincha.cruds.JDBCProdutoDAO;
 import module1.pechincha.cruds.JDBCUsuarioDAO;
 import module1.pechincha.model.Leilao;
@@ -24,7 +25,7 @@ public class GerenciarLeilao extends ModelController {
 	@Override
 	public String[] getActions() {
 		String[] actions = { "criarLeilao", "reenviarEmail",
-				"pesquisarLeilao", "finalizarLeilao" };
+				"pesquisarLeilao", "finalizarLeilao", "criarLote" };
 		return actions;
 	}
 	// os metodos vao abaixo
@@ -46,29 +47,39 @@ public class GerenciarLeilao extends ModelController {
 				le.setDescricao((String) action.getData("descricao"));
 				String temp=(String) action.getData("tempolimite");
 				int segundos=0;
-				if(temp.length()==4){
-					String s=temp.substring(0,1);
+				if(temp.length()==5){
+					try{
+					String s=temp.substring(0,2);
 					int tempo=Integer.parseInt(s);
 					segundos=tempo*60*60;
-					s=temp.substring(2,4);
+					s=temp.substring(2,5);
 					segundos+=tempo*60;
+					}catch(NumberFormatException e){
+						done.setUseCase(action.getUseCase());
+						done.setAction("leilaop0erro");
+						done.setProcessed(true);
+						done.setStatus(false);
+						done.setData("idleiloeiro", (int)action.getData("idleiloeiro"));
+						return done;
+					}
 				}
 				le.setTempoLimite(segundos);
 				le.setAtivo(false);
-				le.setIdLeiloeiro((int)action.getData("idleiloeiro"));
-				user=us.select((int)action.getData("idleiloeiro"));
+				le.setIdLeiloeiro(Integer.parseInt((String) action.getData("idleiloeiro")));
+				user=us.select(le.getIdLeiloeiro());
 				le.setNickname(user.getNickname());
 				if(valida.validar(le)){
-					leilao.insert(le);
+					int pk=leilao.insertReturningPk(le);
 					done.setUseCase(action.getUseCase());
 					done.setAction("leilaop1");
 					done.setProcessed(true);
 					done.setStatus(true);
-					done.setData("idleiloeiro", (int)action.getData("idleiloeiro"));
+					done.setData("idleiloeiro", pk);
+					done.setData("idleilao", (int)action.getData("idleilao"));
 					return done;
 				}else{
 					done.setUseCase(action.getUseCase());
-					done.setAction(action.getAction());
+					done.setAction("leilaop0erro");
 					done.setProcessed(true);
 					done.setStatus(false);
 					done.setData("idleiloeiro", (int)action.getData("idleiloeiro"));
@@ -83,6 +94,11 @@ public class GerenciarLeilao extends ModelController {
 			return done;
 		}
 		return done;
+	}
+	public String desbuga(ActionDone action,String key){
+		String[] filtro = (String[])action.getData(key+"_array");
+		String saida=filtro[filtro.length-1];
+		return saida;
 	}
 	
 	public List<Leilao> getHistorico(DoAction action){
@@ -153,6 +169,35 @@ public class GerenciarLeilao extends ModelController {
 		} catch (EmailException e) {
 			System.err.println("Houve um erro ao enviar o email!");
 			e.printStackTrace();
+		}
+	}
+	
+	public ActionDone criarLote(DoAction action){
+		ValidaLeilao valida = new ValidaLeilao();
+		ActionDone done = new ActionDone();
+		JDBCProdutoDAO produto = new JDBCProdutoDAO();
+		JDBCLoteProdutoDAO lt = new JDBCLoteProdutoDAO();
+		Produto pr = new Produto();
+		LoteProduto lote = new LoteProduto();
+		lote.setFkleilao((int) action.getData("idleilao"));
+		lote.setFkproduto((int) action.getData("idproduto"));
+		pr=produto.select((int) action.getData("idproduto"));
+		if(pr.getQuantidade()>(int) action.getData("quantidadelote")){
+			lote.setUnidades((int) action.getData("quantidadelote"));
+			lt.insert(lote);
+			done.setAction(action.getAction());
+			done.setUseCase(action.getUseCase());
+			done.setProcessed(true);
+			done.setStatus(true);
+			done.setData("estado", "ok");
+			return done;
+		}else{
+			done.setAction("criarLoteerro");
+			done.setUseCase(action.getUseCase());
+			done.setProcessed(true);
+			done.setStatus(false);
+			done.setData("estado", "Erro");
+			return done;
 		}
 	}
 }

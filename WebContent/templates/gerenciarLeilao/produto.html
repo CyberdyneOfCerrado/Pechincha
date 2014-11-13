@@ -2,9 +2,12 @@
 		<form action="q">
 			<td class="tabela">${produto}</td>
 			<td class="tabela">${quantidade}</td>
-			<td class="tabela"><input type="number" id="quantidadelote" name="quantidadelote" /></td>
+			<td class="tabela"><input type="number" id="quantidadelote" name="quantidadelote" ${config} /></td>
 			<td class="tabela">${preco}</td>
 			<input type="hidden" name="idproduto" id="idproduto" value="${idproduto}" />
+			<input type="hidden" name="idproduto" id="idproduto" value="${idleilao}" />
+			<input type="hidden" name="userCase" id="userCase" value="gerenciarLeilao" />
+			<input type="hidden" name="action" id="action" value="cadastrarLote" />
 			<td class="tabela"><button type="submit">Adicionar</button></td>
 		</form>
 	</tr>

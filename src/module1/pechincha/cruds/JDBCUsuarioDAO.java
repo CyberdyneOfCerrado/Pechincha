@@ -11,6 +11,7 @@ import java.util.List;
 
 import module1.pechincha.interf.DAOBehavior;
 import module1.pechincha.model.Usuario;
+import module1.pechincha.util.ConnectionFactory;
 
 /**
  * @author ErIcK
@@ -18,6 +19,9 @@ import module1.pechincha.model.Usuario;
  */
 public class JDBCUsuarioDAO extends DAOBehavior<Usuario> {
 	private Connection c;
+	public JDBCUsuarioDAO(){
+		  c = ConnectionFactory.getConnection();
+		 };
 	@Override
 	public void insert(Usuario arg) {
 		// TODO Auto-generated method stub
@@ -44,7 +48,7 @@ public class JDBCUsuarioDAO extends DAOBehavior<Usuario> {
 			ps.setInt(1,pk);
 			ResultSet result = ps.executeQuery();
 			temp = new Usuario();
-			if(result != null){
+			if(result.next()){
 				temp.setPk(result.getInt("pk"));
 				temp.setNomeCompleto(result.getString("nomecompleto"));
 				temp.setCpf(result.getString("cpf"));

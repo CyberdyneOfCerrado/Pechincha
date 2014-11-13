@@ -20,16 +20,16 @@ public class JDBCLeilaoDAO extends DAOBehavior<Leilao>{
 	};
 	@Override
 	public void insert(Leilao arg) {
-		String sql = "Insert into "+arg.getTableName()+" ("+arg.getColumnName()+") values ( ?, ?, ?, ?, ?, ?, ?, ?, ? )"; 
+		String sql = "Insert into Leilao (etiqueta,descricao,comprador,ativo,idLeiloeiro,lanceInicial,tempoLimite,nickname,precolote) values ( ?, ?, ?, ?, ?, ?, ?, ?, ? ) "; 
 		try {
 			PreparedStatement ps = c.prepareStatement(sql);
 			ps.setString(1,arg.getEtiqueta());
-			ps.setInt(2,arg.getTempoLimite());
-			ps.setString(3, arg.getDescricao());
-			ps.setInt(4, arg.getComprador());
-			ps.setBoolean(5, arg.isAtivo());
-			ps.setInt(6, arg.getIdLeiloeiro());
-			ps.setFloat(7, arg.getLanceInicial());
+			ps.setString(2, arg.getDescricao());
+			ps.setInt(3, arg.getComprador());
+			ps.setBoolean(4, arg.isAtivo());
+			ps.setInt(5, arg.getIdLeiloeiro());
+			ps.setFloat(6, arg.getLanceInicial());
+			ps.setInt(7,arg.getTempoLimite());
 			ps.setString(8, arg.getNickname());
 			ps.setFloat(9, arg.getPrecolote());
 			ps.execute();
@@ -40,16 +40,17 @@ public class JDBCLeilaoDAO extends DAOBehavior<Leilao>{
 	}
 	
 	public int insertReturningPk(Leilao arg){
-		String sql = "Insert into "+arg.getTableName()+" ("+arg.getColumnName()+") values ( ?, ?, ?, ?, ?, ?, ?, ?, ? ) returning idleilao"; 
+		String sql = "Insert into Leilao (etiqueta,descricao,comprador,ativo,idLeiloeiro,lanceInicial,tempoLimite,nickname,precolote) values ( ?, ?, ?, ?, ?, ?, ?, ?, ? ) returning idleilao"; 
+		System.out.println(sql);
 		try {
 			PreparedStatement ps = c.prepareStatement(sql);
 			ps.setString(1,arg.getEtiqueta());
-			ps.setInt(2,arg.getTempoLimite());
-			ps.setString(3, arg.getDescricao());
-			ps.setInt(4, arg.getComprador());
-			ps.setBoolean(5, arg.isAtivo());
-			ps.setInt(6, arg.getIdLeiloeiro());
-			ps.setFloat(7, arg.getLanceInicial());
+			ps.setString(2, arg.getDescricao());
+			ps.setInt(3, arg.getComprador());
+			ps.setBoolean(4, arg.isAtivo());
+			ps.setInt(5, arg.getIdLeiloeiro());
+			ps.setFloat(6, arg.getLanceInicial());
+			ps.setInt(7,arg.getTempoLimite());
 			ps.setString(8, arg.getNickname());
 			ps.setFloat(9, arg.getPrecolote());
 			ResultSet result=ps.executeQuery();
@@ -91,7 +92,7 @@ public class JDBCLeilaoDAO extends DAOBehavior<Leilao>{
 				temp.setIdLeiloeiro(result.getInt("idleiloeiro"));
 				temp.setLanceInicial(result.getFloat("lanceinicial"));
 				temp.setNickname(result.getString("nickname"));
-				temp.setPrecolote(result.getFloat("pecolote"));
+				temp.setPrecolote(result.getFloat("precolote"));
 				list.add(temp);
 			}
 			result.close();
@@ -121,7 +122,7 @@ public class JDBCLeilaoDAO extends DAOBehavior<Leilao>{
 				temp.setIdLeiloeiro(result.getInt("idleiloeiro"));
 				temp.setLanceInicial(result.getFloat("lanceinicial"));
 				temp.setNickname(result.getString("nickname"));
-				temp.setPrecolote(result.getFloat("pecolote"));
+				temp.setPrecolote(result.getFloat("precolote"));
 				break;
 			}
 			result.close();
@@ -151,7 +152,7 @@ public class JDBCLeilaoDAO extends DAOBehavior<Leilao>{
 				temp.setIdLeiloeiro(result.getInt("idleiloeiro"));
 				temp.setLanceInicial(result.getFloat("lanceinicial"));
 				temp.setNickname(result.getString("nickname"));
-				temp.setPrecolote(result.getFloat("pecolote"));
+				temp.setPrecolote(result.getFloat("precolote"));
 				list.add(temp);
 			}
 			result.close();
@@ -166,7 +167,7 @@ public class JDBCLeilaoDAO extends DAOBehavior<Leilao>{
 	public Leilao searchEtiqueta(String etiqueta) {
 		Leilao temp = null;
 		try {
-			PreparedStatement ps = c.prepareStatement("select * from leilao where etiqueta=' ? '");
+			PreparedStatement ps = c.prepareStatement("select * from leilao where etiqueta= ? ");
 			ps.setString(1,etiqueta);
 			ResultSet result = ps.executeQuery();
 			while(result.next()){
@@ -180,7 +181,7 @@ public class JDBCLeilaoDAO extends DAOBehavior<Leilao>{
 				temp.setIdLeiloeiro(result.getInt("idleiloeiro"));
 				temp.setLanceInicial(result.getFloat("lanceinicial"));
 				temp.setNickname(result.getString("nickname"));
-				temp.setPrecolote(result.getFloat("pecolote"));
+				temp.setPrecolote(result.getFloat("precolote"));
 				break;
 			}
 			result.close();
@@ -195,18 +196,18 @@ public class JDBCLeilaoDAO extends DAOBehavior<Leilao>{
 	@Override
 	public void update(Leilao arg) {
 			String sql = "Update " + arg.getTableName() + " set " +
-					"etiqueta = ?, tempolimite = ?, descricao = ?, comprador = ?, ativo = ?,idleiloeiro = ?, lanceinicial = ?, nickname = ?, precolote = ? " +
+					"etiqueta = ?,descricao = ?, comprador = ?, ativo = ?, idleiloeiro = ?, lanceinicial = ?, tempolimite = ?, nickname = ?, precolote = ? " +
 					"where idleilao = ?";
 			try {
 				PreparedStatement ps = c.prepareStatement(sql);
 				ps.setString(1,arg.getEtiqueta());
-				ps.setInt(2,arg.getTempoLimite());
-				ps.setString(3,arg.getDescricao());
-				ps.setInt(4,arg.getComprador());
-				ps.setBoolean(5,arg.isAtivo());
-				ps.setInt(6,arg.getIdLeiloeiro());
-				ps.setFloat(7,arg.getLanceInicial());
-				ps.setString(8,arg.getNickname());
+				ps.setString(2, arg.getDescricao());
+				ps.setInt(3, arg.getComprador());
+				ps.setBoolean(4, arg.isAtivo());
+				ps.setInt(5, arg.getIdLeiloeiro());
+				ps.setFloat(6, arg.getLanceInicial());
+				ps.setInt(7,arg.getTempoLimite());
+				ps.setString(8, arg.getNickname());
 				ps.setFloat(9, arg.getPrecolote());
 				ps.execute();
 				ps.close();
