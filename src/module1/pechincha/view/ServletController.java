@@ -158,9 +158,6 @@ public class ServletController {
 						da.setData(fi.getFieldName(), file);
 					}
 				}
-
-				da.setData("storageContext", this.servletContext);
-				da.setData("pathSeparador", separador);
 			} catch (SizeLimitExceededException e) {
 				da.setData("exception", "Tamanho máximo excedido");
 				return da;
@@ -168,6 +165,8 @@ public class ServletController {
 				e.printStackTrace();
 			}
 		}
+		da.setData("storageContext", this.servletContext);
+		da.setData("pathSeparador", separador);
 		return da;
 	}
 
