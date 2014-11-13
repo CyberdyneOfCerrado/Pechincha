@@ -288,6 +288,7 @@ public class ManterProdutos  extends ModelController{
 					categoria += cat.select(cp.getFkCategoria()).getDescricao() + ", ";
 				}
 				ad.setData("categorias", categoria.substring(0, categoria.lastIndexOf(",")));
+				ad.setData("idusuario", idusuario);
 				System.out.println("Processou.");
 			}
 		}catch(Exception e){

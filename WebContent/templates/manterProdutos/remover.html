@@ -1,17 +1,32 @@
-	<h1>Deseja realmente remover este produto da lista?</h1>
+	<h4>Deseja realmente remover este produto da lista?</h4>
 	<!-- $BeginBlock Imagem -->
 		<img src="templates/imagens/${img}"height="240" width="320">
 	<!-- $EndBlock Imagem -->
-	<h2>${titulo}</h2><br>
-	<h2>${descricao}</h2><br>
-	<p>Quantidade: ${quantidade} unidade(s)</p><br>
-	<p>Preço: R$ ${preco}</p><br>
-	<form method = "get">
-		<input id="uc" type="hidden" name=useCase value="manterProdutos">
-			<input id="uc" type="hidden" name="action" value="remover">
-			<input id="uc" type="hidden" name="idusuario" value="${idusuario}">
-			<input id="uc" type="hidden" name="idproduto" value="${idproduto}">
-			<input id="uc" type="hidden" name="confirm" value="true">
-			<input id="uc" type="hidden" name="redirect" value="false">		
-			<input type="submit" value="Remover" />											
-		</form><br/>
+	<h5>${titulo}</h5><br>
+	<textarea rows="10" cols="100" readonly>${descricao}</textarea><br>
+	<h5>Quantidade: ${quantidade} unidade(s)</h5>
+	<h5>Preço: R$ ${preco}</h5>
+	<table>
+		<tr>
+			<td>
+				<form method = "get">
+					<input id="uc" type="hidden" name=useCase value="manterProdutos">
+					<input id="uc" type="hidden" name="action" value="remover">
+					<input id="uc" type="hidden" name="idusuario" value="${idusuario}">
+					<input id="uc" type="hidden" name="idproduto" value="${idproduto}">
+					<input id="uc" type="hidden" name="confirm" value="true">
+					<input id="uc" type="hidden" name="redirect" value="false">		
+					<input type="submit" value="Remover" />											
+				</form>
+			</td>
+			<td>
+				<form method = "get">
+					<input id="uc" type="hidden" name=useCase value="manterProdutos">
+					<input id="uc" type="hidden" name="action" value="listar">
+					<input id="uc" type="hidden" name="idusuario" value="${idusuario}">
+					<input id="uc" type="hidden" name="redirect" value="false">		
+					<input type="submit" value="Cancelar" />											
+				</form>
+			</td>
+		</tr>
+	</table>

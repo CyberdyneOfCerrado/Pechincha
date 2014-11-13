@@ -29,11 +29,11 @@
 	
 	<br>
 	<h4>Parte 4 - Descrição do produto</h4>
-	<textarea rows="200" cols="1000" name="descricao"></textarea><br>
+	<textarea rows="10" cols="120" name="descricao"></textarea><br>
 	<h4>Parte 5 - Valor unitário do produto (min: R$ 0,10; máx: R$1.000.000,00)</h4>
-	<h6>O valor do produto é: R$ <input type="number" name="preco" min="0.1" max="1000000" value="0.1" step="0.1"><h6><br>
+	<h6>O valor do produto é: R$ <input type="number" name="preco" min="0.1" max="1000000" value="0.1" step="0.1" size="5"><h6><br>
 	<h4>Parte 6 - Quantidade de produtos (min: 1; máx: 100)</h4>
 	<h6>Este cadastro contém <input type="number" name="quantidade" min="1" max="100" value="1"> unidade(s)</h6><br/>
 	<input type="hidden" name="confirm" value="true" />
-	<input type="submit" value="Novo Produto" />
+	<div align="center"><input type="submit" value="Novo Produto" /></div>
 </form>

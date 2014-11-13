@@ -65,6 +65,7 @@ public class ManterProdutosView extends ViewController {
 			temp.setVariable("img",img);
 			temp.addBlock("Imagem");
 		}
+		temp.setVariable("idusuario",Integer.toString((int)ad.getData("idusuario")));
 		temp.setVariable("descricao",(String)ad.getData("descricao"));
 		temp.setVariable("preco",Float.toString((float)ad.getData("preco")));
 		temp.setVariable("quantidade",Integer.toString((int)ad.getData("quantidade")));

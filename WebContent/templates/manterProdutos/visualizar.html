@@ -1,10 +1,20 @@
-	<p>Título: ${titulo}</p>
-	<p>Descrição: ${descricao}</p>
+	<h4>${titulo}</h4>
 	<!-- $BeginBlock Imagem -->
 		<img src="templates/imagens/${img}"height="240" width="320">
 	<!-- $EndBlock Imagem -->
+	<h5>Descrição</h5>
+	<textarea rows="10" cols="100" readonly>${descricao}</textarea>
 	
 	<br>
-	<p>Categorias: ${categorias}</p>
-	<p>Quantidade: ${quantidade}</p>
-	<p>Preço: R$ ${preco}</p>
+	<h4>Categorias: ${categorias}</h4>
+	<h4>Valor unitário: R$ ${preco}</h4>
+	<h4>Quantidade: ${quantidade}</h4>
+	<form method = "get">	
+		<input id="uc" type="hidden" name="useCase" value="manterProdutos">
+		<input id="uc" type="hidden" name="action" value="listar">
+		<input id="uc" type="hidden" name="idusuario" value="${idusuario}">
+		<input id="uc" type="hidden" name="redirect" value="false">					
+		<div align="center">
+			<button type="submit">Voltar para Meus Produtos</button>
+		</div>
+	</form>
