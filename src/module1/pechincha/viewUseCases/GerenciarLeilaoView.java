@@ -61,9 +61,10 @@ public class GerenciarLeilaoView extends ViewController{
 		return temp.generateOutput();
 	}
 	public String leilaop1(ActionDone ad){
-		MiniTemplator temp = super.startMiniTemplator(super.getTemplate(ad));
-		String path = getSevletContext()+getUseCase()+"produto"+".html";
-		MiniTemplator index = super.startMiniTemplator(path);
+		String pathi = getSevletContext()+getUseCase()+"leilaop1"+".html";
+		String pathp = getSevletContext()+getUseCase()+"produto"+".html";
+		MiniTemplator temp = super.startMiniTemplator(pathp);
+		MiniTemplator index = super.startMiniTemplator(pathi);
 		JDBCProdutoDAO pr = new JDBCProdutoDAO();
 		List<Produto> list= pr.list(Integer.parseInt((String) ad.getData("idleiloeiro")));
 		index.setVariable("idleiloeiro", (String) ad.getData("idleiloeiro"));
@@ -72,8 +73,9 @@ public class GerenciarLeilaoView extends ViewController{
 			temp.setVariable("produto", produto.getTitulo());
 			temp.setVariable("quantidade", produto.getQuantidade());
 			temp.setVariable("preco",String.valueOf(produto.getPreco()));
-			temp.setVariable("idproduto", produto.getPk());
+			temp.setVariable("idproduto",String.valueOf(produto.getPk()));
 			temp.setVariable("idleilao", String.valueOf(ad.getData("idleiloeiro")));
+			index.setVariable("produto",temp.generateOutput());
 			index.addBlock("produto");
 		}
 		return index.generateOutput();

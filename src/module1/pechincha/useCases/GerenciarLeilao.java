@@ -69,7 +69,7 @@ public class GerenciarLeilao extends ModelController {
 				user=us.select(le.getIdLeiloeiro());
 				le.setNickname(user.getNickname());
 				if(valida.validar(le)){
-					int pk=leilao.insertReturningPk(le);
+					String pk=String.valueOf(leilao.insertReturningPk(le));
 					done.setUseCase(action.getUseCase());
 					done.setAction("leilaop1");
 					done.setProcessed(true);
