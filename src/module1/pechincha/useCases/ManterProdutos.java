@@ -57,7 +57,7 @@ public class ManterProdutos  extends ModelController{
 		try{
 			prod.setPreco(Float.valueOf((String)da.getData("preco")));
 			prod.setQuantidade(Integer.valueOf((String)da.getData("quantidade")));
-			prod.setFkUsuario(Integer.valueOf((String)da.getData("idusuario")));
+			prod.setFkUsuario(Integer.valueOf(((String)da.getData("idusuario")).split(",")[0]));
 					
 			JDBCProdutoDAO manterproduto = new JDBCProdutoDAO();
 			if ( manterproduto.validar(prod)){
@@ -134,7 +134,9 @@ public class ManterProdutos  extends ModelController{
 				for(String i : cats){
 					daoprod.insert(new CategoriaProduto(0,Integer.valueOf(i),pkprodinsert));
 				}
-				ad.setMessage("Ocorreu tudo bem." + resp);
+//				ad.setMessage("Ocorreu tudo bem." + resp);
+				
+				return listar(da);
 			}
 			else{
 				ad.setMessage("Dados inconsistentes.");
@@ -145,9 +147,8 @@ public class ManterProdutos  extends ModelController{
 			e.printStackTrace();
 			ad.setMessage("Erro desconhecido ou erro ao converter valores.");
 			return ad;
-		}
-		
-		return ad;
+		}		
+//		return ad;
 	};
 	
 	public ActionDone editar ( DoAction da ){
@@ -171,13 +172,43 @@ public class ManterProdutos  extends ModelController{
 		ad.setStatus(true);
 		ad.setProcessed(true);
 		
+		String confirm = (String)da.getData("confirm");
+		boolean conf = Boolean.valueOf(confirm);
+		
+		
 		try{
-			int idprod = Integer.valueOf((String)da.getData("idproduto"));
-			JDBCImagemDAO delimgs = new JDBCImagemDAO();
-			delimgs.deleteFromFKProduto(idprod);
+			int idusuario = Integer.valueOf((String)da.getData("idusuario")),
+				idproduto = Integer.valueOf((String)da.getData("idproduto"));
 			
-			JDBCProdutoDAO manterproduto = new JDBCProdutoDAO();
-			manterproduto.delete(idprod);
+			JDBCProdutoDAO daoprod = new JDBCProdutoDAO();
+			Produto prod =  daoprod.search(idproduto);
+			
+			if ( prod == null || prod.getFkUsuario() != idusuario){
+				return ad;
+			}
+			
+			if ( conf ){
+				new JDBCImagemDAO().deleteFromFKProduto(idproduto);				
+				new JDBCCategoriaProdutoDAO().deleteFromFKProduto(idproduto);
+				daoprod.delete(idproduto);
+				ad.setMessage("Produto excluído.");
+				ad.setAction("listar");
+				
+				return listar(da);
+			}else{
+				ad.setData("idusuario", da.getData("idusuario"));
+				ad.setData("idproduto", da.getData("idproduto"));
+				ad.setData("titulo", prod.getTitulo());
+				ad.setData("descricao", prod.getDescricao());
+				ad.setData("preco", prod.getPreco());
+				ad.setData("quantidade", prod.getQuantidade());
+				JDBCImagemDAO img = new JDBCImagemDAO();
+				List<Imagem> imagens = img.list(idproduto);
+					
+				for (int i = 0; i < imagens.size(); i++){
+					ad.setData("img" + (i+1), imagens.get(i).getPk() + "." + imagens.get(i).getFormato());
+				}
+			}
 		}catch(Exception e){
 			
 		}				
@@ -188,13 +219,13 @@ public class ManterProdutos  extends ModelController{
 		ActionDone ad = new ActionDone();
 		
 		//Identificando o pacote
-		ad.setAction(da.getAction());
+		ad.setAction("listar");
 		ad.setUseCase(da.getUseCase());
 		ad.setStatus(true);
 		ad.setProcessed(true);
 		
 		try{
-			int usuario = Integer.valueOf((String)da.getData("idusuario"));
+			int usuario = Integer.valueOf(((String)da.getData("idusuario")).split(",")[0]);
 			List<Produto> prods = new JDBCProdutoDAO().list(usuario);
 			
 			List<Categoria> listcats = new JDBCCategoriaDAO().list();

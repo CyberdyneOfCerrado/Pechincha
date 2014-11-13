@@ -21,16 +21,20 @@ public class ManterProdutosView extends ViewController {
 		String retorno = ""; 
 		
 		switch(action){
-		case "novo":
-				retorno = novo(ad); 
-			break;
-		case "visualizar":
-			retorno = visualizar(ad);
-			break;
-
-		case "listar":
-			retorno = listar(ad);
-			break;
+			case "novo":
+					retorno = novo(ad); 
+				break;
+			case "visualizar":
+				retorno = visualizar(ad);
+				break;
+	
+			case "listar":
+				retorno = listar(ad);
+				break;
+			
+			case "remover":
+				retorno = remover(ad);
+				break;
 		}
 		return retorno;
 	}
@@ -77,6 +81,7 @@ public class ManterProdutosView extends ViewController {
 			temp.setVariable("pk", cat.getPk());
 			temp.setVariable("descricao", cat.getDescricao());
 			temp.addBlock("Categoria");
+			System.out.println("Entrou");
 		}
 		
 		@SuppressWarnings("unchecked")
@@ -89,6 +94,25 @@ public class ManterProdutosView extends ViewController {
 			temp.setVariable("idproduto",Integer.toString((int)p.getData("idproduto")));
 			temp.addBlock("Produto");
 		}
+		return temp.generateOutput();
+	}
+	private String remover(ActionDone ad){
+		
+		MiniTemplator temp = super.startMiniTemplator(super.getTemplate(ad));
+		temp.setVariable("idproduto",(String)ad.getData("idproduto"));
+		temp.setVariable("idusuario",(String)ad.getData("idusuario"));
+		temp.setVariable("titulo",(String)ad.getData("titulo"));
+		for (int i = 1; i <= 5; i++){
+			String img = (String)ad.getData("img" + i);
+			if ( img == null){
+				break;
+			}
+			temp.setVariable("img",img);
+			temp.addBlock("Imagem");
+		}
+		temp.setVariable("descricao",(String)ad.getData("descricao"));
+		temp.setVariable("preco",Float.toString((float)ad.getData("preco")));
+		temp.setVariable("quantidade",Integer.toString((int)ad.getData("quantidade")));
 		return temp.generateOutput();
 	}
 }

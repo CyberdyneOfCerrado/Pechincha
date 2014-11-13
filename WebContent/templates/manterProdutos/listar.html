@@ -1,15 +1,18 @@
-<table style="position: absolute; left: 10px; width: 15%;">
+<table style="position: absolute; left: 10px; width: 18%;">
 	<tbody>
 		<tr>
-			<th>Filtro</th>
+			<th>
+				<a href="q?useCase=manterProdutos&action=novo&idusuario=${idusuario}&redirect=false"><h2>Adicionar novo produto</h2></a></br>
+				<h1>Filtro por categorias</h1>
+			</th>
 		</tr>
 		<tr>
 			<td>
 				<div id="categorias">	
 					<form method = "get">						
-						<div id="painel_categorias" style="overflow-y: scroll; height:370px; ">
+						<div id="painel_categorias" style="overflow-y: auto; height:370px; ">
 						<!-- $BeginBlock Categoria -->
-							<input type="checkbox" name="categoria" value="${pk}">${descricao}<br>
+							<h3><input type="checkbox" name="categoria" value="${pk}">${descricao}</h3><br>
 						<!-- $EndBlock Categoria -->
 						<input id="uc" type="hidden" name="idusuario" value="${idusuario}">
 						<div id="botaobusca" align="center">
@@ -21,13 +24,13 @@
 		</tr>
 	</tbody>
 </table>
-<table style="position: absolute; right: 10px; width: 83%;" >
+<table style="position: absolute; right: 10px; width: 80%;" >
 		<tr>
-			<th>Produtos</th>
+			<th><h1>Produtos</h1></th>
 		</tr>
 		<tr>
 			<td>
-				<div id="produtos"  style="overflow-y: scroll; height:422px;">
+				<div id="produtos"  style="overflow-y: auto; height:422px;">
 					<div class="table-responsive">
 					<table  class="table table-bordered" align="center">
 						<!-- $BeginBlock Produto -->
@@ -36,9 +39,20 @@
 							<a href="q?useCase=manterProdutos&action=visualizar&idusuario=${idusuario}&idproduto=${idproduto}&redirect=false"><h1>${titulo}</h1></a></br>
 							<h2>R$ ${preco}</h2></td>
 								<form method = "get">
+									<input id="uc" type="hidden" name=useCase value="manterProdutos">
+									<input id="uc" type="hidden" name="action" value="editar">
+									<input id="uc" type="hidden" name="idusuario" value="${idusuario}">
+									<input id="uc" type="hidden" name="idproduto" value="${idproduto}">
+									<input id="uc" type="hidden" name="redirect" value="false">								
 									<input type="submit" value="Editar" />									
 								</form>
 								<form method = "get">
+									<input id="uc" type="hidden" name=useCase value="manterProdutos">
+									<input id="uc" type="hidden" name="action" value="remover">
+									<input id="uc" type="hidden" name="idusuario" value="${idusuario}">
+									<input id="uc" type="hidden" name="idproduto" value="${idproduto}">
+									<input id="uc" type="hidden" name="confirm" value="false">
+									<input id="uc" type="hidden" name="redirect" value="false">		
 									<input type="submit" value="Remover" />											
 								</form><br/></br></br>
 						</tr>
