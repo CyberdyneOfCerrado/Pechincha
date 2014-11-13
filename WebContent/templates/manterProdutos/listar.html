@@ -10,8 +10,7 @@
 			<td>
 				<div id="categorias">	
 					<form method = "post">						
-						<div id="painel_categorias" style="overflow-y: auto; height:370px; ">
-						<h3>${resultado}</h3>
+						<div id="painel_categorias" style="overflow-y: auto; height:340px; ">
 						<!-- $BeginBlock Categoria -->
 							<h6><input type="checkbox" name="categoria" value="${pk}">${descricao}</h6>
 						<!-- $EndBlock Categoria -->
@@ -19,6 +18,7 @@
 						<input id="uc" type="hidden" name="action" value="listar">
 						<input id="uc" type="hidden" name="idusuario" value="${idusuario}">
 						<input id="uc" type="hidden" name="redirect" value="false">
+						</div>
 						<div id="botaobusca" align="center">
 							<button type="submit">Buscar</button>
 						</div>
@@ -41,6 +41,7 @@
 					<div >
 					<table style="position: relative" cellspacing="100">
 						<tr>
+							<h3>${resultado}</h3>
 							<!-- $BeginBlock Produto -->
 							<td>
 								</div><img src="templates/imagens/${img}" height="176px" width="144px"></br>

@@ -3,6 +3,8 @@
 package module1.pechincha.useCases;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -184,8 +186,23 @@ public class ManterProdutos  extends ModelController{
 				return ad;
 			}
 			
+			/*
+			 * da.setData("storageContext", this.servletContext);
+		da.setData("pathSeparador", separador);
+			 */
+			
 			if ( conf ){
 				JDBCImagemDAO imgs = new JDBCImagemDAO();
+				List<Imagem> list = imgs.list(idproduto);
+				
+				String path = (String)da.getData("storageContext"),
+						separador = (String)da.getData("pathSeparador");
+				path += separador + "imagens";
+				
+				for (Imagem img : list){
+					File file = new File(path + separador + img.getPk() + "." + img.getFormato());					 
+		    		file.delete();
+				}
 				imgs.deleteFromFKProduto(idproduto);				
 				new JDBCCategoriaProdutoDAO().deleteFromFKProduto(idproduto);
 				daoprod.delete(idproduto);
