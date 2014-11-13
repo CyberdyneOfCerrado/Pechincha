@@ -26,7 +26,7 @@ public class ManterGalinhaView extends ViewController {
 	private String cantar(ActionDone ad) {
 		
 		MiniTemplator temp = super.startMiniTemplator(super.getTemplate(ad)); 
-		temp.setVariable("lula",ad.getMessage());
+		temp.setVariable("Olá mundo",ad.getMessage());
 		return temp.generateOutput();
 	}
 

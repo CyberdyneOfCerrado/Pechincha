@@ -21,6 +21,8 @@ public class AmbienteLeilaoView extends ViewController {
 		}
 		return resul;
 	}; 
+	
+	
 
 	private String ambiente(ActionDone ad) {
 		String resul = "";

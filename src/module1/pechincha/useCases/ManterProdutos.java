@@ -181,7 +181,7 @@ public class ManterProdutos  extends ModelController{
 				idproduto = Integer.valueOf((String)da.getData("idproduto"));
 			
 			JDBCProdutoDAO daoprod = new JDBCProdutoDAO();
-			Produto prod =  daoprod.search(idproduto);
+			Produto prod =  daoprod.select(idproduto);
 			
 			if ( prod == null || prod.getFkUsuario() != idusuario){
 				return ad;
