@@ -9,6 +9,7 @@ import java.util.List;
 
 import module1.pechincha.interf.DAOBehavior;
 import module1.pechincha.model.CategoriaProduto;
+import module1.pechincha.model.Produto;
 import module1.pechincha.util.ConnectionFactory;
 
 public class JDBCCategoriaProdutoDAO extends DAOBehavior<CategoriaProduto>{
@@ -79,7 +80,41 @@ public class JDBCCategoriaProdutoDAO extends DAOBehavior<CategoriaProduto>{
 		}
 		return list;
 	};
-	
+	public List<Produto> getProdutosByCategorias(String[] pks, int fkusuario){
+		List<Produto> prod = new ArrayList<Produto>();
+		JDBCProdutoDAO daoprod = new JDBCProdutoDAO();
+		if ( pks == null ){
+			return daoprod.list(fkusuario);
+		}
+		if ( pks.length == 0){
+			return daoprod.list(fkusuario);
+		}
+		String where = "";
+		for (String i : pks){
+			if ( i.equals("0")){
+				return daoprod.list(fkusuario);
+			}
+			where += "categoriaproduto.fkcategoria = " + i + " OR ";
+		}
+		where = where.substring(0, where.length()-4);
+		String sql = "select DISTINCT categoriaproduto.fkproduto AS \"fkproduto\" from categoriaproduto, produto, categoria where (" + where + ") and produto.pk = categoriaproduto.fkproduto AND categoriaproduto.fkcategoria = categoria.pk AND produto.fkusuario = " + fkusuario;
+		System.out.println(sql);
+		
+		try {
+			PreparedStatement ps = c.prepareStatement(sql);
+			ResultSet result = ps.executeQuery();
+			while(result.next()){
+				prod.add(daoprod.select(result.getInt("fkproduto")));
+			}
+			result.close();
+			ps.close();
+		
+		} catch (SQLException e) {
+			throw new RuntimeException("Erro ao listar dados. Classe JDBCCategoriaProdutoDAO", e); 
+		}
+		System.out.println(prod.size() + " produtos");
+		return prod;
+	}
 	@Override
 	public List<CategoriaProduto> list() {
 		List<CategoriaProduto> list = new ArrayList<CategoriaProduto>();

@@ -75,7 +75,8 @@ public class ManterProdutosView extends ViewController {
 	private String listar(ActionDone ad){
 		
 		MiniTemplator temp = super.startMiniTemplator(super.getTemplate(ad));
-		
+		Object id = ad.getData("idusuario");
+		temp.setVariable("idusuario",(id.getClass().getName().contains("String") ? (String)id : Integer.toString((int)id)));
 		@SuppressWarnings("unchecked")
 		List<Categoria> listcats = (List<Categoria>)ad.getData("categorias");
 		for (Categoria cat : listcats){

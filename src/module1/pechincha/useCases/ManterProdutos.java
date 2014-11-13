@@ -52,7 +52,6 @@ public class ManterProdutos  extends ModelController{
 			ad.setMessage("Nenhuma categoria.");
 			return ad;
 		}
-		String resp = "";
 		
 		try{
 			prod.setPreco(Float.valueOf((String)da.getData("preco")));
@@ -115,8 +114,6 @@ public class ManterProdutos  extends ModelController{
 					if ( sizeread == -1 || sizeread > fup.getMaxSizeAllowed()){
 						insimg.delete(pknewimg);
 					}else{
-						
-						resp += "<br/><a href=\"templates/imagens/" + pknewimg + "." + formato + "\" target=\"_blank\">Clique aqui para visualizar a imagem.</a>";
 						cont++;
 					}
 					if ( cont == 5){
@@ -196,7 +193,7 @@ public class ManterProdutos  extends ModelController{
 				
 				return listar(da);
 			}else{
-				ad.setData("idusuario", da.getData("idusuario"));
+				ad.setData("idusuario", Integer.toString(idusuario));
 				ad.setData("idproduto", da.getData("idproduto"));
 				ad.setData("titulo", prod.getTitulo());
 				ad.setData("descricao", prod.getDescricao());
@@ -225,8 +222,14 @@ public class ManterProdutos  extends ModelController{
 		ad.setProcessed(true);
 		
 		try{
+			System.out.println("ID: " + (String)da.getData("idusuario"));
 			int usuario = Integer.valueOf(((String)da.getData("idusuario")).split(",")[0]);
-			List<Produto> prods = new JDBCProdutoDAO().list(usuario);
+			String[] filtro = (String[])da.getData("categoria_array");
+			System.out.println("Categorias: " + filtro);
+//			List<Produto> prods = new JDBCProdutoDAO().list(usuario);
+			List<Produto> prods = new JDBCCategoriaProdutoDAO().getProdutosByCategorias(filtro,usuario);
+			System.out.println(usuario);
+			ad.setData("idusuario", usuario);
 			
 			List<Categoria> listcats = new JDBCCategoriaDAO().list();
 			ad.setData("categorias", listcats);

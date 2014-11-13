@@ -106,6 +106,7 @@ public class ServletController {
 				// setando o nome do parametro como chave na hashtable setando o
 				// nome do parametro como valor
 				da.setData(temp, request.getParameter(temp));
+				da.setData(temp + "_array", request.getParameterValues(temp));
 			}
 		}
 		// Pegando dados de Sessão
