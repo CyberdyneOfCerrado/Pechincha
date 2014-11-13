@@ -41,7 +41,7 @@ public class GerenciarLeilao extends ModelController {
 		Usuario user;
 		String etapa=(String) action.getData("etapa");
 		switch(etapa){
-		case "leilaop1":
+		case "criarLeilao":
 				le.setEtiqueta((String) action.getData("etiqueta"));
 				le.setDescricao((String) action.getData("descricao"));
 				String temp=(String) action.getData("tempolimite");
@@ -61,7 +61,7 @@ public class GerenciarLeilao extends ModelController {
 				if(valida.validar(le)){
 					leilao.insert(le);
 					done.setUseCase(action.getUseCase());
-					done.setAction(action.getAction());
+					done.setAction("leilaop1");
 					done.setProcessed(true);
 					done.setStatus(true);
 					done.setData("idleiloeiro", (int)action.getData("idleiloeiro"));
