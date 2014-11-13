@@ -22,7 +22,7 @@ public class WebSocket {
 	   if( wsc == null){
 		   //Essa inicialização causa alguns problemas. 
 		   wsc = new WebSocketController();
-		   System.out.println("Toasty, Tô tendo da webSocket"); 
+		   System.out.println("Toasty, Tô dentro da webSocket"); 
 	   }
    }; 
    

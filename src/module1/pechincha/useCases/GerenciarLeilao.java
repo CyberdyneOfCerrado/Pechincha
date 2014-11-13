@@ -120,11 +120,12 @@ public class GerenciarLeilao extends ModelController {
 		return done;
 	}
 	
-	public void finalizarLeilao(Leilao leilao){
+	public boolean finalizarLeilao(Leilao leilao){
 		JDBCLeilaoDAO update =new JDBCLeilaoDAO();
 		leilao.setAtivo(false);
 		update.update(leilao);
 		enviarEmail(leilao);
+		return true;
 	}
 	
 	public void enviarEmail(Leilao leilao) {
