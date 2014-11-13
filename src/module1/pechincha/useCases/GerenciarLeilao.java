@@ -40,12 +40,12 @@ public class GerenciarLeilao extends ModelController {
 		JDBCLeilaoDAO leilao = new JDBCLeilaoDAO();
 		JDBCUsuarioDAO us = new JDBCUsuarioDAO();
 		Usuario user;
-		String etapa=(String) action.getData("etapa");
+		String etapa=desbuga(action,"etapa");
 		switch(etapa){
 		case "criarLeilao":
-				le.setEtiqueta((String) action.getData("etiqueta"));
-				le.setDescricao((String) action.getData("descricao"));
-				String temp=(String) action.getData("tempolimite");
+				le.setEtiqueta((desbuga(action,"etiqueta")));
+				le.setDescricao(desbuga(action,"descricao"));
+				String temp=desbuga(action,"tempolimite");
 				int segundos=0;
 				if(temp.length()==5){
 					try{
@@ -59,13 +59,13 @@ public class GerenciarLeilao extends ModelController {
 						done.setAction("leilaop0erro");
 						done.setProcessed(true);
 						done.setStatus(false);
-						done.setData("idleiloeiro", (int)action.getData("idleiloeiro"));
+						done.setData("idleiloeiro", desbuga(action,"idleiloeiro"));
 						return done;
 					}
 				}
 				le.setTempoLimite(segundos);
 				le.setAtivo(false);
-				le.setIdLeiloeiro(Integer.parseInt((String) action.getData("idleiloeiro")));
+				le.setIdLeiloeiro(Integer.parseInt(desbuga(action,"idleiloeiro")));
 				user=us.select(le.getIdLeiloeiro());
 				le.setNickname(user.getNickname());
 				if(valida.validar(le)){
@@ -74,28 +74,28 @@ public class GerenciarLeilao extends ModelController {
 					done.setAction("leilaop1");
 					done.setProcessed(true);
 					done.setStatus(true);
-					done.setData("idleiloeiro", pk);
-					done.setData("idleilao", (int)action.getData("idleilao"));
+					done.setData("idleiloeiro", desbuga(action,"idleiloeiro"));
+					done.setData("idleilao", pk);
 					return done;
 				}else{
 					done.setUseCase(action.getUseCase());
 					done.setAction("leilaop0erro");
 					done.setProcessed(true);
 					done.setStatus(false);
-					done.setData("idleiloeiro", (int)action.getData("idleiloeiro"));
+					done.setData("idleiloeiro", Integer.parseInt(desbuga(action,"idleiloeiro")));
 					return done;
 				}
 		case "leilaop0":
 			done.setAction("leilaop0");
 			done.setUseCase(action.getUseCase());
-			done.setData("idleiloeiro",action.getData("idleiloeiro"));
+			done.setData("idleiloeiro",desbuga(action,"idleiloeiro"));
 			done.setProcessed(true);
 			done.setStatus(true);
 			return done;
 		}
 		return done;
 	}
-	public String desbuga(ActionDone action,String key){
+	public String desbuga(DoAction action,String key){
 		String[] filtro = (String[])action.getData(key+"_array");
 		String saida=filtro[filtro.length-1];
 		return saida;

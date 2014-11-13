@@ -22,9 +22,9 @@ public class GerenciarLeilaoView extends ViewController{
 		case "leilaop0":
 				retorno = leilaop0(ad); 
 			break;
-//		case "reenviarEmail":
-//			retorno = reenviarEmail(ad); 
-//		break;
+		case "leilaop1":
+			retorno = leilaop1(ad); 
+		break;
 //		case "getHistorico":
 //			retorno = getHistorico(ad); 
 //		break;
@@ -66,6 +66,8 @@ public class GerenciarLeilaoView extends ViewController{
 		JDBCProdutoDAO pr = new JDBCProdutoDAO();
 		ArrayList<Produto> list= new ArrayList<Produto>();
 		list=(ArrayList<Produto>) pr.list((int) ad.getData("idleiloeiro"));
+		index.setVariable("idleiloeiro", (String) ad.getData("idleiloeiro"));
+		index.setVariable("idleilao",(String) ad.getData("idleilao"));
 		for (Produto produto:list){
 			temp.setVariable("produto", produto.getTitulo());
 			temp.setVariable("quantidade", produto.getQuantidade());
