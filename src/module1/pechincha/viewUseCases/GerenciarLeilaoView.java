@@ -1,6 +1,7 @@
 package module1.pechincha.viewUseCases;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import biz.source_code.miniTemplator.MiniTemplator;
 import module1.pechincha.cruds.JDBCProdutoDAO;
@@ -64,8 +65,7 @@ public class GerenciarLeilaoView extends ViewController{
 		String path = getSevletContext()+getUseCase()+"produto"+".html";
 		MiniTemplator index = super.startMiniTemplator(path);
 		JDBCProdutoDAO pr = new JDBCProdutoDAO();
-		ArrayList<Produto> list= new ArrayList<Produto>();
-		list=(ArrayList<Produto>) pr.list((int) ad.getData("idleiloeiro"));
+		List<Produto> list= pr.list(Integer.parseInt((String) ad.getData("idleiloeiro")));
 		index.setVariable("idleiloeiro", (String) ad.getData("idleiloeiro"));
 		index.setVariable("idleilao",(String) ad.getData("idleilao"));
 		for (Produto produto:list){
