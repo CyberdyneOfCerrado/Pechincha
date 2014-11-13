@@ -16,7 +16,7 @@ public class AmbienteLeilao extends ModelController {
 	ad.setData("idEmissor", da.getData("idEmissor")); 
 	ad.setData("idLeilao", da.getData("idLeilao"));			
 			
-	ad.setData("isLeiloeiro", false);
+	ad.setData("isLeiloeiro", true);
 	
 	//Por enquanto eu não vou fazer nada aqui. 
 	//Identificando o pacote
