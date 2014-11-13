@@ -1,0 +1,91 @@
+<div>
+<style type="text/css">
+body
+{
+   background-color: #FFFFFF;
+   background-image: url(images/index_bkgrnd.png);
+   color: #000000;
+   font-family: Arial;
+   font-size: 13px;
+   margin: 0;
+   padding: 0;
+}
+</style>
+<style type="text/css">
+a
+{
+   color: #0000FF;
+   text-decoration: underline;
+}
+a:visited
+{
+   color: #800080;
+}
+a:active
+{
+   color: #FF0000;
+}
+a:hover
+{
+   color: #0000FF;
+   text-decoration: underline;
+}
+</style>
+<style type="text/css">
+#Layer1
+{
+   background-color: transparent;
+   background-image: url(images/index_bkgrnd.png);
+   background-repeat: repeat;
+   background-position: center top;
+}
+#wb_Text1 
+{
+   background-color: transparent;
+   border: 0px #000000 solid;
+   padding: 0;
+   text-align: left;
+}
+#wb_Text1 div
+{
+   text-align: left;
+}
+#Layer2
+{
+   background-color: #FAFAFA;
+   -moz-box-shadow: 3px 3px 3px #000000;
+   -webkit-box-shadow: 3px 3px 3px #000000;
+   box-shadow: 3px 3px 3px #000000;
+}
+#Button1
+{
+   border: 1px #A9A9A9 solid;
+   background-color: #F0F0F0;
+   color: #000000;
+   font-family: Arial;
+   font-size: 13px;
+   -moz-box-shadow: 3px 3px 3px #000000;
+   -webkit-box-shadow: 3px 3px 3px #000000;
+   box-shadow: 3px 3px 3px #000000;
+}
+</style>
+<div id="Layer1" style="position:absolute;text-align:left;left:155px;top:4px;width:898px;height:564px;z-index:3;" title="">
+<div id="wb_Text1" style="position:absolute;left:338px;top:34px;width:252px;height:33px;z-index:0;text-align:left;">
+<span style="color:#000000;font-family:Arial;font-size:29px;">Adicione produtos</span></div>
+<div id="Layer2" style="position:absolute;text-align:left;left:75px;top:92px;width:750px;height:387px;z-index:1;overflow-y: scroll;" title="">
+<table class="table table-striped">
+	<tr>
+		<td class="tabela">Produto</td>
+		<td class="tabela">Unidades</td>
+		<td class="tabela">Unidades lote</td>
+		<td class="tabela">Preço</td>
+		<td class="tabela"></td>
+	</tr>
+<!-- $BeginBlock produto -->
+	${produto}
+<!-- $EndBlock produto -->
+</table>
+</div>
+<input type="submit" id="Button1" name="concluirleilao" value="Concluir" style="position:absolute;left:401px;top:496px;width:124px;height:37px;z-index:2;">
+</div>
+</div>
