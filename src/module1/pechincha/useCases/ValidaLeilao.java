@@ -9,11 +9,11 @@ public class ValidaLeilao {
 		boolean status=false;
 		JDBCLeilaoDAO leilaoDao = new JDBCLeilaoDAO();
 		if(leilao.getEtiqueta().length()<=20 && leilaoDao.searchEtiqueta(leilao.getEtiqueta())==null)
-			status=true; else status=false;
+			status=true; else return false;
 		if(leilao.getTempoLimite()<=86400 && leilao.getTempoLimite()!=0)
-			status=true; else status=false;
+			status=true; else return false;
 		if(leilao.getDescricao().length()<=1000)
-			status=true; else status=false;
+			status=true; else return false;
 //		if(leilao.getLanceInicial()<=1000 && leilao.getLanceInicial()<=0.50){
 //			done.setProcessed(true);
 //			done.setStatus(true);

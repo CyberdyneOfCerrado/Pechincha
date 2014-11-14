@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import module2.pechincha.manager.StorageLeilaoEnvironments;
+
 
 public class Question extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -24,6 +26,7 @@ public class Question extends HttpServlet {
 */	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		StorageLeilaoEnvironments.initialize();
 		ServletController sc = new ServletController(getServletContext().getRealPath("/"));
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");

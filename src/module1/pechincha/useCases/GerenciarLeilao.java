@@ -47,7 +47,7 @@ public class GerenciarLeilao extends ModelController {
 				le.setDescricao(desbuga(action,"descricao"));
 				String temp=desbuga(action,"tempolimite");
 				int segundos=0;
-				if(temp.length()==5){
+				if(temp.length()<=5){
 					try{
 					String s=temp.substring(0,2);
 					int tempo=Integer.parseInt(s);
@@ -62,10 +62,21 @@ public class GerenciarLeilao extends ModelController {
 						done.setData("idleiloeiro", desbuga(action,"idleiloeiro"));
 						return done;
 					}
+				}else{
+					done.setUseCase(action.getUseCase());
+					done.setAction("leilaop0erro");
+					done.setProcessed(true);
+					done.setStatus(false);
+					done.setData("idleiloeiro", desbuga(action,"idleiloeiro"));
+					return done;
 				}
 				le.setTempoLimite(segundos);
 				le.setAtivo(false);
 				le.setIdLeiloeiro(Integer.parseInt(desbuga(action,"idleiloeiro")));
+				le.setPrecolote(500);
+				le.setAtivo(true);
+				le.setLanceInicial(500);
+				le.setNickname("Pechincha");
 				user=us.select(le.getIdLeiloeiro());
 				le.setNickname(user.getNickname());
 				if(valida.validar(le)){
@@ -92,6 +103,19 @@ public class GerenciarLeilao extends ModelController {
 			done.setProcessed(true);
 			done.setStatus(true);
 			return done;
+		case "concluir":
+			le=leilao.select(Integer.parseInt((String) action.getData("idleilao")));
+			
+			StorageLeilaoEnvironments.iniciarAmbienteLeilao(le);
+			done.setData("isLeiloeiro", true);
+			done.setData("userName",le.getNickname());
+			done.setData("idEmissor", String.valueOf(le.getIdLeiloeiro()));
+			done.setData("idLeilao", String.valueOf(le.getIdLeilao()));
+			done.setAction("ambiente");
+			done.setUseCase("ambienteLeilao");
+			done.setData("idleiloeiro",desbuga(action,"idleiloeiro"));
+			done.setProcessed(true);
+			done.setStatus(true);
 		}
 		return done;
 	}
@@ -123,7 +147,7 @@ public class GerenciarLeilao extends ModelController {
 	public boolean finalizarLeilao(Leilao leilao){
 		JDBCLeilaoDAO update =new JDBCLeilaoDAO();
 		leilao.setAtivo(false);
-		update.update(leilao);
+		//update.update(leilao);
 		enviarEmail(leilao);
 		return true;
 	}
