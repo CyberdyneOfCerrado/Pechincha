@@ -21,11 +21,10 @@ import module1.pechincha.util.DoAction;
 import module2.pechincha.manager.StorageLeilaoEnvironments;
 
 public class GerenciarLeilao extends ModelController {
-
 	@Override
 	public String[] getActions() {
 		String[] actions = { "criarLeilao", "reenviarEmail",
-				"pesquisarLeilao", "finalizarLeilao", "criarLote" };
+				"pesquisarLeilao", "finalizarLeilao", "criarLote", "historicoLeilao"};
 		return actions;
 	}
 	// os metodos vao abaixo
@@ -47,7 +46,7 @@ public class GerenciarLeilao extends ModelController {
 				le.setDescricao(desbuga(action,"descricao"));
 				String temp=desbuga(action,"tempolimite");
 				int segundos=0;
-				if(temp.length()<=5){
+				if(temp.length()==5 && temp.substring(2,3).equals(":")){
 					try{
 					String s=temp.substring(0,2);
 					int tempo=Integer.parseInt(s);
@@ -60,6 +59,7 @@ public class GerenciarLeilao extends ModelController {
 						done.setProcessed(true);
 						done.setStatus(false);
 						done.setData("idleiloeiro", desbuga(action,"idleiloeiro"));
+						done.setData("erro", "Houve um erro no campo tempo!");
 						return done;
 					}
 				}else{
@@ -68,6 +68,10 @@ public class GerenciarLeilao extends ModelController {
 					done.setProcessed(true);
 					done.setStatus(false);
 					done.setData("idleiloeiro", desbuga(action,"idleiloeiro"));
+					done.setData("etiqueta", action.getData("etiqueta"));
+					done.setData("tempolimite", action.getData("tempolimite"));
+					done.setData("descricao", action.getData("descricao"));
+					done.setData("erro", "Houve um erro no campo tempo!");
 					return done;
 				}
 				le.setTempoLimite(segundos);
@@ -94,6 +98,7 @@ public class GerenciarLeilao extends ModelController {
 					done.setProcessed(true);
 					done.setStatus(false);
 					done.setData("idleiloeiro", Integer.parseInt(desbuga(action,"idleiloeiro")));
+					done.setData("erro", "A etiqueta informada já existe!");
 					return done;
 				}
 		case "leilaop0":
@@ -105,7 +110,6 @@ public class GerenciarLeilao extends ModelController {
 			return done;
 		case "concluir":
 			le=leilao.select(Integer.parseInt((String) action.getData("idleilao")));
-			
 			StorageLeilaoEnvironments.iniciarAmbienteLeilao(le);
 			done.setData("isLeiloeiro", true);
 			done.setData("userName",le.getNickname());
@@ -125,13 +129,24 @@ public class GerenciarLeilao extends ModelController {
 		return saida;
 	}
 	
-	public List<Leilao> getHistorico(DoAction action){
+	public ActionDone historicoLeilao(DoAction action){
 		ActionDone done=new ActionDone();
 		JDBCLeilaoDAO leilao = new JDBCLeilaoDAO();
-		List<Leilao> list = null;
-		list=leilao.getHistorico((int) action.getData("idleilao"));
-		return list;
+		String etapa=desbuga(action,"etapa");
+		switch(etapa){
+		case "historico":
+			List<Leilao> list=leilao.getHistorico(Integer.parseInt((String) action.getData("idleiloeiro")));
+			done.setAction("historico");
+			done.setUseCase(action.getUseCase());
+			done.setData("idleiloeiro",desbuga(action,"idleiloeiro"));
+			done.setData("lista", list);
+			done.setProcessed(true);
+			done.setStatus(true);
+			return done;
+		}
+		return null;
 	}
+	
 	
 	public ActionDone reenviarEmail(DoAction action){
 		ActionDone done = new ActionDone();

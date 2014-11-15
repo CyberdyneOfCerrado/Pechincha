@@ -153,20 +153,20 @@ a:hover
 <span style="color:#000000;font-family:Arial;font-size:17px;"><strong>Entre com a etiqueta do leilão:</strong></span></div>
 <div id="wb_Text3" style="position:absolute;left:24px;top:83px;width:264px;height:19px;z-index:1;text-align:left;">
 <span style="color:#000000;font-family:Arial;font-size:17px;"><strong>Entre com a descrição do leilão:</strong></span></div>
-<textarea name="descricao" id="descricao" style="position:absolute;left:26px;top:121px;width:695px;height:151px;z-index:2;" rows="8" cols="110" value="${descricao}"></textarea>
+<textarea name="descricao" id="descricao" style="position:absolute;left:26px;top:121px;width:695px;height:151px;z-index:2;" rows="8" cols="110" ></textarea>
 <div id="wb_Text4" style="position:absolute;left:24px;top:292px;width:324px;height:19px;z-index:3;text-align:left;">
 <span style="color:#000000;font-family:Arial;font-size:17px;"><strong>Entre com o tempo de duração: (hh:mm)</strong></span></div>
-<textarea name="etiqueta" id="etiqueta" style="position:absolute;left:265px;top:29px;width:454px;height:24px;z-index:4;" rows="0" cols="70" value="${etiqueta}"></textarea>
-<textarea name="tempolimite" id="tempolimite" style="position:absolute;left:361px;top:290px;width:359px;height:24px;z-index:5;" rows="0" cols="54" value="${tempolimite}"></textarea>
+<textarea name="etiqueta" id="etiqueta" style="position:absolute;left:265px;top:29px;width:454px;height:24px;z-index:4;" rows="0" cols="70" ></textarea>
+<textarea name="tempolimite" id="tempolimite" style="position:absolute;left:361px;top:290px;width:359px;height:24px;z-index:5;" rows="0" cols="54" ></textarea>
 <input type="hidden" id="etapa" name="etapa" value="criarLeilao"/>
 <input type="hidden" id="userCase" name="userCase" value="gerenciarLeilao"/>
 <input type="hidden" id="action" name="action" value="criarLeilao"/>
 <input type="hidden" id="idleiloeiro" name="idleiloeiro" value="${idleiloeiro}"/>
 <input type="submit" id="Button2" name="" value="Cancelar" style="position:absolute;left:279px;top:369px;width:95px;height:37px;z-index:6;">
 <input type="submit" id="Button3" name="" value="CriarLeilao" style="position:absolute;left:410px;top:369px;width:95px;height:37px;z-index:7;">
-<div id="wb_Text5" style="position:absolute;left:25px;top:320px;width:282px;height:19px;z-index:9;text-align:left;">
-<span style="color:#FFFFFF;font-family:Arial;font-size:17px;"><strong>Houve um erro na criação do leilão</strong></span></div>
+<div id="wb_Text5" style="background:red;position:absolute;left:25px;top:340px;width:292px;height:19px;z-index:9;text-align:left;">
+<span style="color:#FFFFFF;font-family:Arial;font-size:17px;"><strong>${erro}</strong></span></div>
 </form>
 </div>
 </div>
-</div>html>
+</div>

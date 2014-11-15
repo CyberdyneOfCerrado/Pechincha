@@ -5,6 +5,7 @@ import java.util.List;
 
 import biz.source_code.miniTemplator.MiniTemplator;
 import module1.pechincha.cruds.JDBCProdutoDAO;
+import module1.pechincha.model.Leilao;
 import module1.pechincha.model.Produto;
 import module1.pechincha.util.ActionDone;
 import module1.pechincha.view.ViewController;
@@ -26,9 +27,12 @@ public class GerenciarLeilaoView extends ViewController{
 		case "leilaop1":
 			retorno = leilaop1(ad); 
 		break;
-//		case "getHistorico":
-//			retorno = getHistorico(ad); 
-//		break;
+		case "leilaop0erro":
+			retorno = leilaop0erro(ad); 
+		break;
+		case "historico":
+			retorno = getHistorico(ad); 
+		break;
 //		case "getTodosLeiloes":
 //			
 //			retorno = getTodosLeiloes(ad); 
@@ -54,10 +58,8 @@ public class GerenciarLeilaoView extends ViewController{
 	
 	public String leilaop0erro(ActionDone ad){
 		MiniTemplator temp = super.startMiniTemplator(super.getTemplate(ad));
-		temp.setVariable("etiqueta",(String)ad.getData("etiqueta"));
-		temp.setVariable("descricao",(String)ad.getData("descricao"));
-		temp.setVariable("tempolimite",(String)ad.getData("tempolimite"));
-		temp.setVariable("idleiloeiro",(String)ad.getData("idleiloeiro"));
+		temp.setVariable("erro",(String)ad.getData("erro"));
+		temp.setVariable("idleiloeiro",String.valueOf(ad.getData("idleiloeiro")));
 		return temp.generateOutput();
 	}
 	public String leilaop1(ActionDone ad){
@@ -80,4 +82,23 @@ public class GerenciarLeilaoView extends ViewController{
 		}
 		return index.generateOutput();
 		}
+	
+	public String getHistorico(ActionDone ad){
+		String pathi = getSevletContext()+getUseCase()+"historicoLeilao"+".html";
+		String pathp = getSevletContext()+getUseCase()+"historico"+".html";
+		MiniTemplator temp = super.startMiniTemplator(pathp);
+		MiniTemplator index = super.startMiniTemplator(pathi);
+		JDBCProdutoDAO pr = new JDBCProdutoDAO();
+		List<Leilao> list=(List<Leilao>) ad.getData("lista");
+		index.setVariable("idleiloeiro", String.valueOf(ad.getData("idleiloeiro")));
+		for (Leilao le:list){
+			temp.setVariable("etiqueta", le.getEtiqueta());
+			temp.setVariable("termino", le.getTermino());
+			temp.setVariable("valor", String.valueOf(le.getPrecolote()));
+			temp.setVariable("idleilao",String.valueOf(le.getIdLeilao()));
+			index.setVariable("conteudo",temp.generateOutput());
+			index.addBlock("historico");
+		}
+		return index.generateOutput();
+	}
 }

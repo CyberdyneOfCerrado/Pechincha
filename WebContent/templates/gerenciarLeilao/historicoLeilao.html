@@ -1,0 +1,102 @@
+<div>
+<style type="text/css">
+body
+{
+   background-color: #FFFFFF;
+   background-image: url(images/index_bkgrnd.png);
+   color: #000000;
+   font-family: Arial;
+   font-size: 13px;
+   margin: 0;
+   padding: 0;
+}
+</style>
+<style type="text/css">
+a
+{
+   color: #0000FF;
+   text-decoration: underline;
+}
+a:visited
+{
+   color: #800080;
+}
+a:active
+{
+   color: #FF0000;
+}
+a:hover
+{
+   color: #0000FF;
+   text-decoration: underline;
+}
+</style>
+<style type="text/css">
+#Layer1
+{
+   background-color: transparent;
+   background-image: url(images/index_bkgrnd.png);
+   background-repeat: repeat;
+   background-position: center top;
+}
+#Button1
+{
+   border: 1px #A9A9A9 solid;
+   background-color: #F0F0F0;
+   color: #000000;
+   font-family: Arial;
+   font-size: 20px;
+   -moz-box-shadow: 3px 3px 3px #000000;
+   -webkit-box-shadow: 3px 3px 3px #000000;
+   box-shadow: 3px 3px 3px #000000;
+}
+#Button2
+{
+   border: 1px #A9A9A9 solid;
+   background-color: #F0F0F0;
+   color: #000000;
+   font-family: Arial;
+   font-size: 20px;
+   -moz-box-shadow: 3px 3px 3px #000000;
+   -webkit-box-shadow: 3px 3px 3px #000000;
+   box-shadow: 3px 3px 3px #000000;
+}
+#wb_Text1 
+{
+   background-color: transparent;
+   border: 0px #000000 solid;
+   padding: 0;
+   text-align: left;
+}
+#wb_Text1 div
+{
+   text-align: left;
+}
+#Layer2
+{
+   background-color: #FAFAFA;
+   -moz-box-shadow: 3px 3px 5px #000000;
+   -webkit-box-shadow: 3px 3px 5px #000000;
+   box-shadow: 3px 3px 5px #000000;
+}
+</style>
+<div id="Layer1" style="position:absolute;text-align:left;left:162px;top:0px;width:898px;height:779px;z-index:5;" title="">
+<input type="submit" id="Button1" name="Criar Leilão" value="Criar Leilão" style="position:absolute;left:37px;top:130px;width:115px;height:63px;z-index:1;">
+<input type="submit" id="Button2" name="home" value="Home" style="position:absolute;left:37px;top:208px;width:115px;height:63px;z-index:2;">
+<div id="wb_Text1" style="position:absolute;left:415px;top:99px;width:252px;height:23px;z-index:3;text-align:left;">
+<span style="color:#000000;font-family:Arial;font-size:20px;">Histórico de leilão</span></div>
+<div id="Layer2" style="position:absolute;text-align:left;left:162px;top:132px;width:684px;height:597px;z-index:4;" title="">
+                    <input type="hidden" name="idleiloeiro" value="${idleiloeiro}"/>
+                     <table class="table table-striped">
+                     <tr>
+                        <td class="tabela">Etiqueta</td>
+                        <td class="tabela"> Data de término</td>
+                        <td class="valor">Valor</td>
+                        <td class="buttom"></td>
+ 								<!-- $BeginBlock historico -->
+ 								${conteudo}
+ 								<!-- $EndBlock historico -->
+                     </table>
+</div>
+</div>
+</div>

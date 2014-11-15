@@ -8,7 +8,9 @@ public class ValidaLeilao {
 	public boolean validar(Leilao leilao){
 		boolean status=false;
 		JDBCLeilaoDAO leilaoDao = new JDBCLeilaoDAO();
-		if(leilao.getEtiqueta().length()<=20 && leilaoDao.searchEtiqueta(leilao.getEtiqueta())==null)
+		Leilao le=null;
+		le = leilaoDao.searchEtiqueta(leilao.getEtiqueta());
+		if(leilao.getEtiqueta().length()<=20 && le==null)
 			status=true; else return false;
 		if(leilao.getTempoLimite()<=86400 && leilao.getTempoLimite()!=0)
 			status=true; else return false;
