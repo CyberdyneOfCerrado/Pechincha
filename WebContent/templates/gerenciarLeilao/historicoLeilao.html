@@ -128,7 +128,7 @@ a:hover
 </form>
 <div id="wb_Text1" style="position:absolute;left:415px;top:99px;width:252px;height:23px;z-index:3;text-align:left;">
 <span style="color:#000000;font-family:Arial;font-size:20px;">Histórico de leilão</span></div>
-<div id="Layer2" style="position:absolute;text-align:left;left:162px;top:132px;width:784px;height:323px;z-index:4;" title="" overflow-y: scroll;>
+<div id="Layer2" style="position:absolute;text-align:left;left:162px;top:132px;width:784px;height:323px;z-index:4;overflow-y: scroll;" title="" >
                      <table class="table table-striped">
                      <tr>
                         <td class="tabela">Etiqueta</td>
@@ -136,7 +136,21 @@ a:hover
                         <td class="valor">Valor</td>
                         <td class="buttom"></td>
  								<!-- $BeginBlock historico -->
- 								${conteudo}
+                     <tr>
+                     	<td>${etiqueta}</td>
+                     	<td>${termino}</td>
+                     	<td>${valor}</td>
+                     	<td>
+                     		<form class="form-search" action="q" method="post">
+	                     		<input type="submit" value="Reenviar e-mail" /> 
+	                     		<input type="hidden" name="idleilao" value="${idleilao}"/>
+	                     		<input type="hidden" name="idleiloeiro" value="${idleiloeiro}"/>
+	                     		<input type="hidden" name="useCase" value="gerenciarLeilao"/>
+	                     		<input type="hidden" name="action" value="reenviarEmail"/>
+	                     		<input type="hidden" name="redirect" value="false"/>
+                     		</form> 
+                     	</td>
+                     </tr>
  								<!-- $EndBlock historico -->
                      </table>
 </div>

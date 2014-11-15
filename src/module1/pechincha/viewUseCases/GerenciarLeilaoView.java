@@ -67,20 +67,17 @@ public class GerenciarLeilaoView extends ViewController{
 	}
 	public String leilaop1(ActionDone ad){
 		String pathi = getSevletContext()+getUseCase()+"leilaop1"+".html";
-		String pathp = getSevletContext()+getUseCase()+"produto"+".html";
-		MiniTemplator temp = super.startMiniTemplator(pathp);
 		MiniTemplator index = super.startMiniTemplator(pathi);
 		JDBCProdutoDAO pr = new JDBCProdutoDAO();
 		List<Produto> list= pr.list(Integer.parseInt((String) ad.getData("idleiloeiro")));
 		index.setVariable("idleiloeiro", (String) ad.getData("idleiloeiro"));
 		index.setVariable("idleilao",(String) ad.getData("idleilao"));
 		for (Produto produto:list){
-			temp.setVariable("produto", produto.getTitulo());
-			temp.setVariable("quantidade", produto.getQuantidade());
-			temp.setVariable("preco",String.valueOf(produto.getPreco()));
-			temp.setVariable("idproduto",String.valueOf(produto.getPk()));
-			temp.setVariable("idleilao", String.valueOf(ad.getData("idleiloeiro")));
-			index.setVariable("produto",temp.generateOutput());
+			index.setVariable("produto", produto.getTitulo());
+			index.setVariable("quantidade", produto.getQuantidade());
+			index.setVariable("preco",String.valueOf(produto.getPreco()));
+			index.setVariable("idproduto",String.valueOf(produto.getPk()));
+			index.setVariable("idleilao", String.valueOf(ad.getData("idleiloeiro")));
 			index.addBlock("produto");
 		}
 		return index.generateOutput();
@@ -88,11 +85,9 @@ public class GerenciarLeilaoView extends ViewController{
 	
 	public String getHistorico(ActionDone ad){
 		String pathi = getSevletContext()+getUseCase()+"historicoLeilao"+".html";
-		String pathp = getSevletContext()+getUseCase()+"historico"+".html";
 		String pathok = getSevletContext()+getUseCase()+"okemail"+".html";
 		String patherro = getSevletContext()+getUseCase()+"erroemail"+".html";
 		String pathtermino = getSevletContext()+getUseCase()+"termino"+".html";
-		MiniTemplator temp = super.startMiniTemplator(pathp);
 		MiniTemplator ok = super.startMiniTemplator(pathok);
 		MiniTemplator erro = super.startMiniTemplator(patherro);
 		MiniTemplator index = super.startMiniTemplator(pathi);
@@ -113,12 +108,11 @@ public class GerenciarLeilaoView extends ViewController{
 		}else index.setVariable("termino", " ");
 		index.setVariable("idleiloeiro", String.valueOf(ad.getData("idleiloeiro")));
 		for (Leilao le:list){
-			temp.setVariable("etiqueta", le.getEtiqueta());
-			temp.setVariable("termino", le.getTermino());
-			temp.setVariable("valor", String.valueOf(le.getPrecolote()));
-			temp.setVariable("idleilao",String.valueOf(le.getIdLeilao()));
-			temp.setVariable("idleiloeiro", String.valueOf(le.getIdLeiloeiro()));
-			index.setVariable("conteudo",temp.generateOutput());
+			index.setVariable("etiqueta", le.getEtiqueta());
+			index.setVariable("termino", le.getTermino());
+			index.setVariable("valor", String.valueOf(le.getPrecolote()));
+			index.setVariable("idleilao",String.valueOf(le.getIdLeilao()));
+			index.setVariable("idleiloeiro", String.valueOf(le.getIdLeiloeiro()));
 			index.addBlock("historico");
 		}
 		return index.generateOutput();
