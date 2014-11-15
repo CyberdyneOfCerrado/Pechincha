@@ -142,6 +142,7 @@ public class GerenciarLeilao extends ModelController {
 			done.setData("lista", list);
 			done.setProcessed(true);
 			done.setStatus(true);
+			done.setData("message", " ");
 			return done;
 		}
 		return null;
@@ -154,12 +155,15 @@ public class GerenciarLeilao extends ModelController {
 		Leilao leilao = null;
 		JDBCLeilaoDAO leilaoDao = new JDBCLeilaoDAO();
 		leilao=leilaoDao.select(Integer.parseInt((String) action.getData("idleilao")));
-		enviarEmail(leilao);
+		boolean statusEmail=enviarEmail(leilao);
 		List<Leilao> list=le.getHistorico(Integer.parseInt((String) action.getData("idleiloeiro")));
 		done.setAction("historico");
 		done.setUseCase(action.getUseCase());
 		done.setData("idleiloeiro",check(action,"idleiloeiro"));
 		done.setData("lista", list);
+		if(statusEmail){
+			done.setData("message","ok");
+		}else done.setData("message","erro");
 		done.setProcessed(true);
 		done.setStatus(true);
 		return done;
@@ -173,7 +177,7 @@ public class GerenciarLeilao extends ModelController {
 		return true;
 	}
 	
-	public void enviarEmail(Leilao leilao) {
+	public boolean enviarEmail(Leilao leilao) {
 		String nome="";
 		String msg="";
 		String destino="";
@@ -184,7 +188,11 @@ public class GerenciarLeilao extends ModelController {
 		nome=leiloeiro.getNomeCompleto();
 		msg="Informamos que seu leilão não obteve vendas, que tal anunciar novamente!";
 		destino=leiloeiro.getEmailPrincipal();
-		mail(nome,msg,destino);
+		if(!mail(nome,msg,destino)){
+			destino=leiloeiro.getEmailAlternativo();
+			return mail(nome,msg,destino);
+		}
+		return mail(nome,msg,destino);
 		}else{
 			nome=leiloeiro.getNomeCompleto();
 			msg="Informamos que o senhor(a) "+comprador.getNomeCompleto()+" efetuou uma compra no seu leilão, </ br>Voce pode entrar em contato com o mesmo com os seguinte dados:</ br><ul><li>Skype: "+comprador.getSkype()+"</li><li>E-mail: "+comprador.getEmailPrincipal()+"</li><li>Telefone fixo: "+comprador.getTelFixo()+"</li><li>Telefone celular: "+comprador.getTelCelular()+"</li></ul></ br><h1>Agradecemos aos nossos clientes pela preferência</h1>";
@@ -193,10 +201,14 @@ public class GerenciarLeilao extends ModelController {
 			nome=comprador.getNomeCompleto();
 			msg="É um prazer informar que o senhor(a) efetuou uma compra de "+leiloeiro.getNomeCompleto()+" no Pechincha.com, </ br>Voce pode entrar em contato com o mesmo para concluir sua compra pelos seguintes canais de comunicação:</ br><ul><li>Skype: "+leiloeiro.getSkype()+"</li><li>E-mail: "+leiloeiro.getEmailPrincipal()+"</li><li>Telefone fixo: "+leiloeiro.getTelFixo()+"</li><li>Telefone celular: "+leiloeiro.getTelCelular()+"</li></ul></ br><h1>Agradecemos aos nossos clientes pela preferência</h1>";
 			destino=comprador.getEmailPrincipal();
-			mail(nome,msg,destino);
+			if(!mail(nome,msg,destino)){
+				destino=leiloeiro.getEmailAlternativo();
+				return mail(nome,msg,destino);
+			}
+			return mail(nome,msg,destino);
 		}
 	}
-	private synchronized void  mail(String nome,String msg,String destino){
+	private synchronized boolean  mail(String nome,String msg,String destino){
 		HtmlEmail email = new HtmlEmail();
 		email.setHostName("smtp.gmail.com");
 		email.setSslSmtpPort("465");
@@ -212,9 +224,11 @@ public class GerenciarLeilao extends ModelController {
 			email.setHtmlMsg(builder.toString());
 			email.addTo(destino);// destinatario
 			email.send();
+			return true;
 		} catch (EmailException e) {
 			System.err.println("Houve um erro ao enviar o email!");
 			e.printStackTrace();
+			return false;
 		}
 	}
 	
