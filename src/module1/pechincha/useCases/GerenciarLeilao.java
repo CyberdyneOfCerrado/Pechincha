@@ -136,13 +136,17 @@ public class GerenciarLeilao extends ModelController {
 		return done;
 	}
 	
-	public ActionDone finalizarLeilao(Leilao leilao){
-		ActionDone done = new ActionDone();
+	public boolean finalizarLeilao(Leilao leilao){
 		JDBCLeilaoDAO update =new JDBCLeilaoDAO();
-		JDBCLeilaoDAO le = new JDBCLeilaoDAO();
 		leilao.setAtivo(false);
 		update.update(leilao);
 		enviarEmail(leilao);
+		return true;
+	}
+	
+	public ActionDone leilaoFinalizado(Leilao leilao){
+		JDBCLeilaoDAO le = new JDBCLeilaoDAO();
+		ActionDone done = new ActionDone();
 		List<Leilao> list=le.getHistorico(leilao.getIdLeiloeiro());
 		done.setAction("historico");
 		done.setData("termino", true);
