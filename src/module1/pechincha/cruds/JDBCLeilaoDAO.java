@@ -54,8 +54,8 @@ public class JDBCLeilaoDAO extends DAOBehavior<Leilao>{
 			ps.setInt(7,arg.getTempoLimite());
 			ps.setString(8, arg.getNickname());
 			ps.setFloat(9, arg.getPrecolote());
+			ps.setString(10, arg.getTermino());			
 			ResultSet result=ps.executeQuery();
-			ps.setString(10, arg.getTermino());
 			int idleilao = 0;
 			while(result.next()){
 				idleilao = result.getInt("idleilao");
@@ -216,6 +216,7 @@ public class JDBCLeilaoDAO extends DAOBehavior<Leilao>{
 				ps.setString(8, arg.getNickname());
 				ps.setFloat(9, arg.getPrecolote());
 				ps.setString(10, arg.getTermino());
+				ps.setInt(11, arg.getIdLeilao());
 				ps.execute();
 				ps.close();
 			

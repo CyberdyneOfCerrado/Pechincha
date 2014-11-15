@@ -60,6 +60,9 @@ public class GerenciarLeilaoView extends ViewController{
 		MiniTemplator temp = super.startMiniTemplator(super.getTemplate(ad));
 		temp.setVariable("erro",(String)ad.getData("erro"));
 		temp.setVariable("idleiloeiro",String.valueOf(ad.getData("idleiloeiro")));
+		temp.setVariable("descricao",String.valueOf(ad.getData("descricao")));
+		temp.setVariable("etiqueta",String.valueOf(ad.getData("etiqueta")));
+		temp.setVariable("tempolimite",String.valueOf(ad.getData("tempolimite")));
 		return temp.generateOutput();
 	}
 	public String leilaop1(ActionDone ad){
@@ -88,10 +91,12 @@ public class GerenciarLeilaoView extends ViewController{
 		String pathp = getSevletContext()+getUseCase()+"historico"+".html";
 		String pathok = getSevletContext()+getUseCase()+"okemail"+".html";
 		String patherro = getSevletContext()+getUseCase()+"erroemail"+".html";
+		String pathtermino = getSevletContext()+getUseCase()+"termino"+".html";
 		MiniTemplator temp = super.startMiniTemplator(pathp);
 		MiniTemplator ok = super.startMiniTemplator(pathok);
 		MiniTemplator erro = super.startMiniTemplator(patherro);
 		MiniTemplator index = super.startMiniTemplator(pathi);
+		MiniTemplator termino = super.startMiniTemplator(pathtermino);
 		JDBCProdutoDAO pr = new JDBCProdutoDAO();
 		List<Leilao> list=(List<Leilao>) ad.getData("lista");
 		if(ad.getData("message").equals("ok")){
@@ -103,6 +108,9 @@ public class GerenciarLeilaoView extends ViewController{
 		if(ad.getData("message").equals(" ")){
 			index.setVariable("message", String.valueOf(ad.getData("message")));
 		}
+		if((boolean) ad.getData("termino")){
+			index.setVariable("termino",termino.generateOutput());
+		}else index.setVariable("termino", " ");
 		index.setVariable("idleiloeiro", String.valueOf(ad.getData("idleiloeiro")));
 		for (Leilao le:list){
 			temp.setVariable("etiqueta", le.getEtiqueta());

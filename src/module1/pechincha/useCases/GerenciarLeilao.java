@@ -44,38 +44,6 @@ public class GerenciarLeilao extends ModelController {
 		case "criarLeilao":
 				le.setEtiqueta((check(action,"etiqueta")));
 				le.setDescricao(check(action,"descricao"));
-				String temp=check(action,"tempolimite");
-				int segundos=0;
-				if(temp.length()==5 && temp.substring(2,3).equals(":")){
-					try{
-					String s=temp.substring(0,2);
-					int tempo=Integer.parseInt(s);
-					segundos=tempo*60*60;
-					s=temp.substring(2,5);
-					segundos+=tempo*60;
-					}catch(NumberFormatException e){
-						done.setUseCase(action.getUseCase());
-						done.setAction("leilaop0erro");
-						done.setProcessed(true);
-						done.setStatus(false);
-						done.setData("idleiloeiro", check(action,"idleiloeiro"));
-						done.setData("erro", "Houve um erro no campo tempo!");
-						return done;
-					}
-				}else{
-					done.setUseCase(action.getUseCase());
-					done.setAction("leilaop0erro");
-					done.setProcessed(true);
-					done.setStatus(false);
-					done.setData("idleiloeiro", check(action,"idleiloeiro"));
-					done.setData("etiqueta", action.getData("etiqueta"));
-					done.setData("tempolimite", action.getData("tempolimite"));
-					done.setData("descricao", action.getData("descricao"));
-					done.setData("erro", "Houve um erro no campo tempo!");
-					return done;
-				}
-				le.setTempoLimite(segundos);
-				le.setAtivo(false);
 				le.setIdLeiloeiro(Integer.parseInt(check(action,"idleiloeiro")));
 				le.setPrecolote(500);
 				le.setAtivo(true);
@@ -83,7 +51,9 @@ public class GerenciarLeilao extends ModelController {
 				le.setNickname("Pechincha");
 				user=us.select(le.getIdLeiloeiro());
 				le.setNickname(user.getNickname());
-				if(valida.validar(le)){
+				done=valida.validar(le,action);
+				if(done.getData("valida").equals(true)){
+					le.setTempoLimite(Integer.parseInt(String.valueOf(done.getData("tempo"))));
 					String pk=String.valueOf(leilao.insertReturningPk(le));
 					done.setUseCase(action.getUseCase());
 					done.setAction("leilaop1");
@@ -91,14 +61,9 @@ public class GerenciarLeilao extends ModelController {
 					done.setStatus(true);
 					done.setData("idleiloeiro", check(action,"idleiloeiro"));
 					done.setData("idleilao", pk);
+					done.setUseCase(action.getUseCase());
 					return done;
 				}else{
-					done.setUseCase(action.getUseCase());
-					done.setAction("leilaop0erro");
-					done.setProcessed(true);
-					done.setStatus(false);
-					done.setData("idleiloeiro", Integer.parseInt(check(action,"idleiloeiro")));
-					done.setData("erro", "A etiqueta informada já existe!");
 					return done;
 				}
 		case "leilaop0":
@@ -131,12 +96,14 @@ public class GerenciarLeilao extends ModelController {
 	
 	public ActionDone historicoLeilao(DoAction action){
 		ActionDone done=new ActionDone();
+		List<Leilao> list;
 		JDBCLeilaoDAO leilao = new JDBCLeilaoDAO();
 		String etapa=check(action,"etapa");
 		switch(etapa){
 		case "historico":
-			List<Leilao> list=leilao.getHistorico(Integer.parseInt((String) action.getData("idleiloeiro")));
+			list=leilao.getHistorico(Integer.parseInt((String) action.getData("idleiloeiro")));
 			done.setAction("historico");
+			done.setData("termino",false);
 			done.setUseCase(action.getUseCase());
 			done.setData("idleiloeiro",check(action,"idleiloeiro"));
 			done.setData("lista", list);
@@ -169,12 +136,24 @@ public class GerenciarLeilao extends ModelController {
 		return done;
 	}
 	
-	public boolean finalizarLeilao(Leilao leilao){
+	public ActionDone finalizarLeilao(Leilao leilao){
+		ActionDone done = new ActionDone();
 		JDBCLeilaoDAO update =new JDBCLeilaoDAO();
+		JDBCLeilaoDAO le = new JDBCLeilaoDAO();
 		leilao.setAtivo(false);
-		//update.update(leilao);
+		update.update(leilao);
 		enviarEmail(leilao);
-		return true;
+		List<Leilao> list=le.getHistorico(leilao.getIdLeiloeiro());
+		done.setAction("historico");
+		done.setData("termino", true);
+		done.setUseCase("gerenciarLeilao");
+		done.setData("idleiloeiro",leilao.getIdLeiloeiro());
+		done.setData("lista", list);
+		done.setProcessed(true);
+		done.setStatus(true);
+		done.setData("end",true);
+		done.setData("message", " ");
+		return done;
 	}
 	
 	public boolean enviarEmail(Leilao leilao) {

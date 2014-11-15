@@ -146,7 +146,7 @@ public class ManagerLeilao extends Thread {
 	};
 
 	private void finalizar(UserSession userSession) {
-	        boolean result = gl.finalizarLeilao(this.leilao);
+	        boolean result = (boolean) gl.finalizarLeilao(this.leilao).getData("end");
 			
 	    	if (result) {
 			// Pegar a sessão do maior lance e do leiloeiro;
