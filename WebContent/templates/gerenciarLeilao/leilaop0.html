@@ -148,7 +148,7 @@ a:hover
 <div id="wb_Text1" style="position:absolute;left:338px;top:34px;width:252px;height:33px;z-index:8;text-align:left;">
 <span style="color:#000000;font-family:Arial;font-size:29px;">Criar um leilão</span></div>
 <div id="wb_Form1" style="position:absolute;left:74px;top:92px;width:750px;height:445px;z-index:9;">
-<form method="post">
+<form class="form-search" action="q" method="post">
 <div id="wb_Text2" style="position:absolute;left:23px;top:31px;width:243px;height:19px;z-index:0;text-align:left;">
 <span style="color:#000000;font-family:Arial;font-size:17px;"><strong>Entre com a etiqueta do leilão:</strong></span></div>
 <div id="wb_Text3" style="position:absolute;left:24px;top:83px;width:264px;height:19px;z-index:1;text-align:left;">
@@ -159,11 +159,19 @@ a:hover
 <textarea name="etiqueta" id="etiqueta" style="position:absolute;left:265px;top:29px;width:454px;height:24px;z-index:4;" rows="0" cols="70"></textarea>
 <textarea name="tempolimite" id="tempolimite" style="position:absolute;left:361px;top:290px;width:359px;height:24px;z-index:5;" rows="0" cols="54"></textarea>
 <input type="hidden" id="etapa" name="etapa" value="criarLeilao"/>
-<input type="hidden" id="userCase" name="userCase" value="gerenciarLeilao"/>
+<input type="hidden" id="redirect" name="redirect" value="false"/>
+<input type="hidden" id="userCase" name="useCase" value="gerenciarLeilao"/>
 <input type="hidden" id="action" name="action" value="criarLeilao"/>
 <input type="hidden" id="idleiloeiro" name="idleiloeiro" value="${idleiloeiro}"/>
-<input type="submit" id="Button2" name="" value="Cancelar" style="position:absolute;left:279px;top:369px;width:95px;height:37px;z-index:6;">
 <input type="submit" id="Button3" name="" value="CriarLeilao" style="position:absolute;left:410px;top:369px;width:95px;height:37px;z-index:7;">
+</form>
+<form class="form-search" action="q" method="post">
+<input type="submit" id="Button2" name="" value="Cancelar" style="position:absolute;left:279px;top:369px;width:95px;height:37px;z-index:6;">
+<input type="hidden" id="etapa" name="etapa" value="historico"/>
+<input type="hidden" id="redirect" name="redirect" value="false"/>
+<input type="hidden" id="userCase" name="useCase" value="gerenciarLeilao"/>
+<input type="hidden" id="action" name="action" value="historicoLeilao"/>
+<input type="hidden" id="idleiloeiro" name="idleiloeiro" value="${idleiloeiro}"/>
 </form>
 </div>
 </div>

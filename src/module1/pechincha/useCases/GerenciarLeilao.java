@@ -39,12 +39,12 @@ public class GerenciarLeilao extends ModelController {
 		JDBCLeilaoDAO leilao = new JDBCLeilaoDAO();
 		JDBCUsuarioDAO us = new JDBCUsuarioDAO();
 		Usuario user;
-		String etapa=desbuga(action,"etapa");
+		String etapa=check(action,"etapa");
 		switch(etapa){
 		case "criarLeilao":
-				le.setEtiqueta((desbuga(action,"etiqueta")));
-				le.setDescricao(desbuga(action,"descricao"));
-				String temp=desbuga(action,"tempolimite");
+				le.setEtiqueta((check(action,"etiqueta")));
+				le.setDescricao(check(action,"descricao"));
+				String temp=check(action,"tempolimite");
 				int segundos=0;
 				if(temp.length()==5 && temp.substring(2,3).equals(":")){
 					try{
@@ -58,7 +58,7 @@ public class GerenciarLeilao extends ModelController {
 						done.setAction("leilaop0erro");
 						done.setProcessed(true);
 						done.setStatus(false);
-						done.setData("idleiloeiro", desbuga(action,"idleiloeiro"));
+						done.setData("idleiloeiro", check(action,"idleiloeiro"));
 						done.setData("erro", "Houve um erro no campo tempo!");
 						return done;
 					}
@@ -67,7 +67,7 @@ public class GerenciarLeilao extends ModelController {
 					done.setAction("leilaop0erro");
 					done.setProcessed(true);
 					done.setStatus(false);
-					done.setData("idleiloeiro", desbuga(action,"idleiloeiro"));
+					done.setData("idleiloeiro", check(action,"idleiloeiro"));
 					done.setData("etiqueta", action.getData("etiqueta"));
 					done.setData("tempolimite", action.getData("tempolimite"));
 					done.setData("descricao", action.getData("descricao"));
@@ -76,7 +76,7 @@ public class GerenciarLeilao extends ModelController {
 				}
 				le.setTempoLimite(segundos);
 				le.setAtivo(false);
-				le.setIdLeiloeiro(Integer.parseInt(desbuga(action,"idleiloeiro")));
+				le.setIdLeiloeiro(Integer.parseInt(check(action,"idleiloeiro")));
 				le.setPrecolote(500);
 				le.setAtivo(true);
 				le.setLanceInicial(500);
@@ -89,7 +89,7 @@ public class GerenciarLeilao extends ModelController {
 					done.setAction("leilaop1");
 					done.setProcessed(true);
 					done.setStatus(true);
-					done.setData("idleiloeiro", desbuga(action,"idleiloeiro"));
+					done.setData("idleiloeiro", check(action,"idleiloeiro"));
 					done.setData("idleilao", pk);
 					return done;
 				}else{
@@ -97,14 +97,14 @@ public class GerenciarLeilao extends ModelController {
 					done.setAction("leilaop0erro");
 					done.setProcessed(true);
 					done.setStatus(false);
-					done.setData("idleiloeiro", Integer.parseInt(desbuga(action,"idleiloeiro")));
+					done.setData("idleiloeiro", Integer.parseInt(check(action,"idleiloeiro")));
 					done.setData("erro", "A etiqueta informada já existe!");
 					return done;
 				}
 		case "leilaop0":
 			done.setAction("leilaop0");
 			done.setUseCase(action.getUseCase());
-			done.setData("idleiloeiro",desbuga(action,"idleiloeiro"));
+			done.setData("idleiloeiro",check(action,"idleiloeiro"));
 			done.setProcessed(true);
 			done.setStatus(true);
 			return done;
@@ -117,13 +117,13 @@ public class GerenciarLeilao extends ModelController {
 			done.setData("idLeilao", String.valueOf(le.getIdLeilao()));
 			done.setAction("ambiente");
 			done.setUseCase("ambienteLeilao");
-			done.setData("idleiloeiro",desbuga(action,"idleiloeiro"));
+			done.setData("idleiloeiro",check(action,"idleiloeiro"));
 			done.setProcessed(true);
 			done.setStatus(true);
 		}
 		return done;
 	}
-	public String desbuga(DoAction action,String key){
+	public String check(DoAction action,String key){
 		String[] filtro = (String[])action.getData(key+"_array");
 		String saida=filtro[filtro.length-1];
 		return saida;
@@ -132,13 +132,13 @@ public class GerenciarLeilao extends ModelController {
 	public ActionDone historicoLeilao(DoAction action){
 		ActionDone done=new ActionDone();
 		JDBCLeilaoDAO leilao = new JDBCLeilaoDAO();
-		String etapa=desbuga(action,"etapa");
+		String etapa=check(action,"etapa");
 		switch(etapa){
 		case "historico":
 			List<Leilao> list=leilao.getHistorico(Integer.parseInt((String) action.getData("idleiloeiro")));
 			done.setAction("historico");
 			done.setUseCase(action.getUseCase());
-			done.setData("idleiloeiro",desbuga(action,"idleiloeiro"));
+			done.setData("idleiloeiro",check(action,"idleiloeiro"));
 			done.setData("lista", list);
 			done.setProcessed(true);
 			done.setStatus(true);
@@ -150,10 +150,16 @@ public class GerenciarLeilao extends ModelController {
 	
 	public ActionDone reenviarEmail(DoAction action){
 		ActionDone done = new ActionDone();
+		JDBCLeilaoDAO le = new JDBCLeilaoDAO();
 		Leilao leilao = null;
 		JDBCLeilaoDAO leilaoDao = new JDBCLeilaoDAO();
-		leilao=leilaoDao.select((int) action.getData("idleilao"));
+		leilao=leilaoDao.select(Integer.parseInt((String) action.getData("idleilao")));
 		enviarEmail(leilao);
+		List<Leilao> list=le.getHistorico(Integer.parseInt((String) action.getData("idleiloeiro")));
+		done.setAction("historico");
+		done.setUseCase(action.getUseCase());
+		done.setData("idleiloeiro",check(action,"idleiloeiro"));
+		done.setData("lista", list);
 		done.setProcessed(true);
 		done.setStatus(true);
 		return done;

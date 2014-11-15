@@ -96,6 +96,7 @@ public class GerenciarLeilaoView extends ViewController{
 			temp.setVariable("termino", le.getTermino());
 			temp.setVariable("valor", String.valueOf(le.getPrecolote()));
 			temp.setVariable("idleilao",String.valueOf(le.getIdLeilao()));
+			temp.setVariable("idleiloeiro", String.valueOf(le.getIdLeiloeiro()));
 			index.setVariable("conteudo",temp.generateOutput());
 			index.addBlock("historico");
 		}

@@ -86,9 +86,10 @@ a:hover
 <!-- $EndBlock produto -->
 </table>
 </div>
-<form method="post">
+<form class="form-search" action="q" method="post">
 <span style="color:#000000;font-family:Arial;font-size:15px;"><strong>Valor Personalizado</strong></span></div>
 <textarea name="TextArea1" id="TextArea1" style="position:absolute;left:225px;top:496px;width:174px;height:22px;z-index:4;" rows="0" cols="23"></textarea>
+<input type="hidden" id="redirect" name="redirect" value="false"/>
 <input type="hidden" id="etapa" name="etapa" value="valorpersonalizado"/>
 <input type="hidden" id="userCase" name="userCase" value="gerenciarLeilao"/>
 <input type="hidden" id="action" name="action" value="criarLeilao"/>
@@ -96,7 +97,8 @@ a:hover
 <input type="hidden" id="idleilao" name="idleilao" value="${idleilao}"/>
 <input type="submit" id="Button2" name="" value="add" style="position:absolute;left:409px;top:495px;width:55px;height:25px;z-index:5;">
 </form>
-<form method="post">
+<form class="form-search" action="q" method="post">
+<input type="hidden" id="redirect" name="redirect" value="false"/>
 <input type="hidden" id="etapa" name="etapa" value="concluir"/>
 <input type="hidden" id="userCase" name="userCase" value="gerenciarLeilao"/>
 <input type="hidden" id="action" name="action" value="criarLeilao"/>
