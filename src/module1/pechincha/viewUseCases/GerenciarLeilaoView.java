@@ -77,7 +77,7 @@ public class GerenciarLeilaoView extends ViewController{
 			index.setVariable("quantidade", produto.getQuantidade());
 			index.setVariable("preco",String.valueOf(produto.getPreco()));
 			index.setVariable("idproduto",String.valueOf(produto.getPk()));
-			index.setVariable("idleilao", String.valueOf(ad.getData("idleiloeiro")));
+			index.setVariable("idleilao", String.valueOf(ad.getData("idleilao")));
 			index.addBlock("produto");
 		}
 		return index.generateOutput();

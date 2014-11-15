@@ -23,7 +23,7 @@ import module2.pechincha.manager.StorageLeilaoEnvironments;
 public class GerenciarLeilao extends ModelController {
 	@Override
 	public String[] getActions() {
-		String[] actions = { "criarLeilao", "reenviarEmail",
+		String[] actions = { "criarLeilao", "processaEmail",
 				"pesquisarLeilao", "finalizarLeilao", "criarLote", "historicoLeilao"};
 		return actions;
 	}
@@ -98,9 +98,6 @@ public class GerenciarLeilao extends ModelController {
 		ActionDone done=new ActionDone();
 		List<Leilao> list;
 		JDBCLeilaoDAO leilao = new JDBCLeilaoDAO();
-		String etapa=check(action,"etapa");
-		switch(etapa){
-		case "historico":
 			list=leilao.getHistorico(Integer.parseInt((String) action.getData("idleiloeiro")));
 			done.setAction("historico");
 			done.setData("termino",false);
@@ -111,20 +108,18 @@ public class GerenciarLeilao extends ModelController {
 			done.setStatus(true);
 			done.setData("message", " ");
 			return done;
-		}
-		return null;
 	}
 	
 	
-	public ActionDone reenviarEmail(DoAction action){
+	public ActionDone processaEmail(DoAction action){
 		ActionDone done = new ActionDone();
-		JDBCLeilaoDAO le = new JDBCLeilaoDAO();
 		Leilao leilao = null;
 		JDBCLeilaoDAO leilaoDao = new JDBCLeilaoDAO();
 		leilao=leilaoDao.select(Integer.parseInt((String) action.getData("idleilao")));
 		boolean statusEmail=enviarEmail(leilao);
-		List<Leilao> list=le.getHistorico(Integer.parseInt((String) action.getData("idleiloeiro")));
+		List<Leilao> list=leilaoDao.getHistorico(Integer.parseInt((String) action.getData("idleiloeiro")));
 		done.setAction("historico");
+		done.setData("termino",false);
 		done.setUseCase(action.getUseCase());
 		done.setData("idleiloeiro",check(action,"idleiloeiro"));
 		done.setData("lista", list);
@@ -135,29 +130,29 @@ public class GerenciarLeilao extends ModelController {
 		done.setStatus(true);
 		return done;
 	}
+	public ActionDone processaEmail(Leilao leilao){
+		ActionDone done = new ActionDone();
+		JDBCLeilaoDAO leilaoDao = new JDBCLeilaoDAO();
+		List<Leilao> list=leilaoDao.getHistorico(leilao.getIdLeiloeiro());
+		boolean statusEmail=enviarEmail(leilao);
+		done.setAction("historico");
+		done.setUseCase("gerenciarLeilao");
+		done.setData("termino",true);
+		done.setData("idleiloeiro",leilao.getIdLeiloeiro());
+		done.setData("lista", list);
+		if(statusEmail){
+			done.setData("message","ok");
+		}else done.setData("message","erro");
+		done.setProcessed(true);
+		done.setStatus(true);
+		return done;
+	}
 	
-	public boolean finalizarLeilao(Leilao leilao){
+	public ActionDone finalizarLeilao(Leilao leilao){
 		JDBCLeilaoDAO update =new JDBCLeilaoDAO();
 		leilao.setAtivo(false);
 		update.update(leilao);
-		enviarEmail(leilao);
-		return true;
-	}
-	
-	public ActionDone leilaoFinalizado(Leilao leilao){
-		JDBCLeilaoDAO le = new JDBCLeilaoDAO();
-		ActionDone done = new ActionDone();
-		List<Leilao> list=le.getHistorico(leilao.getIdLeiloeiro());
-		done.setAction("historico");
-		done.setData("termino", true);
-		done.setUseCase("gerenciarLeilao");
-		done.setData("idleiloeiro",leilao.getIdLeiloeiro());
-		done.setData("lista", list);
-		done.setProcessed(true);
-		done.setStatus(true);
-		done.setData("end",true);
-		done.setData("message", " ");
-		return done;
+		return processaEmail(leilao);
 	}
 	
 	public boolean enviarEmail(Leilao leilao) {
