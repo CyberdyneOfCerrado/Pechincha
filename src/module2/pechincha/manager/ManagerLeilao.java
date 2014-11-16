@@ -7,6 +7,7 @@ import javax.websocket.Session;
 
 import module1.pechincha.model.Leilao;
 import module1.pechincha.useCases.GerenciarLeilao;
+import module1.pechincha.util.ActionDone;
 import module2.pechincha.useCases.Chat;
 import module2.pechincha.util.Messeger;
 import module2.pechincha.util.MessegerFactory;
@@ -78,8 +79,7 @@ public class ManagerLeilao extends Thread {
 	public synchronized void removeSession(UserSession userSession) {
 		if (!peers.containsKey(userSession.getIdUser()))
 			return;
-		System.err.println("Clientes conectados removendo " + peers.size()
-				+ " Leilao " + leilao.getIdLeilao());
+		System.err.println("Clientes conectados removendo " + peers.size()+ " Leilao " + leilao.getIdLeilao());
 		peers.remove(userSession.getIdUser());
 		this.feedOffline(peers.size());
 	};
@@ -87,8 +87,7 @@ public class ManagerLeilao extends Thread {
 	public synchronized void addSession(UserSession userSession) {
 		if (peers.containsKey(userSession.getIdUser()))
 			return;
-		System.err.println("Clientes conectados adicionando " + peers.size()
-				+ " Leilao " + leilao.getIdLeilao());
+		System.err.println("Clientes conectados adicionando " + peers.size()+ " Leilao " + leilao.getIdLeilao());
 		feedOnline(peers.size() + 1);
 		peers.put(userSession.getIdUser(), userSession);
 	};
@@ -107,23 +106,20 @@ public class ManagerLeilao extends Thread {
 				peers.remove(us.getIdUser());
 				continue;
 			}
-			session.getAsyncRemote().sendText(
-					MessegerFactory.MessegerToJSONString(messeger));
+			session.getAsyncRemote().sendText(MessegerFactory.MessegerToJSONString(messeger));
 		}
 	};
 
 	private void msgUnicast(UserSession userSession, Messeger messeger) {
 		if (userSession.getSession() == null)
 			return;
-		userSession.getSession().getAsyncRemote()
-				.sendText(MessegerFactory.MessegerToJSONString(messeger));
+		userSession.getSession().getAsyncRemote().sendText(MessegerFactory.MessegerToJSONString(messeger));
 	};
 
 	private void chat(UserSession userSession, Messeger messeger) {
 		boolean valida = chat.validarMensagem(messeger);
 		if (valida) {
-			messeger = chat.diferenciarUsuario(messeger, userSession,
-					maiorLance, leilao);
+			messeger = chat.diferenciarUsuario(messeger, userSession,maiorLance, leilao);
 			msgBroadcast(messeger);
 		}
 	};
@@ -140,14 +136,14 @@ public class ManagerLeilao extends Thread {
 			msgBroadcast(MessegerFactory.createMessegerLance(
 					String.valueOf(lanceCorrente), userSession.getNickname()));
 		} else {
-			msgUnicast(userSession,
-					MessegerFactory.createMessegerLanceInvalido());
+			msgUnicast(userSession,MessegerFactory.createMessegerLanceInvalido());
 		}
 	};
 
 	private void finalizar(UserSession userSession) {
-	        boolean result = gl.finalizarLeilao(this.leilao);
-			
+			ActionDone ad = gl.finalizarLeilao(this.leilao);
+	        boolean result = true;
+	        
 	    	if (result) {
 			// Pegar a sessão do maior lance e do leiloeiro;
 			// Preparar mensagem para ambos.
@@ -174,15 +170,12 @@ public class ManagerLeilao extends Thread {
 			this.done = true;
 
 		} else {
-			msgUnicast(
-					userSession,
-					MessegerFactory
-							.createMessegerFinalizar("Você não pode finalizar o leilão neste momento."));
+			msgUnicast(userSession,MessegerFactory.createMessegerFinalizar("Você não pode finalizar o leilão neste momento."));
 		}
 	};
 
 	private void finalizar() {
-		// gl.finalizarLeilao(this.leilao);
+		gl.finalizarLeilao(this.leilao);
 
 		UserSession leiloeiro = peers.get(this.leilao.getIdLeilao());
 
@@ -218,8 +211,7 @@ public class ManagerLeilao extends Thread {
 		msg += leilao.getEtiqueta() + ";";
 		msg += peers.size() + ";";
 		msg += lanceCorrente + ";";
-		msg += (maiorLance.getNickname() != null) ? maiorLance.getNickname()
-				+ ";" : "Ninguém ainda" + ";";
+		msg += (maiorLance.getNickname() != null) ? maiorLance.getNickname()+ ";" : "Ninguém ainda" + ";";
 		msg += leilao.getNickname() + ";";
 
 		msgUnicast(userSession, MessegerFactory.createMessegerCallback(msg));
