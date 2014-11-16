@@ -78,9 +78,10 @@ public class GerenciarLeilao extends ModelController {
 			String[] idproduto=(String[])action.getData("idproduto_array");
 			String[] quantidade=(String[])action.getData("quantidade_array");
 			String[] precoProd=(String[])action.getData("precoProd_array");
+			String[] adicionado=(String[])action.getData("adicionado_array");
 			float valorPerson=Float.parseFloat((String) action.getData("valorBox"));
 			float valorTrue=0;
-			boolean valido=validaLote.validar(quantidadeLote, precoLote, idproduto, quantidade, precoProd,valorPerson);
+			boolean valido=validaLote.validar(quantidadeLote, precoLote, idproduto, quantidade, precoProd,valorPerson,adicionado);
 			if(valido){
 				le.setEtiqueta((check(action,"etiqueta")));
 				le.setDescricao(check(action,"descricao"));
@@ -95,7 +96,7 @@ public class GerenciarLeilao extends ModelController {
 				}
 				else{
 					ArrayList<Integer> adicionados=new ArrayList<Integer>();
-					String[] adicionado=(String[])action.getData("adicionado_array");
+					adicionado=(String[])action.getData("adicionado_array");
 					int x=0;
 					for(String temp:adicionado){
 						if(temp.equals("true"))adicionados.add(x);
@@ -110,7 +111,7 @@ public class GerenciarLeilao extends ModelController {
 				int pk=leilao.insertReturningPk(le);
 				le.setIdLeilao(pk);
 				ArrayList<Integer> adicionados=new ArrayList<Integer>();
-				String[] adicionado=(String[])action.getData("adicionado_array");
+				adicionado=(String[])action.getData("adicionado_array");
 				int x=0;
 				for(String temp:adicionado){
 					if(temp.equals("true"))adicionados.add(x);

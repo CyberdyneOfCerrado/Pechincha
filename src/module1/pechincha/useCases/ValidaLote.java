@@ -1,7 +1,7 @@
 package module1.pechincha.useCases;
 
 public class ValidaLote {
-		public boolean validar(String[] quantidadeLote,String[] precoLote,String[] idproduto,String[] quantidade,String[] precoProd, float valorPerson){
+		public boolean validar(String[] quantidadeLote,String[] precoLote,String[] idproduto,String[] quantidade,String[] precoProd, float valorPerson,String[] adicionado){
 			int x=0;
 			boolean resul=false;
 			for(String qtd:quantidadeLote){
@@ -19,6 +19,12 @@ public class ValidaLote {
 				if(tempquantidade*tempPrecoProd==tempPrecoLote)resul=true;else return false;
 				}
 			if(valorPerson>=0 && valorPerson<=10000)resul=true;else return false;
+			for(String add:adicionado){
+				if(add.equals("true")){
+					resul=true;
+					break;
+				}else resul=false;
+			}
 			return resul;
 			}
 	}
