@@ -141,7 +141,7 @@ public class GerenciarLeilao extends ModelController {
 				done.setData("descricao",check(action,"descricao"));
 				done.setData("idleiloeiro", check(action,"idleiloeiro"));
 				done.setData("tempolimite", check(action,"tempolimite"));
-				done.setData("nickname",le.getNickname());
+				done.setData("nickname",check(action,"nickname"));
 				done.setAction("leilaop1");
 				done.setData("message", "Houve um erro no cadastro do lote!");
 				done.setProcessed(true);
