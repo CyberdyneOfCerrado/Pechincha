@@ -33,19 +33,6 @@ public class GerenciarLeilaoView extends ViewController{
 		case "historico":
 			retorno = getHistorico(ad); 
 		break;
-//		case "getTodosLeiloes":
-//			
-//			retorno = getTodosLeiloes(ad); 
-//		break;
-//		case "entrarLeilao":
-//			retorno = entrarLeilao(ad); 
-//		break;
-//		case "enviarEmail":
-//			retorno = enviarEmail(ad); 
-//		break;
-//		case "pesquisarLeilao":
-//			retorno = pesquisarLeilao(ad); 
-//		break;
 		}
 		return retorno;
 	}
