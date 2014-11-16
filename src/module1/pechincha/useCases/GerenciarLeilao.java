@@ -33,10 +33,13 @@ public class GerenciarLeilao extends ModelController {
 		return "gerenciarLeilao";
 	}
 	public ActionDone criarLeilao(DoAction action){
+		LoteProduto loteProduto;
 		ValidaLeilao valida = new ValidaLeilao();
+		ValidaLote validaLote = new ValidaLote();
 		ActionDone done = new ActionDone();
 		Leilao le=new Leilao();
 		JDBCLeilaoDAO leilao = new JDBCLeilaoDAO();
+		JDBCLoteProdutoDAO loteProdutoDao = new JDBCLoteProdutoDAO();
 		JDBCUsuarioDAO us = new JDBCUsuarioDAO();
 		Usuario user;
 		String etapa=check(action,"etapa");
@@ -45,23 +48,18 @@ public class GerenciarLeilao extends ModelController {
 				le.setEtiqueta((check(action,"etiqueta")));
 				le.setDescricao(check(action,"descricao"));
 				le.setIdLeiloeiro(Integer.parseInt(check(action,"idleiloeiro")));
-				le.setPrecolote(500);
-				le.setAtivo(true);
-				le.setLanceInicial(500);
-				le.setNickname("Pechincha");
 				user=us.select(le.getIdLeiloeiro());
 				le.setNickname(user.getNickname());
 				done=valida.validar(le,action);
 				if(done.getData("valida").equals(true)){
-					le.setTempoLimite(Integer.parseInt(String.valueOf(done.getData("tempo"))));
-					String pk=String.valueOf(leilao.insertReturningPk(le));
 					done.setUseCase(action.getUseCase());
+					done.setData("etiqueta",check(action,"etiqueta"));
+					done.setData("descricao",check(action,"descricao"));
+					done.setData("nickname",le.getNickname());
 					done.setAction("leilaop1");
 					done.setProcessed(true);
 					done.setStatus(true);
 					done.setData("idleiloeiro", check(action,"idleiloeiro"));
-					done.setData("idleilao", pk);
-					done.setUseCase(action.getUseCase());
 					return done;
 				}else{
 					return done;
@@ -74,17 +72,80 @@ public class GerenciarLeilao extends ModelController {
 			done.setStatus(true);
 			return done;
 		case "concluir":
-			le=leilao.select(Integer.parseInt((String) action.getData("idleilao")));
-			StorageLeilaoEnvironments.iniciarAmbienteLeilao(le);
-			done.setData("isLeiloeiro", true);
-			done.setData("userName",le.getNickname());
-			done.setData("idEmissor", String.valueOf(le.getIdLeiloeiro()));
-			done.setData("idLeilao", String.valueOf(le.getIdLeilao()));
-			done.setAction("ambiente");
-			done.setUseCase("ambienteLeilao");
-			done.setData("idleiloeiro",check(action,"idleiloeiro"));
-			done.setProcessed(true);
-			done.setStatus(true);
+			String[] quantidadeLote=(String[])action.getData("quantidadeLote_array");
+			String[] precoLote=(String[])action.getData("precoLote_array");
+			String[] idproduto=(String[])action.getData("idproduto_array");
+			String[] quantidade=(String[])action.getData("quantidade_array");
+			String[] precoProd=(String[])action.getData("precoProd_array");
+			float valorPerson=Float.parseFloat((String) action.getData("valorBox"));
+			float valorTrue=0;
+			boolean valido=validaLote.validar(quantidadeLote, precoLote, idproduto, quantidade, precoProd,valorPerson);
+			if(valido){
+				le.setEtiqueta((check(action,"etiqueta")));
+				le.setDescricao(check(action,"descricao"));
+				le.setIdLeiloeiro(Integer.parseInt(check(action,"idleiloeiro")));
+				le.setAtivo(true);
+				user=us.select(le.getIdLeiloeiro());
+				le.setNickname(user.getNickname());
+				le.setTempoLimite(Integer.parseInt(check(action,"tempolimite")));
+				if(action.getData("valorPersonalizado").equals("true")){
+					le.setLanceInicial(valorPerson);
+					le.setPrecolote(valorPerson);
+				}
+				else{
+					ArrayList<Integer> adicionados=new ArrayList<Integer>();
+					String[] adicionado=(String[])action.getData("adicionado_array");
+					int x=0;
+					for(String temp:adicionado){
+						if(temp.equals("true"))adicionados.add(x);
+						x++;
+					}
+					for(int indice:adicionados){
+						valorTrue+=Integer.parseInt(quantidadeLote[indice])*Float.parseFloat(precoProd[indice]);
+					}
+					le.setLanceInicial(valorTrue);
+					le.setPrecolote(valorTrue);
+				}
+				int pk=leilao.insertReturningPk(le);
+				le.setIdLeilao(pk);
+				ArrayList<Integer> adicionados=new ArrayList<Integer>();
+				String[] adicionado=(String[])action.getData("adicionado_array");
+				int x=0;
+				for(String temp:adicionado){
+					if(temp.equals("true"))adicionados.add(x);
+					x++;
+				}
+				for(int indice:adicionados){
+					loteProduto = new LoteProduto();
+					loteProduto.setFkleilao(pk);
+					loteProduto.setFkproduto(Integer.parseInt(idproduto[indice]));
+					loteProduto.setUnidades(Integer.parseInt(quantidadeLote[indice]));
+					loteProdutoDao.insert(loteProduto);
+				}
+				done.setData("idEmissor", String.valueOf(le.getIdLeiloeiro()));
+				done.setData("idLeilao", String.valueOf(pk));
+				done.setData("idleiloeiro",String.valueOf(le.getIdLeiloeiro()));
+				done.setData("isLeiloeiro", true);
+				done.setAction("ambiente");
+				done.setData("userName",le.getNickname());
+				done.setUseCase("ambienteLeilao");
+				done.setProcessed(true);
+				done.setStatus(true);
+				StorageLeilaoEnvironments.iniciarAmbienteLeilao(le);
+				return done;
+			}else{
+				done.setUseCase(action.getUseCase());
+				done.setData("etiqueta",check(action,"etiqueta"));
+				done.setData("descricao",check(action,"descricao"));
+				done.setData("idleiloeiro", check(action,"idleiloeiro"));
+				done.setData("tempolimite", check(action,"tempolimite"));
+				done.setData("nickname",le.getNickname());
+				done.setAction("leilaop1");
+				done.setData("message", "Houve um erro no cadastro do lote!");
+				done.setProcessed(true);
+				done.setStatus(true);
+				return done;
+			}
 		}
 		return done;
 	}

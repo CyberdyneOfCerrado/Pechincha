@@ -19,7 +19,7 @@ public class JDBCLoteProdutoDAO extends DAOBehavior<LoteProduto> {
 
 	@Override
 	public void insert(LoteProduto arg) {
-		String sql = "Insert into "+arg.getTableName()+" ("+arg.getColumnName()+") values ( ?, ?, ? )"; 
+		String sql = "Insert into "+arg.getTableName()+" (fkleilao,fkproduto,quantidade) values ( ?, ?, ? )"; 
 		try {
 			PreparedStatement ps = c.prepareStatement(sql);
 			ps.setInt(1,arg.getFkleilao());
