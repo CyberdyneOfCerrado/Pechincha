@@ -50,9 +50,37 @@ a:hover
 {
    text-align: left;
 }
-#Layer2
+#wb_Text2 
 {
-   background-color: #FAFAFA;
+   background-color: transparent;
+   border: 0px #000000 solid;
+   padding: 0;
+   text-align: left;
+}
+#wb_Text2 div
+{
+   text-align: left;
+}
+#wb_Text3 
+{
+   background-color: transparent;
+   border: 0px #000000 solid;
+   padding: 0;
+   text-align: left;
+}
+#wb_Text3 div
+{
+   text-align: left;
+}
+#Editbox1
+{
+   border: 1px #A9A9A9 solid;
+   background-color: #FFFFFF;
+   color :#000000;
+   font-family: Arial;
+   font-size: 13px;
+   text-align: left;
+   vertical-align: middle;
    -moz-box-shadow: 3px 3px 3px #000000;
    -webkit-box-shadow: 3px 3px 3px #000000;
    box-shadow: 3px 3px 3px #000000;
@@ -63,46 +91,85 @@ a:hover
    background-color: #F0F0F0;
    color: #000000;
    font-family: Arial;
-   font-size: 13px;
+   font-size: 17px;
+   -moz-box-shadow: 3px 3px 3px #000000;
+   -webkit-box-shadow: 3px 3px 3px #000000;
+   box-shadow: 3px 3px 3px #000000;
+}
+#Button2
+{
+   border: 1px #A9A9A9 solid;
+   background-color: #F0F0F0;
+   color: #000000;
+   font-family: Arial;
+   font-size: 17px;
+   -moz-box-shadow: 3px 3px 3px #000000;
+   -webkit-box-shadow: 3px 3px 3px #000000;
+   box-shadow: 3px 3px 3px #000000;
+}
+#Layer2
+{
+   background-color: #FAFAFA;
    -moz-box-shadow: 3px 3px 3px #000000;
    -webkit-box-shadow: 3px 3px 3px #000000;
    box-shadow: 3px 3px 3px #000000;
 }
 </style>
-<div id="Layer1" style="position:absolute;text-align:left;left:155px;top:4px;width:898px;height:564px;z-index:3;" title="">
-<div id="wb_Text1" style="position:absolute;left:338px;top:34px;width:252px;height:33px;z-index:0;text-align:left;">
-<span style="color:#000000;font-family:Arial;font-size:29px;">Adicione produtos</span></div>
-<div id="Layer2" style="position:absolute;text-align:left;left:75px;top:92px;width:750px;height:387px;z-index:1;overflow-y: scroll;" title="">
+<div id="Layer1" style="position:absolute;text-align:left;left:156px;top:4px;width:898px;height:564px;z-index:8;" title="">
+<div id="wb_Text1" style="position:absolute;left:376px;top:9px;width:252px;height:33px;z-index:0;text-align:left;">
+<span style="color:#000000;font-family:Arial;font-size:29px;">Criar um leilão</span></div>
+<div id="wb_Text2" style="position:absolute;left:342px;top:60px;width:297px;height:23px;z-index:1;text-align:left;">
+<span style="color:#FF0000;font-family:Arial;font-size:20px;">Adicione produtos ao seu lote</span></div>
+<div id="wb_Text3" style="position:absolute;left:298px;top:457px;width:219px;height:19px;z-index:3;text-align:left;">
+<span style="color:#000000;font-family:Arial;font-size:16px;"><strong>Valor personalizado do lote</strong></span></div>
+<form class="form-search" action="q" method="post">
+<input type="submit" id="Button1" name="cancelarLeilao" value="Cancelar" style="position:absolute;left:355px;top:503px;width:108px;height:46px;z-index:5;">
+<input type="hidden" id="etapa" name="etapa" value="historico"/>
+<input type="hidden" id="redirect" name="redirect" value="false"/>
+<input type="hidden" id="userCase" name="useCase" value="gerenciarLeilao"/>
+<input type="hidden" id="action" name="action" value="historicoLeilao"/>
+<input type="hidden" id="idleiloeiro" name="idleiloeiro" value="${idleiloeiro}"/>
+</form>
+<form class="form-search" action="q" method="post">
+<input type="number" id="Editbox1" style="position:absolute;left:515px;top:454px;width:251px;height:24px;line-height:24px;z-index:4;" name="valorBox" value="0.00" min="0" max="10000" />
+<input type="checkbox" id="checkval" value="true" name="checkval" onclick="(function(){$('#valorPersonalizado').val((document.getElementById('checkval').checked? 'true' : 'false'));})();" style="position:absolute;left:273px;top:458px;z-index:2;" />
+<input type="hidden" id="redirect" name="redirect" value="false"/>
+<input type="hidden" id="etapa" name="etapa" value="concluir"/>
+<input type="hidden" id="valorPersonalizado" name="valorPersonalizado" value="false" />
+<input type="hidden" id="useCase" name="useCase" value="gerenciarLeilao"/>
+<input type="hidden" id="action" name="action" value="criarLeilao"/>
+<input type="hidden" id="idleiloeiro" name="idleiloeiro" value="${idleiloeiro}"/>
+<input type="hidden" id="nickname" name="nickname" value="${nickname}"/>
+<input type="hidden" id="etiqueta" name="etiqueta" value="${etiqueta}"/>
+<input type="hidden" id="descricao" name="descricao" value="${descricao}"/>
+<input type="hidden" id="tempolimite" name="tempolimite" value="${tempolimite}"/>
+<input type="submit" id="Button2" name="Concluir" value="Concluir" style="position:absolute;left:490px;top:503px;width:108px;height:46px;z-index:6;">
+<div id="Layer2" style="position:absolute;text-align:left;left:58px;top:107px;width:784px;height:323px;z-index:7; overflow-y: scroll;" title="">
 <table class="table table-striped">
 	<tr>
 		<td class="tabela">Produto</td>
-		<td class="tabela">Unidades</td>
+		<td class="tabela">Unidades produto</td>
 		<td class="tabela">Unidades lote</td>
-		<td class="tabela">Preço</td>
-		<td class="tabela"></td>
+		<td class="tabela">Preço unitário </td>
+		<td class="tabela">Preço x unidades</td>
+		<td class="tabela">Adicionado</td>
 	</tr>
 <!-- $BeginBlock produto -->
-	${produto}
+	<tr>
+			<td class="tabela">${produto}</td>
+			<td class="tabela">${quantidade}</td>
+			<td class="tabela"><input id="qtd${idproduto}" name="quantidadeLote" type="number" value="0" min="0" max="${quantidade}" onclick="(function somar(){$('#valor${idproduto}').val($('#qtd${idproduto}').val()*$('#preco${idproduto}').val());})();"/></td>
+			<td class="tabela"><input type="text" style="width:50px;" id="preco${idproduto}" name="precoProd" value="${preco}" readonly /></td>
+			<td class="tabela"><input input type="text" style="width:50px;" id="valor${idproduto}" name="precoLote" value="0.00" readonly /></td>
+			<td><input type="checkbox" id="checkpr${idproduto}" name="checkpr${idproduto}" onclick="(function(){$('#adicionado${idproduto}').val((document.getElementById('checkpr${idproduto}').checked? 'true' : 'false'));})();" /></td>
+			<input type="hidden" name="adicionado" id="adicionado${idproduto}" value="false"/>
+			<input type="hidden" name="idproduto" id="idproduto" value="${idproduto}" />
+			<input type="hidden" name="quantidade" id="quantidade" value="${quantidade}" />
+	</tr>
 <!-- $EndBlock produto -->
 </table>
+</form>
 </div>
-<form method="post">
-<span style="color:#000000;font-family:Arial;font-size:15px;"><strong>Valor Personalizado</strong></span></div>
-<textarea name="TextArea1" id="TextArea1" style="position:absolute;left:225px;top:496px;width:174px;height:22px;z-index:4;" rows="0" cols="23"></textarea>
-<input type="hidden" id="etapa" name="etapa" value="valorpersonalizado"/>
-<input type="hidden" id="userCase" name="userCase" value="gerenciarLeilao"/>
-<input type="hidden" id="action" name="action" value="criarLeilao"/>
-<input type="hidden" id="idleiloeiro" name="idleiloeiro" value="${idleiloeiro}"/>
-<input type="hidden" id="idleilao" name="idleilao" value="${idleilao}"/>
-<input type="submit" id="Button2" name="" value="add" style="position:absolute;left:409px;top:495px;width:55px;height:25px;z-index:5;">
-</form>
-<form method="post">
-<input type="hidden" id="etapa" name="etapa" value="concluir"/>
-<input type="hidden" id="userCase" name="userCase" value="gerenciarLeilao"/>
-<input type="hidden" id="action" name="action" value="criarLeilao"/>
-<input type="hidden" id="idleiloeiro" name="idleiloeiro" value="${idleiloeiro}"/>
-<input type="hidden" id="idleilao" name="idleilao" value="${idleilao}"/>
-<input type="submit" id="Button1"  value="Concluir" style="position:absolute;left:701px;top:489px;width:124px;height:37px;z-index:99999;">
-</form>
+${message}
 </div>
 </div>

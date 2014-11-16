@@ -1,6 +1,7 @@
 package module1.pechincha.useCases;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -21,11 +22,10 @@ import module1.pechincha.util.DoAction;
 import module2.pechincha.manager.StorageLeilaoEnvironments;
 
 public class GerenciarLeilao extends ModelController {
-
 	@Override
 	public String[] getActions() {
-		String[] actions = { "criarLeilao", "reenviarEmail",
-				"pesquisarLeilao", "finalizarLeilao", "criarLote" };
+		String[] actions = { "criarLeilao", "processaEmail",
+				"pesquisarLeilao", "finalizarLeilao", "criarLote", "historicoLeilao"};
 		return actions;
 	}
 	// os metodos vao abaixo
@@ -34,111 +34,160 @@ public class GerenciarLeilao extends ModelController {
 		return "gerenciarLeilao";
 	}
 	public ActionDone criarLeilao(DoAction action){
+		LoteProduto loteProduto;
 		ValidaLeilao valida = new ValidaLeilao();
+		ValidaLote validaLote = new ValidaLote();
 		ActionDone done = new ActionDone();
 		Leilao le=new Leilao();
 		JDBCLeilaoDAO leilao = new JDBCLeilaoDAO();
+		JDBCLoteProdutoDAO loteProdutoDao = new JDBCLoteProdutoDAO();
 		JDBCUsuarioDAO us = new JDBCUsuarioDAO();
 		Usuario user;
-		String etapa=desbuga(action,"etapa");
+		String etapa=check(action,"etapa");
 		switch(etapa){
 		case "criarLeilao":
-				le.setEtiqueta((desbuga(action,"etiqueta")));
-				le.setDescricao(desbuga(action,"descricao"));
-				String temp=desbuga(action,"tempolimite");
-				int segundos=0;
-				if(temp.length()<=5){
-					try{
-					String s=temp.substring(0,2);
-					int tempo=Integer.parseInt(s);
-					segundos=tempo*60*60;
-					s=temp.substring(2,5);
-					segundos+=tempo*60;
-					}catch(NumberFormatException e){
-						done.setUseCase(action.getUseCase());
-						done.setAction("leilaop0erro");
-						done.setProcessed(true);
-						done.setStatus(false);
-						done.setData("idleiloeiro", desbuga(action,"idleiloeiro"));
-						return done;
-					}
-				}else{
-					done.setUseCase(action.getUseCase());
-					done.setAction("leilaop0erro");
-					done.setProcessed(true);
-					done.setStatus(false);
-					done.setData("idleiloeiro", desbuga(action,"idleiloeiro"));
-					return done;
-				}
-				le.setTempoLimite(segundos);
-				le.setAtivo(false);
-				le.setIdLeiloeiro(Integer.parseInt(desbuga(action,"idleiloeiro")));
-				le.setPrecolote(500);
-				le.setAtivo(true);
-				le.setLanceInicial(500);
-				le.setNickname("Pechincha");
+				le.setEtiqueta((check(action,"etiqueta")));
+				le.setDescricao(check(action,"descricao"));
+				le.setIdLeiloeiro(Integer.parseInt(check(action,"idleiloeiro")));
 				user=us.select(le.getIdLeiloeiro());
 				le.setNickname(user.getNickname());
-				if(valida.validar(le)){
-					String pk=String.valueOf(leilao.insertReturningPk(le));
+				done=valida.validar(le,action);
+				if(done.getData("valida").equals(true)){
 					done.setUseCase(action.getUseCase());
+					done.setData("etiqueta",check(action,"etiqueta"));
+					done.setData("descricao",check(action,"descricao"));
+					done.setData("nickname",le.getNickname());
 					done.setAction("leilaop1");
 					done.setProcessed(true);
 					done.setStatus(true);
-					done.setData("idleiloeiro", desbuga(action,"idleiloeiro"));
-					done.setData("idleilao", pk);
+					done.setData("idleiloeiro", check(action,"idleiloeiro"));
 					return done;
 				}else{
-					done.setUseCase(action.getUseCase());
-					done.setAction("leilaop0erro");
-					done.setProcessed(true);
-					done.setStatus(false);
-					done.setData("idleiloeiro", Integer.parseInt(desbuga(action,"idleiloeiro")));
 					return done;
 				}
 		case "leilaop0":
 			done.setAction("leilaop0");
 			done.setUseCase(action.getUseCase());
-			done.setData("idleiloeiro",desbuga(action,"idleiloeiro"));
+			done.setData("idleiloeiro",check(action,"idleiloeiro"));
 			done.setProcessed(true);
 			done.setStatus(true);
 			return done;
 		case "concluir":
-			le=leilao.select(Integer.parseInt((String) action.getData("idleilao")));
-			
-			StorageLeilaoEnvironments.iniciarAmbienteLeilao(le);
-			done.setData("isLeiloeiro", true);
-			done.setData("userName",le.getNickname());
-			done.setData("idEmissor", String.valueOf(le.getIdLeiloeiro()));
-			done.setData("idLeilao", String.valueOf(le.getIdLeilao()));
-			done.setAction("ambiente");
-			done.setUseCase("ambienteLeilao");
-			done.setData("idleiloeiro",desbuga(action,"idleiloeiro"));
-			done.setProcessed(true);
-			done.setStatus(true);
+			String[] quantidadeLote=(String[])action.getData("quantidadeLote_array");
+			String[] precoLote=(String[])action.getData("precoLote_array");
+			String[] idproduto=(String[])action.getData("idproduto_array");
+			String[] quantidade=(String[])action.getData("quantidade_array");
+			String[] precoProd=(String[])action.getData("precoProd_array");
+			String[] adicionado=(String[])action.getData("adicionado_array");
+			float valorPerson=Float.parseFloat((String) action.getData("valorBox"));
+			float valorTrue=0;
+			boolean valido=validaLote.validar(quantidadeLote, precoLote, idproduto, quantidade, precoProd,valorPerson,adicionado);
+			if(valido){
+				le.setEtiqueta((check(action,"etiqueta")));
+				le.setDescricao(check(action,"descricao"));
+				le.setIdLeiloeiro(Integer.parseInt(check(action,"idleiloeiro")));
+				le.setAtivo(true);
+				user=us.select(le.getIdLeiloeiro());
+				le.setNickname(user.getNickname());
+				le.setTempoLimite(Integer.parseInt(check(action,"tempolimite")));
+				if(action.getData("valorPersonalizado").equals("true")){
+					le.setLanceInicial(valorPerson);
+					le.setPrecolote(valorPerson);
+				}
+				else{
+					ArrayList<Integer> adicionados=new ArrayList<Integer>();
+					adicionado=(String[])action.getData("adicionado_array");
+					int x=0;
+					for(String temp:adicionado){
+						if(temp.equals("true"))adicionados.add(x);
+						x++;
+					}
+					for(int indice:adicionados){
+						valorTrue+=Integer.parseInt(quantidadeLote[indice])*Float.parseFloat(precoProd[indice]);
+					}
+					le.setLanceInicial(valorTrue);
+					le.setPrecolote(valorTrue);
+				}
+				int pk=leilao.insertReturningPk(le);
+				le.setIdLeilao(pk);
+				ArrayList<Integer> adicionados=new ArrayList<Integer>();
+				adicionado=(String[])action.getData("adicionado_array");
+				int x=0;
+				for(String temp:adicionado){
+					if(temp.equals("true"))adicionados.add(x);
+					x++;
+				}
+				for(int indice:adicionados){
+					loteProduto = new LoteProduto();
+					loteProduto.setFkleilao(pk);
+					loteProduto.setFkproduto(Integer.parseInt(idproduto[indice]));
+					loteProduto.setUnidades(Integer.parseInt(quantidadeLote[indice]));
+					loteProdutoDao.insert(loteProduto);
+				}
+				done.setData("idEmissor", String.valueOf(le.getIdLeiloeiro()));
+				done.setData("idLeilao", String.valueOf(pk));
+				done.setData("idleiloeiro",String.valueOf(le.getIdLeiloeiro()));
+				done.setData("isLeiloeiro", true);
+				done.setAction("ambiente");
+				done.setData("userName",le.getNickname());
+				done.setUseCase("ambienteLeilao");
+				done.setProcessed(true);
+				done.setStatus(true);
+				StorageLeilaoEnvironments.iniciarAmbienteLeilao(le);
+				return done;
+			}else{
+				done.setUseCase(action.getUseCase());
+				done.setData("etiqueta",check(action,"etiqueta"));
+				done.setData("descricao",check(action,"descricao"));
+				done.setData("idleiloeiro", check(action,"idleiloeiro"));
+				done.setData("tempolimite", check(action,"tempolimite"));
+				done.setData("nickname",check(action,"nickname"));
+				done.setAction("leilaop1");
+				done.setData("message", "Houve um erro no cadastro do lote!");
+				done.setProcessed(true);
+				done.setStatus(true);
+				return done;
+			}
 		}
 		return done;
 	}
-	public String desbuga(DoAction action,String key){
+	public String check(DoAction action,String key){
 		String[] filtro = (String[])action.getData(key+"_array");
 		String saida=filtro[filtro.length-1];
 		return saida;
 	}
 	
-	public List<Leilao> getHistorico(DoAction action){
+	public ActionDone historicoLeilao(DoAction action){
 		ActionDone done=new ActionDone();
+		List<Leilao> list;
 		JDBCLeilaoDAO leilao = new JDBCLeilaoDAO();
-		List<Leilao> list = null;
-		list=leilao.getHistorico((int) action.getData("idleilao"));
-		return list;
+			list=leilao.getHistorico(Integer.parseInt((String) action.getData("idleiloeiro")));
+			done.setAction("historico");
+			done.setData("termino",false);
+			done.setUseCase(action.getUseCase());
+			done.setData("idleiloeiro",check(action,"idleiloeiro"));
+			done.setData("lista", list);
+			done.setProcessed(true);
+			done.setStatus(true);
+			done.setData("message", " ");
+			return done;
 	}
 	
-	public ActionDone reenviarEmail(DoAction action){
+	
+	public ActionDone processaEmail(DoAction action){
 		ActionDone done = new ActionDone();
 		Leilao leilao = null;
 		JDBCLeilaoDAO leilaoDao = new JDBCLeilaoDAO();
-		leilao=leilaoDao.select((int) action.getData("idleilao"));
-		enviarEmail(leilao);
+		leilao=leilaoDao.select(Integer.parseInt((String) action.getData("idleilao")));
+		boolean statusEmail=enviarEmail(leilao);
+		List<Leilao> list=leilaoDao.getHistorico(Integer.parseInt((String) action.getData("idleiloeiro")));
+		done.setAction("historico");
+		done.setUseCase(action.getUseCase());
+		done.setData("idleiloeiro",check(action,"idleiloeiro"));
+		done.setData("lista", list);
+		if(statusEmail){
+			done.setData("message","ok");
+		}else done.setData("message","erro");
 		done.setProcessed(true);
 		done.setStatus(true);
 		return done;
@@ -146,13 +195,17 @@ public class GerenciarLeilao extends ModelController {
 	
 	public boolean finalizarLeilao(Leilao leilao){
 		JDBCLeilaoDAO update =new JDBCLeilaoDAO();
+		JDBCLoteProdutoDAO lt =new JDBCLoteProdutoDAO();
+		Calendar data = Calendar.getInstance(); 
+		String tempo = String.valueOf(data.get(Calendar.DAY_OF_MONTH))+"/"+ String.valueOf(data.get(Calendar.MONTH))+"/"+String.valueOf(data.get(Calendar.YEAR));
+		leilao.setTermino(tempo);
+		lt.delete(leilao.getIdLeilao());
 		leilao.setAtivo(false);
-		//update.update(leilao);
-		enviarEmail(leilao);
-		return true;
+		update.update(leilao);
+		return enviarEmail(leilao);
 	}
 	
-	public void enviarEmail(Leilao leilao) {
+	public boolean enviarEmail(Leilao leilao) {
 		String nome="";
 		String msg="";
 		String destino="";
@@ -163,7 +216,11 @@ public class GerenciarLeilao extends ModelController {
 		nome=leiloeiro.getNomeCompleto();
 		msg="Informamos que seu leilão não obteve vendas, que tal anunciar novamente!";
 		destino=leiloeiro.getEmailPrincipal();
-		mail(nome,msg,destino);
+		if(!mail(nome,msg,destino)){
+			destino=leiloeiro.getEmailAlternativo();
+			return mail(nome,msg,destino);
+		}
+		return mail(nome,msg,destino);
 		}else{
 			nome=leiloeiro.getNomeCompleto();
 			msg="Informamos que o senhor(a) "+comprador.getNomeCompleto()+" efetuou uma compra no seu leilão, </ br>Voce pode entrar em contato com o mesmo com os seguinte dados:</ br><ul><li>Skype: "+comprador.getSkype()+"</li><li>E-mail: "+comprador.getEmailPrincipal()+"</li><li>Telefone fixo: "+comprador.getTelFixo()+"</li><li>Telefone celular: "+comprador.getTelCelular()+"</li></ul></ br><h1>Agradecemos aos nossos clientes pela preferência</h1>";
@@ -172,10 +229,14 @@ public class GerenciarLeilao extends ModelController {
 			nome=comprador.getNomeCompleto();
 			msg="É um prazer informar que o senhor(a) efetuou uma compra de "+leiloeiro.getNomeCompleto()+" no Pechincha.com, </ br>Voce pode entrar em contato com o mesmo para concluir sua compra pelos seguintes canais de comunicação:</ br><ul><li>Skype: "+leiloeiro.getSkype()+"</li><li>E-mail: "+leiloeiro.getEmailPrincipal()+"</li><li>Telefone fixo: "+leiloeiro.getTelFixo()+"</li><li>Telefone celular: "+leiloeiro.getTelCelular()+"</li></ul></ br><h1>Agradecemos aos nossos clientes pela preferência</h1>";
 			destino=comprador.getEmailPrincipal();
-			mail(nome,msg,destino);
+			if(!mail(nome,msg,destino)){
+				destino=leiloeiro.getEmailAlternativo();
+				return mail(nome,msg,destino);
+			}
+			return mail(nome,msg,destino);
 		}
 	}
-	private synchronized void  mail(String nome,String msg,String destino){
+	private synchronized boolean  mail(String nome,String msg,String destino){
 		HtmlEmail email = new HtmlEmail();
 		email.setHostName("smtp.gmail.com");
 		email.setSslSmtpPort("465");
@@ -191,9 +252,11 @@ public class GerenciarLeilao extends ModelController {
 			email.setHtmlMsg(builder.toString());
 			email.addTo(destino);// destinatario
 			email.send();
+			return true;
 		} catch (EmailException e) {
 			System.err.println("Houve um erro ao enviar o email!");
 			e.printStackTrace();
+			return false;
 		}
 	}
 	

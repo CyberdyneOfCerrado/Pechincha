@@ -7,6 +7,7 @@ import javax.websocket.Session;
 
 import module1.pechincha.model.Leilao;
 import module1.pechincha.useCases.GerenciarLeilao;
+import module1.pechincha.util.ActionDone;
 import module2.pechincha.useCases.Chat;
 import module2.pechincha.util.Messeger;
 import module2.pechincha.util.MessegerFactory;
@@ -32,7 +33,8 @@ public class ManagerLeilao extends Thread {
 			System.out.println("Manager verificando se o tempo já acabou: "
 					+ tempoCorrente);
 		}
-		// Provavelmente terei que chamar o método de finalizar aqui.
+		//Finalização automática.
+		if( !done )
 		finalizar();
 	};
 
@@ -78,8 +80,7 @@ public class ManagerLeilao extends Thread {
 	public synchronized void removeSession(UserSession userSession) {
 		if (!peers.containsKey(userSession.getIdUser()))
 			return;
-		System.err.println("Clientes conectados removendo " + peers.size()
-				+ " Leilao " + leilao.getIdLeilao());
+		System.err.println("Clientes conectados removendo " + peers.size()+ " Leilao " + leilao.getIdLeilao());
 		peers.remove(userSession.getIdUser());
 		this.feedOffline(peers.size());
 	};
@@ -87,8 +88,7 @@ public class ManagerLeilao extends Thread {
 	public synchronized void addSession(UserSession userSession) {
 		if (peers.containsKey(userSession.getIdUser()))
 			return;
-		System.err.println("Clientes conectados adicionando " + peers.size()
-				+ " Leilao " + leilao.getIdLeilao());
+		System.err.println("Clientes conectados adicionando " + peers.size()+ " Leilao " + leilao.getIdLeilao());
 		feedOnline(peers.size() + 1);
 		peers.put(userSession.getIdUser(), userSession);
 	};
@@ -107,23 +107,20 @@ public class ManagerLeilao extends Thread {
 				peers.remove(us.getIdUser());
 				continue;
 			}
-			session.getAsyncRemote().sendText(
-					MessegerFactory.MessegerToJSONString(messeger));
+			session.getAsyncRemote().sendText(MessegerFactory.MessegerToJSONString(messeger));
 		}
 	};
 
 	private void msgUnicast(UserSession userSession, Messeger messeger) {
 		if (userSession.getSession() == null)
 			return;
-		userSession.getSession().getAsyncRemote()
-				.sendText(MessegerFactory.MessegerToJSONString(messeger));
+		userSession.getSession().getAsyncRemote().sendText(MessegerFactory.MessegerToJSONString(messeger));
 	};
 
 	private void chat(UserSession userSession, Messeger messeger) {
 		boolean valida = chat.validarMensagem(messeger);
 		if (valida) {
-			messeger = chat.diferenciarUsuario(messeger, userSession,
-					maiorLance, leilao);
+			messeger = chat.diferenciarUsuario(messeger, userSession,maiorLance, leilao);
 			msgBroadcast(messeger);
 		}
 	};
@@ -140,15 +137,14 @@ public class ManagerLeilao extends Thread {
 			msgBroadcast(MessegerFactory.createMessegerLance(
 					String.valueOf(lanceCorrente), userSession.getNickname()));
 		} else {
-			msgUnicast(userSession,
-					MessegerFactory.createMessegerLanceInvalido());
+			msgUnicast(userSession,MessegerFactory.createMessegerLanceInvalido());
 		}
 	};
 
 	private void finalizar(UserSession userSession) {
-	        boolean result = gl.finalizarLeilao(this.leilao);
-			
-	    	if (result) {
+			//Previnir que o leiloeiro finalizem em nenhum lance. 
+	    	if ( maiorLance.getSession() != null ) {
+	    	boolean result = gl.finalizarLeilao(this.leilao);
 			// Pegar a sessão do maior lance e do leiloeiro;
 			// Preparar mensagem para ambos.
 			// Enviar mensagem de acordo de compra unicast.
@@ -156,37 +152,35 @@ public class ManagerLeilao extends Thread {
 			// conectados.
 
 			String msg = "Os dados de acordo de comprar foram eviados para o seu email.";
+			String msgFalha = "O leilão fui finalizado, porém houve uma falha ao enviar os emails."; 
 			String msgDone = "O leilão foi encerrado.";
 
 			if (maiorLance.getSession().isOpen()) {
-				msgUnicast(maiorLance,
-						MessegerFactory.createMessegerFinalizar(msg));
+
+				msgUnicast(maiorLance,MessegerFactory.createMessegerFinalizar( ((!result) ? msgFalha : msg)  ));
 				peers.remove(maiorLance.getIdUser());
 			}
 
 			if (userSession.getSession().isOpen()) {
-				msgUnicast(userSession,
-						MessegerFactory.createMessegerFinalizar(msg));
+				msgUnicast(userSession,MessegerFactory.createMessegerFinalizar( ((!result) ? msgFalha : msg)  ));
 				peers.remove(userSession.getIdUser());
 			}
 
 			msgBroadcast(MessegerFactory.createMessegerFinalizar(msgDone));
-			this.done = true;
+			this.tempoCorrente = 0;
+			this.done = true; 
 
 		} else {
-			msgUnicast(
-					userSession,
-					MessegerFactory
-							.createMessegerFinalizar("Você não pode finalizar o leilão neste momento."));
+			msgUnicast(userSession,MessegerFactory.createMessegerFinalizar("Você não pode finalizar sem lances."));
 		}
 	};
 
 	private void finalizar() {
-		// gl.finalizarLeilao(this.leilao);
+		gl.finalizarLeilao(this.leilao);
 
 		UserSession leiloeiro = peers.get(this.leilao.getIdLeilao());
 
-		String msg = "Os dados de acordo de comprar foram eviados para o seu email.";
+		String msg = "Os dados de acordo de compra foram eviados para o seu email.";
 		String msgDone = "O leilão foi encerrado.";
 
 		if (maiorLance != null){
@@ -218,8 +212,7 @@ public class ManagerLeilao extends Thread {
 		msg += leilao.getEtiqueta() + ";";
 		msg += peers.size() + ";";
 		msg += lanceCorrente + ";";
-		msg += (maiorLance.getNickname() != null) ? maiorLance.getNickname()
-				+ ";" : "Ninguém ainda" + ";";
+		msg += (maiorLance.getNickname() != null) ? maiorLance.getNickname()+ ";" : "Ninguém ainda" + ";";
 		msg += leilao.getNickname() + ";";
 
 		msgUnicast(userSession, MessegerFactory.createMessegerCallback(msg));

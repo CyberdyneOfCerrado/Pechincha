@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import module1.pechincha.util.ReflectiveModel;
 
 public class LoteProduto extends ReflectiveModel {
-	private Produto produto;
-	private int unidades;
 	private int fkleilao;
 	private int fkproduto;
+	private int unidades;	
+	private Produto produto;
 	
 	public LoteProduto(Produto produto,int unidades,float precoLote, int fkleilao,int fkproduto){
 		this.produto=produto;

@@ -5,6 +5,7 @@ import java.util.List;
 
 import biz.source_code.miniTemplator.MiniTemplator;
 import module1.pechincha.cruds.JDBCProdutoDAO;
+import module1.pechincha.model.Leilao;
 import module1.pechincha.model.Produto;
 import module1.pechincha.util.ActionDone;
 import module1.pechincha.view.ViewController;
@@ -26,9 +27,12 @@ public class GerenciarLeilaoView extends ViewController{
 		case "leilaop1":
 			retorno = leilaop1(ad); 
 		break;
-//		case "getHistorico":
-//			retorno = getHistorico(ad); 
-//		break;
+		case "leilaop0erro":
+			retorno = leilaop0erro(ad); 
+		break;
+		case "historico":
+			retorno = getHistorico(ad); 
+		break;
 //		case "getTodosLeiloes":
 //			
 //			retorno = getTodosLeiloes(ad); 
@@ -54,30 +58,63 @@ public class GerenciarLeilaoView extends ViewController{
 	
 	public String leilaop0erro(ActionDone ad){
 		MiniTemplator temp = super.startMiniTemplator(super.getTemplate(ad));
-		temp.setVariable("etiqueta",(String)ad.getData("etiqueta"));
-		temp.setVariable("descricao",(String)ad.getData("descricao"));
-		temp.setVariable("tempolimite",(String)ad.getData("tempolimite"));
-		temp.setVariable("idleiloeiro",(String)ad.getData("idleiloeiro"));
+		temp.setVariable("erro",(String)ad.getData("erro"));
+		temp.setVariable("idleiloeiro",String.valueOf(ad.getData("idleiloeiro")));
+		temp.setVariable("descricao",String.valueOf(ad.getData("descricao")));
+		temp.setVariable("etiqueta",String.valueOf(ad.getData("etiqueta")));
+		temp.setVariable("tempolimite",String.valueOf(ad.getData("tempolimite")));
 		return temp.generateOutput();
 	}
 	public String leilaop1(ActionDone ad){
 		String pathi = getSevletContext()+getUseCase()+"leilaop1"+".html";
-		String pathp = getSevletContext()+getUseCase()+"produto"+".html";
-		MiniTemplator temp = super.startMiniTemplator(pathp);
 		MiniTemplator index = super.startMiniTemplator(pathi);
 		JDBCProdutoDAO pr = new JDBCProdutoDAO();
 		List<Produto> list= pr.list(Integer.parseInt((String) ad.getData("idleiloeiro")));
-		index.setVariable("idleiloeiro", (String) ad.getData("idleiloeiro"));
-		index.setVariable("idleilao",(String) ad.getData("idleilao"));
+		index.setVariable("etiqueta", String.valueOf(ad.getData("etiqueta")));
+		index.setVariable("descricao", String.valueOf(ad.getData("descricao")));
+		index.setVariable("tempolimite", String.valueOf(ad.getData("tempo")));
+		index.setVariable("nickname", String.valueOf(ad.getData("nickname")));
+		index.setVariable("idleiloeiro", String.valueOf(ad.getData("idleiloeiro")));
+		if(String.valueOf(ad.getData("message")).equals(" ")){
+			index.setVariable("message"," ");
+		}else index.setVariable("message", "<div id=\"wb_Text5\" style=\"background:red;position:absolute;left:55px;top:440px;width:292px;height:19px;z-index:9;text-align:left;\"><span style=\"color:#FFFFFF;font-family:Arial;font-size:17px;\"><strong>"+String.valueOf(ad.getData("message"))+"</strong></span></div>");
 		for (Produto produto:list){
-			temp.setVariable("produto", produto.getTitulo());
-			temp.setVariable("quantidade", produto.getQuantidade());
-			temp.setVariable("preco",String.valueOf(produto.getPreco()));
-			temp.setVariable("idproduto",String.valueOf(produto.getPk()));
-			temp.setVariable("idleilao", String.valueOf(ad.getData("idleiloeiro")));
-			index.setVariable("produto",temp.generateOutput());
+			index.setVariable("produto", produto.getTitulo());
+			index.setVariable("quantidade", produto.getQuantidade());
+			index.setVariable("preco",String.valueOf(produto.getPreco()));
+			index.setVariable("idproduto",String.valueOf(produto.getPk()));
 			index.addBlock("produto");
 		}
 		return index.generateOutput();
 		}
+
+	public String getHistorico(ActionDone ad){
+		String pathi = getSevletContext()+getUseCase()+"historicoLeilao"+".html";
+		String pathok = getSevletContext()+getUseCase()+"okemail"+".html";
+		String patherro = getSevletContext()+getUseCase()+"erroemail"+".html";
+		MiniTemplator ok = super.startMiniTemplator(pathok);
+		MiniTemplator erro = super.startMiniTemplator(patherro);
+		MiniTemplator index = super.startMiniTemplator(pathi);
+		JDBCProdutoDAO pr = new JDBCProdutoDAO();
+		List<Leilao> list=(List<Leilao>) ad.getData("lista");
+		if(ad.getData("message").equals("ok")){
+			index.setVariable("message",ok.generateOutput());
+		}
+		if(ad.getData("message").equals("erro")){
+			index.setVariable("message",erro.generateOutput());
+		}
+		if(ad.getData("message").equals(" ")){
+			index.setVariable("message", String.valueOf(ad.getData("message")));
+		}
+		index.setVariable("idleiloeiro", String.valueOf(ad.getData("idleiloeiro")));
+		for (Leilao le:list){
+			index.setVariable("etiqueta", le.getEtiqueta());
+			index.setVariable("termino", le.getTermino());
+			index.setVariable("valor", String.valueOf(le.getPrecolote()));
+			index.setVariable("idleilao",String.valueOf(le.getIdLeilao()));
+			index.setVariable("idleiloeiro", String.valueOf(le.getIdLeiloeiro()));
+			index.addBlock("historico");
+		}
+		return index.generateOutput();
+	}
 }

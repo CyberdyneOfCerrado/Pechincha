@@ -19,7 +19,7 @@ public class JDBCLoteProdutoDAO extends DAOBehavior<LoteProduto> {
 
 	@Override
 	public void insert(LoteProduto arg) {
-		String sql = "Insert into "+arg.getTableName()+" ("+arg.getColumnName()+") values ( ?, ?, ? )"; 
+		String sql = "Insert into "+arg.getTableName()+" (fkleilao,fkproduto,quantidade) values ( ?, ?, ? )"; 
 		try {
 			PreparedStatement ps = c.prepareStatement(sql);
 			ps.setInt(1,arg.getFkleilao());
@@ -33,9 +33,17 @@ public class JDBCLoteProdutoDAO extends DAOBehavior<LoteProduto> {
 	}
 
 	@Override
-	public void delete(int pk) {
-		// TODO Auto-generated method stub
-		
+	public void delete(int pk){
+		String sql = "delete from loteproduto where fkleilao= ?";
+		PreparedStatement ps;
+		try {
+			ps = c.prepareStatement(sql);
+			ps.setInt(1,pk);
+			ps.execute();
+			ps.close();
+		} catch (SQLException e) {
+			throw new RuntimeException("Erro ao deletar dados. Classe JDBCLoteProdutoDAO", e); 
+		}
 	}
 
 	@Override
