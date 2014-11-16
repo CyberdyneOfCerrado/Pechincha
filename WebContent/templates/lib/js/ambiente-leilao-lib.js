@@ -191,7 +191,7 @@ function finalizar(message){
    $( "#dialog" ).dialog({ 
 	 width: 500, 
 	 height: 200,
-	 close: function( event, ui ) { console.log('merda'); }
+	 close: function( event, ui ) { console.log('nada'); }
 	});
    
    finalizado = true;
@@ -261,4 +261,4 @@ function alertaDown(){
 		$('#alertas').slideUp( "slow" );
 	}
 }
-//Lixos
+
