@@ -1,6 +1,7 @@
 package module1.pechincha.useCases;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -180,7 +181,6 @@ public class GerenciarLeilao extends ModelController {
 		boolean statusEmail=enviarEmail(leilao);
 		List<Leilao> list=leilaoDao.getHistorico(Integer.parseInt((String) action.getData("idleiloeiro")));
 		done.setAction("historico");
-		done.setData("termino",false);
 		done.setUseCase(action.getUseCase());
 		done.setData("idleiloeiro",check(action,"idleiloeiro"));
 		done.setData("lista", list);
@@ -191,29 +191,15 @@ public class GerenciarLeilao extends ModelController {
 		done.setStatus(true);
 		return done;
 	}
-	public ActionDone processaEmail(Leilao leilao){
-		ActionDone done = new ActionDone();
-		JDBCLeilaoDAO leilaoDao = new JDBCLeilaoDAO();
-		List<Leilao> list=leilaoDao.getHistorico(leilao.getIdLeiloeiro());
-		boolean statusEmail=enviarEmail(leilao);
-		done.setAction("historico");
-		done.setUseCase("gerenciarLeilao");
-		done.setData("termino",true);
-		done.setData("idleiloeiro",leilao.getIdLeiloeiro());
-		done.setData("lista", list);
-		if(statusEmail){
-			done.setData("message","ok");
-		}else done.setData("message","erro");
-		done.setProcessed(true);
-		done.setStatus(true);
-		return done;
-	}
 	
-	public ActionDone finalizarLeilao(Leilao leilao){
+	public boolean finalizarLeilao(Leilao leilao){
 		JDBCLeilaoDAO update =new JDBCLeilaoDAO();
+		Calendar data = Calendar.getInstance(); 
+		String tempo = String.valueOf(data.get(Calendar.DAY_OF_MONTH))+"/"+ String.valueOf(data.get(Calendar.MONTH))+"/"+String.valueOf(data.get(Calendar.YEAR));
+		leilao.setTermino(tempo);
 		leilao.setAtivo(false);
 		update.update(leilao);
-		return processaEmail(leilao);
+		return enviarEmail(leilao);
 	}
 	
 	public boolean enviarEmail(Leilao leilao) {

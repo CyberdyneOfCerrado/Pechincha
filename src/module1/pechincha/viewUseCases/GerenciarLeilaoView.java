@@ -92,11 +92,9 @@ public class GerenciarLeilaoView extends ViewController{
 		String pathi = getSevletContext()+getUseCase()+"historicoLeilao"+".html";
 		String pathok = getSevletContext()+getUseCase()+"okemail"+".html";
 		String patherro = getSevletContext()+getUseCase()+"erroemail"+".html";
-		String pathtermino = getSevletContext()+getUseCase()+"termino"+".html";
 		MiniTemplator ok = super.startMiniTemplator(pathok);
 		MiniTemplator erro = super.startMiniTemplator(patherro);
 		MiniTemplator index = super.startMiniTemplator(pathi);
-		MiniTemplator termino = super.startMiniTemplator(pathtermino);
 		JDBCProdutoDAO pr = new JDBCProdutoDAO();
 		List<Leilao> list=(List<Leilao>) ad.getData("lista");
 		if(ad.getData("message").equals("ok")){
@@ -108,9 +106,6 @@ public class GerenciarLeilaoView extends ViewController{
 		if(ad.getData("message").equals(" ")){
 			index.setVariable("message", String.valueOf(ad.getData("message")));
 		}
-		if((boolean) ad.getData("termino")){
-			index.setVariable("termino",termino.generateOutput());
-		}else index.setVariable("termino", " ");
 		index.setVariable("idleiloeiro", String.valueOf(ad.getData("idleiloeiro")));
 		for (Leilao le:list){
 			index.setVariable("etiqueta", le.getEtiqueta());
