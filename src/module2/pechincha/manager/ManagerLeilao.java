@@ -33,7 +33,8 @@ public class ManagerLeilao extends Thread {
 			System.out.println("Manager verificando se o tempo já acabou: "
 					+ tempoCorrente);
 		}
-		// Provavelmente terei que chamar o método de finalizar aqui.
+		//Finalização automática.
+		if( !done )
 		finalizar();
 	};
 
@@ -154,7 +155,7 @@ public class ManagerLeilao extends Thread {
 			String msg = "Os dados de acordo de comprar foram eviados para o seu email.";
 			String msgDone = "O leilão foi encerrado.";
 
-			if (maiorLance.getSession().isOpen()) {
+			if (maiorLance.getSession() != null && maiorLance.getSession().isOpen()) {
 				msgUnicast(maiorLance,
 						MessegerFactory.createMessegerFinalizar(msg));
 				peers.remove(maiorLance.getIdUser());
@@ -167,7 +168,8 @@ public class ManagerLeilao extends Thread {
 			}
 
 			msgBroadcast(MessegerFactory.createMessegerFinalizar(msgDone));
-			this.done = true;
+			this.tempoCorrente = 0;
+			this.done = true; 
 
 		} else {
 			msgUnicast(userSession,MessegerFactory.createMessegerFinalizar("Você não pode finalizar o leilão neste momento."));
@@ -179,7 +181,7 @@ public class ManagerLeilao extends Thread {
 
 		UserSession leiloeiro = peers.get(this.leilao.getIdLeilao());
 
-		String msg = "Os dados de acordo de comprar foram eviados para o seu email.";
+		String msg = "Os dados de acordo de compra foram eviados para o seu email.";
 		String msgDone = "O leilão foi encerrado.";
 
 		if (maiorLance != null){
