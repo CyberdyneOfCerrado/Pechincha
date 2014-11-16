@@ -142,10 +142,9 @@ public class ManagerLeilao extends Thread {
 	};
 
 	private void finalizar(UserSession userSession) {
-			ActionDone ad = gl.finalizarLeilao(this.leilao);
-	        boolean result = true;
-	        
-	    	if (result) {
+			//Previnir que o leiloeiro finalizem em nenhum lance. 
+	    	if ( maiorLance.getSession() != null ) {
+	    	boolean result = gl.finalizarLeilao(this.leilao);
 			// Pegar a sessão do maior lance e do leiloeiro;
 			// Preparar mensagem para ambos.
 			// Enviar mensagem de acordo de compra unicast.
@@ -153,17 +152,17 @@ public class ManagerLeilao extends Thread {
 			// conectados.
 
 			String msg = "Os dados de acordo de comprar foram eviados para o seu email.";
+			String msgFalha = "O leilão fui finalizado, porém houve uma falha ao enviar os emails."; 
 			String msgDone = "O leilão foi encerrado.";
 
-			if (maiorLance.getSession() != null && maiorLance.getSession().isOpen()) {
-				msgUnicast(maiorLance,
-						MessegerFactory.createMessegerFinalizar(msg));
+			if (maiorLance.getSession().isOpen()) {
+
+				msgUnicast(maiorLance,MessegerFactory.createMessegerFinalizar( ((!result) ? msgFalha : msg)  ));
 				peers.remove(maiorLance.getIdUser());
 			}
 
 			if (userSession.getSession().isOpen()) {
-				msgUnicast(userSession,
-						MessegerFactory.createMessegerFinalizar(msg));
+				msgUnicast(userSession,MessegerFactory.createMessegerFinalizar( ((!result) ? msgFalha : msg)  ));
 				peers.remove(userSession.getIdUser());
 			}
 
@@ -172,7 +171,7 @@ public class ManagerLeilao extends Thread {
 			this.done = true; 
 
 		} else {
-			msgUnicast(userSession,MessegerFactory.createMessegerFinalizar("Você não pode finalizar o leilão neste momento."));
+			msgUnicast(userSession,MessegerFactory.createMessegerFinalizar("Você não pode finalizar sem lances."));
 		}
 	};
 
