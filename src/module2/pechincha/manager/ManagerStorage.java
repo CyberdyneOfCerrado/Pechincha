@@ -24,7 +24,7 @@ public class ManagerStorage extends Thread{
 					System.out.println("Limpando leilão "+key+" da memória. "); 
 				}
 			}
-			System.out.println("Storege fazendo a limpeza."); 
+//			System.out.println("Storege fazendo a limpeza."); 
 		}
 	}; 
 
