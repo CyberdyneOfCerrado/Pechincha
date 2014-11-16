@@ -16,8 +16,8 @@ public class ValidaLeilao {
 		if(temp.length()==5 && temp.substring(2,3).equals(":")){
 			try{
 			String s=temp.substring(0,2);
-			int tempo=Integer.parseInt(s);
-			if(tempo>23 || tempo<0){
+			int hora=Integer.parseInt(s);
+			if(hora>23 || hora<0){
 				done.setUseCase("gerenciarLeilao");
 				done.setAction("leilaop0erro");
 				done.setProcessed(true);
@@ -30,9 +30,10 @@ public class ValidaLeilao {
 				done.setData("valida",false);
 				return done;
 			}
-			segundos=tempo*60*60;
-			s=temp.substring(2,5);
-			if(tempo>59 || tempo<0){
+			segundos=hora*60*60;
+			s=temp.substring(3,5);
+			int minutos=Integer.parseInt(s);
+			if(minutos>59 || minutos<0){
 				done.setUseCase("gerenciarLeilao");
 				done.setAction("leilaop0erro");
 				done.setProcessed(true);
@@ -45,7 +46,7 @@ public class ValidaLeilao {
 				done.setData("valida",false);
 				return done;
 			}
-			segundos+=tempo*60;
+			segundos+=minutos*60;
 			done.setData("tempo", segundos);
 			done.setData("valida",true);
 			}catch(NumberFormatException e){

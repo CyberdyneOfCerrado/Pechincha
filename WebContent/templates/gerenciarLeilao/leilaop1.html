@@ -131,7 +131,7 @@ a:hover
 <input type="hidden" id="idleiloeiro" name="idleiloeiro" value="${idleiloeiro}"/>
 </form>
 <form class="form-search" action="q" method="post">
-<input type="number" id="Editbox1" style="position:absolute;left:515px;top:454px;width:251px;height:24px;line-height:24px;z-index:4;" name="valorBox" value="0.00" min="0" max="10000" />
+<input type="number" id="valorBox" style="position:absolute;left:515px;top:454px;width:251px;height:24px;line-height:24px;z-index:4;" name="valorBox" value="0" min="0" max="10000" />
 <input type="checkbox" id="checkval" value="true" name="checkval" onclick="(function(){$('#valorPersonalizado').val((document.getElementById('checkval').checked? 'true' : 'false'));})();" style="position:absolute;left:273px;top:458px;z-index:2;" />
 <input type="hidden" id="redirect" name="redirect" value="false"/>
 <input type="hidden" id="etapa" name="etapa" value="concluir"/>
@@ -160,7 +160,7 @@ a:hover
 			<td class="tabela">${quantidade}</td>
 			<td class="tabela"><input id="qtd${idproduto}" name="quantidadeLote" type="number" value="0" min="0" max="${quantidade}" onclick="(function somar(){$('#valor${idproduto}').val($('#qtd${idproduto}').val()*$('#preco${idproduto}').val());})();"/></td>
 			<td class="tabela"><input type="text" style="width:50px;" id="preco${idproduto}" name="precoProd" value="${preco}" readonly /></td>
-			<td class="tabela"><input input type="text" style="width:50px;" id="valor${idproduto}" name="precoLote" value="0.00" readonly /></td>
+			<td class="tabela"><input type="text" style="width:50px;" id="valor${idproduto}" name="precoLote" value="0.00" readonly /></td>
 			<td><input type="checkbox" id="checkpr${idproduto}" name="checkpr${idproduto}" onclick="(function(){$('#adicionado${idproduto}').val((document.getElementById('checkpr${idproduto}').checked? 'true' : 'false'));})();" /></td>
 			<input type="hidden" name="adicionado" id="adicionado${idproduto}" value="false"/>
 			<input type="hidden" name="idproduto" id="idproduto" value="${idproduto}" />
