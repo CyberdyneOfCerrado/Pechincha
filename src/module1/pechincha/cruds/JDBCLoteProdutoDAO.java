@@ -33,9 +33,17 @@ public class JDBCLoteProdutoDAO extends DAOBehavior<LoteProduto> {
 	}
 
 	@Override
-	public void delete(int pk) {
-		// TODO Auto-generated method stub
-		
+	public void delete(int pk){
+		String sql = "delete from loteproduto where fkleilao= ?";
+		PreparedStatement ps;
+		try {
+			ps = c.prepareStatement(sql);
+			ps.setInt(1,pk);
+			ps.execute();
+			ps.close();
+		} catch (SQLException e) {
+			throw new RuntimeException("Erro ao deletar dados. Classe JDBCLoteProdutoDAO", e); 
+		}
 	}
 
 	@Override

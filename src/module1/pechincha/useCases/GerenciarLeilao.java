@@ -194,9 +194,11 @@ public class GerenciarLeilao extends ModelController {
 	
 	public boolean finalizarLeilao(Leilao leilao){
 		JDBCLeilaoDAO update =new JDBCLeilaoDAO();
+		JDBCLoteProdutoDAO lt =new JDBCLoteProdutoDAO();
 		Calendar data = Calendar.getInstance(); 
 		String tempo = String.valueOf(data.get(Calendar.DAY_OF_MONTH))+"/"+ String.valueOf(data.get(Calendar.MONTH))+"/"+String.valueOf(data.get(Calendar.YEAR));
 		leilao.setTermino(tempo);
+		lt.delete(leilao.getIdLeilao());
 		leilao.setAtivo(false);
 		update.update(leilao);
 		return enviarEmail(leilao);
