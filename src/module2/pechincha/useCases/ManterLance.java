@@ -23,9 +23,8 @@ public class ManterLance {
 			Lance novo = new Lance(pkleilao, pkusuario, vallance);
 			
 			JDBCLanceDAO dao = new JDBCLanceDAO();
-			Lance ultimo = dao.searchMaxLanceByLeilao(pkleilao);
 			
-			if ( dao.validar(ultimo, novo)){
+			if ( dao.validar(novo)){
 				dao.insert(novo);
 				ad.setData("valid", true);
 			}else{

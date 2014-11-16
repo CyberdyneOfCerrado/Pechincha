@@ -124,8 +124,9 @@ public class JDBCLanceDAO extends DAOBehavior<Lance>{
 			PreparedStatement ps = c.prepareStatement("select * from lance where idleilao = ? and lance = (select max(lance) from lance where idleilao = ?");
 			ps.setInt(1,pkleilao);
 			ResultSet result = ps.executeQuery();
-			temp = new Lance(); 
-			while(result.next()){
+
+			if(result.next()){
+				temp = new Lance(); 
 				temp.setPk(result.getInt("pk"));
 				temp.setIdLeilao(result.getInt("idleilao"));
 				temp.setIdusuario(result.getInt("idusuario"));
@@ -159,16 +160,19 @@ public class JDBCLanceDAO extends DAOBehavior<Lance>{
 			throw new RuntimeException("Erro ao atualizar dados. Classe JDBCLanceDAO", e); 
 		}
 	};
-	public boolean validar(Lance atual, Lance novo){
+	public boolean validar(Lance novo){
 		if ( novo == null){
 			return false;
 		}
-		if ( atual == null){
-			return isValidValue(novo.getLance());
-		}
-		if ( !isValidValue(novo.getLance()) || !isValidValue(atual.getLance()) ||
-				atual.getLance() + 0.5 > novo.getLance()){
-			return false;
+		Lance ultimo = new JDBCLanceDAO().searchMaxLanceByLeilao(novo.getIdLeilao());
+		
+		if ( ultimo == null ){
+			return true;
+		}else{
+			if ( !isValidValue(novo.getLance()) ||
+					ultimo.getLance() + 0.5 > novo.getLance()){
+				return false;
+			}
 		}
 		return true;
 	}
