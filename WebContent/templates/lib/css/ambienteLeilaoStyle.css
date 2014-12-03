@@ -1,7 +1,9 @@
 div#ambienteLeilao{
 	height: 100%; 
-	width: 100%; 
+	width: 1005px; 
 	background-color: transparent;
+	margin: 0 auto;
+    float: none;
 }
 
 div#container-informacoes{
@@ -117,7 +119,9 @@ div#alertas{
 
 .fixIcon{
 	color: white;
-	margin: 3px;
+	margin: 3px !important;
+	font-size:10px;
+	
 }
 #lance-footer-right i {
 	margin:2px;
@@ -144,7 +148,7 @@ div#container-chat div#top-chat ul li{
 
 .fixFont{
 	font-family: Tahoma, Helvetica; 
-	font-size:14px;
+	font-size:15px;
 }
 
 .fixFontAlerta{
@@ -220,8 +224,8 @@ div#container-chat div#top-chat ul li{
 #msg{
 
 	resize: none ;
-	width: 279px ;
-	height: 44px ;
+	width: 290px ;
+	height: 53px ;
 	margin:3px ;
 	
 	font-family: Tahoma, Helvetica; 
