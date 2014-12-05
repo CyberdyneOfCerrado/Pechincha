@@ -21,6 +21,7 @@ import module1.pechincha.util.ActionDone;
 import module1.pechincha.util.DoAction;
 import module1.pechincha.viewUseCases.AmbienteLeilaoView;
 import module1.pechincha.viewUseCases.GerenciarLeilaoView;
+import module1.pechincha.viewUseCases.HomeView;
 import module1.pechincha.viewUseCases.ManterGalinhaView;
 import module1.pechincha.viewUseCases.ManterProdutosView;
 import biz.source_code.miniTemplator.MiniTemplator;
@@ -54,6 +55,8 @@ public class ServletController {
 				"manterGalinha"));
 		listViews.put("manterProdutos", new ManterProdutosView(servletContext,
 				"manterProdutos"));
+		listViews.put("home", new HomeView(servletContext,
+				"home"));
 	};
 
 	private String init() throws TemplateSyntaxException, IOException {

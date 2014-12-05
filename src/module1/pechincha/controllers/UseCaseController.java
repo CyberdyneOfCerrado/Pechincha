@@ -5,6 +5,7 @@ import java.util.Hashtable;
 
 import module1.pechincha.useCases.AmbienteLeilao;
 import module1.pechincha.useCases.GerenciarLeilao;
+import module1.pechincha.useCases.Home;
 import module1.pechincha.useCases.ManterGalinha;
 import module1.pechincha.useCases.ManterProdutos;
 import module1.pechincha.util.ActionDone;
@@ -22,6 +23,7 @@ public class UseCaseController {
 		listUserCase.put("manterGalinha", new ManterGalinha());
 		listUserCase.put("gerenciarLeilao", new GerenciarLeilao());
 		listUserCase.put("manterProdutos", new ManterProdutos());
+		listUserCase.put("home", new Home());
 		
 	};
 	

@@ -1,0 +1,45 @@
+
+		.box{
+			width:260px; 
+			height:120px;
+			background-color: rgb(226,226,226); 
+			float: left; 
+			margin: 10px;
+			margin-left:13px;
+			-webkit-border-radius: 2px;
+			-moz-border-radius: 2px;
+			border-radius: 2px;
+		}
+		.boxAlertaTempoLimite{
+			background-color:rgb(217,83,79) !important;
+		}
+		
+		.boxAlertaSemLance{
+			background-color:rgb(92,184,92) !important;
+		}
+		.center{
+			position:relative; 
+			left: 47%; 
+		}
+		.header{
+			background-color: rgb(91,192,222);
+			width:100%; 
+			height:20px;
+		}
+		.box:hover
+		{
+			-moz-box-shadow: 0 0 15px black;
+			-webkit-box-shadow: 0 0 15px black;
+			box-shadow: 0 0 15px black;
+		}
+		.fixIcon{
+	color: white;
+	margin: 3px !important;
+	font-size:16px !important;
+	
+}
+.fixFont{
+	font-family: Tahoma, Helvetica; 
+	font-size:15px;
+}
+

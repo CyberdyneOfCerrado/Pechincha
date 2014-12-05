@@ -14,6 +14,7 @@ import module2.pechincha.util.MessegerFactory;
 import module2.pechincha.util.UserSession;
 
 public class ManagerLeilao extends Thread {
+	
 	private final int TIME_DELAY = 1 * 1000;
 
 	private float lanceCorrente;
@@ -239,4 +240,20 @@ public class ManagerLeilao extends Thread {
 			e.printStackTrace();
 		}
 	};
+	
+	public float getLanceCorrente() {
+		return lanceCorrente;
+	};
+
+	public Leilao getLeilao() {
+		return leilao;
+	};
+
+	public int getTempoCorrente() {
+		return tempoCorrente;
+	};
+
+	public int getOnline(){
+		return peers.size();
+	}; 
 }
