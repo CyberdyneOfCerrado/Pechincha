@@ -1,0 +1,86 @@
+
+#Layer1
+{
+   background-color: transparent;
+   background-image: url(images/index_bkgrnd.png);
+   background-repeat: repeat;
+   background-position: center top;
+}
+#Button1
+{
+   border: 1px #A9A9A9 solid;
+   background-color: #F0F0F0;
+   color: #ffffff;
+   font-family: Arial;
+   font-size: 15px;
+   -moz-box-shadow: 3px 3px 3px #000000;
+   -webkit-box-shadow: 3px 3px 3px #000000;
+   box-shadow: 3px 3px 3px #000000;
+}
+#Button2
+{
+   border: 1px #A9A9A9 solid;
+   background-color: #F0F0F0;
+   color: #ffffff;
+   font-family: Arial;
+   font-size: 20px;
+   -moz-box-shadow: 3px 3px 3px #000000;
+   -webkit-box-shadow: 3px 3px 3px #000000;
+   box-shadow: 3px 3px 3px #000000;
+}
+#wb_Text1 
+{
+   background-color: transparent;
+   border: 0px #000000 solid;
+   padding: 0;
+   text-align: left;
+}
+#wb_Text1 div
+{
+   text-align: left;
+}
+#Layer2
+{
+   -moz-box-shadow: 3px 3px 5px #000000;
+   -webkit-box-shadow: 3px 3px 5px #000000;
+   box-shadow: 3px 3px 5px #000000;
+}
+#wb_mailerro 
+{
+   background-color: #FF0000;
+   border: 0px #000000 solid;
+   padding: 0;
+   text-align: left;
+}
+#wb_mailerro div
+{
+   text-align: left;
+}
+#wb_okmail 
+{
+   background-color: #7CFC00;
+   border: 0px #000000 solid;
+   padding: 0;
+   text-align: left;
+}
+#wb_okmail div
+{
+   text-align: left;
+}
+#wb_terminoLeilao 
+{
+   background-color: #00FF00;
+   border: 1px #0000FF dotted;
+   -moz-border-radius: 1px;
+   -webkit-border-radius: 1px;
+   border-radius: 1px;
+   padding: 0;
+   text-align: left;
+}
+#wb_terminoLeilao div
+{
+   text-align: left;
+}
+.botaoEnviar{
+	width:100px;
+}
