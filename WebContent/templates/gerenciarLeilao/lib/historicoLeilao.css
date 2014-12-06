@@ -82,5 +82,17 @@
    text-align: left;
 }
 .botaoEnviar{
-	width:100px;
+   box-shadow: 3px 3px 3px #006dcc;
+}
+.img{
+	position:absolute;
+	left:232px;
+	top:50px;	
+}
+.layer3{
+	background-color: #ffffff;
+    opacity: .4;
+}
+.txtconteudo{
+	color:blue;
 }
