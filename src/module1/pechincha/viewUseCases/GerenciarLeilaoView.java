@@ -83,14 +83,10 @@ public class GerenciarLeilaoView extends ViewController{
 		JDBCProdutoDAO pr = new JDBCProdutoDAO();
 		List<Leilao> list=(List<Leilao>) ad.getData("lista");
 		if(ad.getData("message").equals("ok")){
-			JSONObject resposta = new JSONObject();
-			resposta.put("resposta", true);
-			return resposta.toString();
+			return (String) ad.getData("message");
 		}
 		if(ad.getData("message").equals("erro")){
-			JSONObject resposta = new JSONObject();
-			resposta.put("resposta", false);
-			return resposta.toString();
+			return (String) ad.getData("message");
 		}
 		if(ad.getData("message").equals(" ")){
 			index.setVariable("message", String.valueOf(ad.getData("message")));

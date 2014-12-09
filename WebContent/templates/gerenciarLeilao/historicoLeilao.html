@@ -1,8 +1,38 @@
 <div>
+<a href="#janela1" id="modal1" rel="modal"></a>
+<a href="#janela2" id="modal2" rel="modal"></a>
+<a href="#janela3" id="modal3" rel="modal"></a>
+
+<div class="window" id="janela1">
+		<a href="#" class="fechar close">&times;</a>
+        <div class="alert alert-success">
+        <h4>Sucesso!</h4>
+    	O e-mail foi enviado corretamente para o(s) remetente(s)!
+    	</div>
+</div>
+
+<div class="window" id="janela2">
+		<a href="#" class="fechar close">&times;</a>
+        <div class="alert alert-error">
+        <h4>Erro!</h4>
+    	Houve algum erro ao enviar o e-mail, por favor contate o suporte!
+    	</div>
+</div>
+
+<div class="window" id="janela3">
+        <div class="alert alert-info">
+        <h4>Aguarde!</h4>
+    	Neste momento estamos enviando o seu e-mail...
+    	</div>
+</div>
+ 
+<!-- mascara para cobrir o site -->  
+<div id="mascara"></div>
+                   
 <link rel="stylesheet" href="templates/lib/css/css.css" media="screen">
 <link rel="stylesheet" href="templates/lib/css/style.css" media="screen">
-<link rel="stylesheet" href="templates/gerenciarLeilao/lib/historicoLeilao.css" media="screen">
-<script src="templates/gerenciarLeilao/lib/historicoLeilao.js"></script>
+<link rel="stylesheet" href="templates/gerenciarLeilao/css/historicoLeilao.css" media="screen">
+<script src="templates/gerenciarLeilao/js/historicoLeilao.js"></script>
 <div id="Layer1" style="position:absolute;text-align:left;left:162px;top:25px;width:898px;height:540px;z-index:5;" title="">
 <img src="templates/gerenciarLeilao/img/carrinho.png" class="img"></img>
 <form class="form-search" id="etapa" action="q" method="post">
