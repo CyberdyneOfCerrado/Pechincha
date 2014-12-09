@@ -3,6 +3,8 @@ package module1.pechincha.viewUseCases;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONObject;
+
 import biz.source_code.miniTemplator.MiniTemplator;
 import module1.pechincha.cruds.JDBCProdutoDAO;
 import module1.pechincha.model.Leilao;
@@ -77,18 +79,18 @@ public class GerenciarLeilaoView extends ViewController{
 
 	public String getHistorico(ActionDone ad){
 		String pathi = getSevletContext()+getUseCase()+"historicoLeilao"+".html";
-		String pathok = getSevletContext()+getUseCase()+"okemail"+".html";
-		String patherro = getSevletContext()+getUseCase()+"erroemail"+".html";
-		MiniTemplator ok = super.startMiniTemplator(pathok);
-		MiniTemplator erro = super.startMiniTemplator(patherro);
 		MiniTemplator index = super.startMiniTemplator(pathi);
 		JDBCProdutoDAO pr = new JDBCProdutoDAO();
 		List<Leilao> list=(List<Leilao>) ad.getData("lista");
 		if(ad.getData("message").equals("ok")){
-			index.setVariable("message",ok.generateOutput());
+			JSONObject resposta = new JSONObject();
+			resposta.put("resposta", true);
+			return resposta.toString();
 		}
 		if(ad.getData("message").equals("erro")){
-			index.setVariable("message",erro.generateOutput());
+			JSONObject resposta = new JSONObject();
+			resposta.put("resposta", false);
+			return resposta.toString();
 		}
 		if(ad.getData("message").equals(" ")){
 			index.setVariable("message", String.valueOf(ad.getData("message")));

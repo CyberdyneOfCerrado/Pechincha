@@ -32,12 +32,7 @@
                      	<td><h5 class="txtconteudo text-center">R$ ${valor}</h5></td>
                      	<td>
                      		<form class="form-search" id="historico" action="q" method="post">
-	                     		<a class="btn btn-primary botaoEnviar" onclick="enviar('historico')"><i class="icon-envelope icon-white"></i> Reenviar e-mail</a> 
-	                     		<input type="hidden" name="idleilao" value="${idleilao}"/>
-	                     		<input type="hidden" name="idleiloeiro" value="${idleiloeiro}"/>
-	                     		<input type="hidden" name="useCase" value="gerenciarLeilao"/>
-	                     		<input type="hidden" name="action" value="processaEmail"/>
-	                     		<input type="hidden" name="redirect" value="false"/>
+	                     		<a class="btn btn-primary botaoEnviar" onclick="enviar('${idleilao}','${idleiloeiro}','gerenciarLeilao','processaEmail','false')"><i class="icon-envelope icon-white"></i> Reenviar e-mail</a> 
                      		</form> 
                      	</td>
                      </tr>

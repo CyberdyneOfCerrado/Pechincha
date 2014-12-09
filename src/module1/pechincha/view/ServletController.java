@@ -181,8 +181,9 @@ public class ServletController {
 		ViewController view = listViews.get(ad.getUseCase());
 
 		conteudo = view.choose(ad);
-
 		// Fixando conteúdo na index.
+		
+		if(ad.getData("index")==null){
 		MiniTemplator index = null;
 		try {
 			System.out.println(servletContext + "index.html");
@@ -192,5 +193,6 @@ public class ServletController {
 		}
 		index.setVariable("conteudo", conteudo);
 		return index.generateOutput();
+		}else return conteudo;
 	};
 }

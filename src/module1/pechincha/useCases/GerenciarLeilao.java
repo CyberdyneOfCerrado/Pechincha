@@ -201,6 +201,7 @@ public class GerenciarLeilao extends ModelController {
 		}else done.setData("message","erro");
 		done.setProcessed(true);
 		done.setStatus(true);
+		done.setData("index","false");
 		return done;
 	}
 	
