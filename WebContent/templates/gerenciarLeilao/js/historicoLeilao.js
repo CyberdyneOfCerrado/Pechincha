@@ -11,10 +11,22 @@ function enviar(Idleilao,Idleiloeiro,UseCase,Action,Redirect){
     			$('.fechar').click();
     			if(resposta=="ok"){
     				document.getElementById("modal1").click();
+					 $("#mascara").click( function(){
+						$(this).hide();
+						$(".window").hide();
+					});
     			}else{
     				document.getElementById("modal2").click();
+					 $("#mascara").click( function(){
+						$(this).hide();
+						$(".window").hide();
+					});
     			}
     		});
+}
+
+function postar(acao){
+	document.getElementById(acao).submit();
 }
 
 $(document).ready(function(){
@@ -37,11 +49,6 @@ $(document).ready(function(){
         $(id).css({'top':top,'left':left});
         $(id).show();  
     });
- 
-/*    $("#mascara").click( function(){
-        $(this).hide();
-        $(".window").hide();
-    });*/
  
     $('.fechar').click(function(ev){
         ev.preventDefault();

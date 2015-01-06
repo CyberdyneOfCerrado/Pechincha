@@ -14,10 +14,6 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import org.apache.commons.mail.DefaultAuthenticator;
-import org.apache.commons.mail.EmailException;
-import org.apache.commons.mail.HtmlEmail;
-
 import module1.pechincha.controllers.ModelController;
 import module1.pechincha.cruds.JDBCLeilaoDAO;
 import module1.pechincha.cruds.JDBCLoteProdutoDAO;
