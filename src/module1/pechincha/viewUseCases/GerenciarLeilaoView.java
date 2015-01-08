@@ -46,13 +46,7 @@ public class GerenciarLeilaoView extends ViewController{
 	}
 	
 	public String leilaop0erro(ActionDone ad){
-		MiniTemplator temp = super.startMiniTemplator(super.getTemplate(ad));
-		temp.setVariable("erro",(String)ad.getData("erro"));
-		temp.setVariable("idleiloeiro",String.valueOf(ad.getData("idleiloeiro")));
-		temp.setVariable("descricao",String.valueOf(ad.getData("descricao")));
-		temp.setVariable("etiqueta",String.valueOf(ad.getData("etiqueta")));
-		temp.setVariable("tempolimite",String.valueOf(ad.getData("tempolimite")));
-		return temp.generateOutput();
+		return (String) ad.getData("message");
 	}
 	public String leilaop1(ActionDone ad){
 		String pathi = getSevletContext()+getUseCase()+"leilaop1"+".html";
@@ -87,9 +81,6 @@ public class GerenciarLeilaoView extends ViewController{
 		}
 		if(ad.getData("message").equals("erro")){
 			return (String) ad.getData("message");
-		}
-		if(ad.getData("message").equals(" ")){
-			index.setVariable("message", String.valueOf(ad.getData("message")));
 		}
 		index.setVariable("idleiloeiro", String.valueOf(ad.getData("idleiloeiro")));
 		for (Leilao le:list){

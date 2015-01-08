@@ -27,6 +27,7 @@ public class ValidaLeilao {
 				done.setData("tempolimite", action.getData("tempolimite"));
 				done.setData("descricao", action.getData("descricao"));
 				done.setData("erro", "Houve um erro no campo tempo!");
+				done.setData("tipo", "3");
 				done.setData("valida",false);
 				return done;
 			}
@@ -43,6 +44,7 @@ public class ValidaLeilao {
 				done.setData("tempolimite", action.getData("tempolimite"));
 				done.setData("descricao", action.getData("descricao"));
 				done.setData("erro", "Houve um erro no campo tempo!");
+				done.setData("tipo", "3");
 				done.setData("valida",false);
 				return done;
 			}
@@ -59,6 +61,7 @@ public class ValidaLeilao {
 				done.setData("tempolimite", action.getData("tempolimite"));
 				done.setData("descricao", action.getData("descricao"));
 				done.setData("erro", "Houve um erro no campo tempo!");
+				done.setData("tipo", "3");
 				done.setData("valida",false);
 				return done;
 			}
@@ -72,6 +75,7 @@ public class ValidaLeilao {
 			done.setData("tempolimite", action.getData("tempolimite"));
 			done.setData("descricao", action.getData("descricao"));
 			done.setData("erro", "Houve um erro no campo tempo!");
+			done.setData("tipo", "3");
 			done.setData("valida",false);
 			return done;
 		}
@@ -87,6 +91,7 @@ public class ValidaLeilao {
 				done.setData("tempolimite", action.getData("tempolimite"));
 				done.setData("descricao", action.getData("descricao"));
 				done.setData("erro", "A etiqueta informada já existe!");
+				done.setData("tipo", "1");
 				done.setData("valida",false);
 				return done;
 			}
@@ -101,6 +106,7 @@ public class ValidaLeilao {
 				done.setData("tempolimite", action.getData("tempolimite"));
 				done.setData("descricao", action.getData("descricao"));
 				done.setData("erro", "Erro no campo descrição!");
+				done.setData("tipo", "2");
 				done.setData("valida",false);
 				return done;
 			}

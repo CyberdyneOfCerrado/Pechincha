@@ -2,7 +2,6 @@ package module1.pechincha.useCases;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Properties;
 
@@ -49,33 +48,37 @@ public class GerenciarLeilao extends ModelController {
 		JDBCLoteProdutoDAO loteProdutoDao = new JDBCLoteProdutoDAO();
 		JDBCUsuarioDAO us = new JDBCUsuarioDAO();
 		Usuario user;
-		String etapa=check(action,"etapa");
+		String etapa=String.valueOf(action.getData("etapa"));
 		switch(etapa){
 		case "criarLeilao":
-				le.setEtiqueta((check(action,"etiqueta")));
-				le.setDescricao(check(action,"descricao"));
-				le.setIdLeiloeiro(Integer.parseInt(check(action,"idleiloeiro")));
+				le.setEtiqueta(String.valueOf(action.getData("etiqueta")));
+				le.setDescricao(String.valueOf(action.getData("descricao")));
+				le.setIdLeiloeiro(Integer.parseInt((String) action.getData("idleiloeiro")));
 				user=us.select(le.getIdLeiloeiro());
 				le.setNickname(user.getNickname());
 				done=valida.validar(le,action);
 				if(done.getData("valida").equals(true)){
 					done.setUseCase(action.getUseCase());
-					done.setData("etiqueta",check(action,"etiqueta"));
-					done.setData("descricao",check(action,"descricao"));
+					done.setData("etiqueta",String.valueOf(action.getData("etiqueta")));
+					done.setData("descricao",String.valueOf(action.getData("descricao")));
 					done.setData("nickname",le.getNickname());
-					done.setData("message", " ");
 					done.setAction("leilaop1");
 					done.setProcessed(true);
 					done.setStatus(true);
-					done.setData("idleiloeiro", check(action,"idleiloeiro"));
+					done.setData("idleiloeiro", String.valueOf(action.getData("idleiloeiro")));
 					return done;
 				}else{
+					done.setProcessed(true);
+					done.setStatus(true);
+					String temp= "{ \"erro\":\""+(String)done.getData("erro")+"\", \"tipo\" : \""+done.getData("tipo")+"\"}";
+					done.setData("message",temp);
+					done.setData("index","false");
 					return done;
 				}
 		case "leilaop0":
 			done.setAction("leilaop0");
 			done.setUseCase(action.getUseCase());
-			done.setData("idleiloeiro",check(action,"idleiloeiro"));
+			done.setData("idleiloeiro",String.valueOf(action.getData("idleiloeiro")));
 			done.setProcessed(true);
 			done.setStatus(true);
 			return done;
@@ -90,13 +93,13 @@ public class GerenciarLeilao extends ModelController {
 			float valorTrue=0;
 			boolean valido=validaLote.validar(quantidadeLote, precoLote, idproduto, quantidade, precoProd,valorPerson,adicionado);
 			if(valido){
-				le.setEtiqueta((check(action,"etiqueta")));
-				le.setDescricao(check(action,"descricao"));
-				le.setIdLeiloeiro(Integer.parseInt(check(action,"idleiloeiro")));
+				le.setEtiqueta(String.valueOf(action.getData("etiqueta")));
+				le.setDescricao(String.valueOf(action.getData("descricao")));
+				le.setIdLeiloeiro(Integer.parseInt((String) action.getData("idleiloeiro")));
 				le.setAtivo(true);
 				user=us.select(le.getIdLeiloeiro());
 				le.setNickname(user.getNickname());
-				le.setTempoLimite(Integer.parseInt(check(action,"tempolimite")));
+				le.setTempoLimite(Integer.parseInt((String) action.getData("tempolimite")));
 				if(action.getData("valorPersonalizado").equals("true")){
 					le.setLanceInicial(valorPerson);
 					le.setPrecolote(valorPerson);
@@ -144,11 +147,10 @@ public class GerenciarLeilao extends ModelController {
 				return done;
 			}else{
 				done.setUseCase(action.getUseCase());
-				done.setData("etiqueta",check(action,"etiqueta"));
-				done.setData("descricao",check(action,"descricao"));
-				done.setData("idleiloeiro", check(action,"idleiloeiro"));
-				done.setData("tempo", check(action,"tempolimite"));
-				done.setData("nickname",check(action,"nickname"));
+				done.setData("etiqueta",String.valueOf(action.getData("descricao")));
+				done.setData("idleiloeiro", String.valueOf(action.getData("idleiloeiro")));
+				done.setData("tempo", String.valueOf(action.getData("tempolimite")));
+				done.setData("nickname",String.valueOf(action.getData("nickname")));
 				done.setAction("leilaop1");
 				done.setData("message", "Houve um erro no cadastro do lote!");
 				done.setProcessed(true);
@@ -157,11 +159,6 @@ public class GerenciarLeilao extends ModelController {
 			}
 		}
 		return done;
-	}
-	public String check(DoAction action,String key){
-		String[] filtro = (String[])action.getData(key+"_array");
-		String saida=filtro[filtro.length-1];
-		return saida;
 	}
 	
 	public ActionDone historicoLeilao(DoAction action){
@@ -172,7 +169,7 @@ public class GerenciarLeilao extends ModelController {
 			done.setAction("historico");
 			done.setData("termino",false);
 			done.setUseCase(action.getUseCase());
-			done.setData("idleiloeiro",check(action,"idleiloeiro"));
+			done.setData("idleiloeiro",String.valueOf(action.getData("idleiloeiro")));
 			done.setData("lista", list);
 			done.setProcessed(true);
 			done.setStatus(true);
@@ -190,7 +187,7 @@ public class GerenciarLeilao extends ModelController {
 		List<Leilao> list=leilaoDao.getHistorico(Integer.parseInt((String) action.getData("idleiloeiro")));
 		done.setAction("historico");
 		done.setUseCase(action.getUseCase());
-		done.setData("idleiloeiro",check(action,"idleiloeiro"));
+		done.setData("idleiloeiro",String.valueOf(action.getData("idleiloeiro")));
 		done.setData("lista", list);
 		if(statusEmail){
 			done.setData("message","ok");
@@ -292,7 +289,6 @@ public class GerenciarLeilao extends ModelController {
 	}
 	
 	public ActionDone criarLote(DoAction action){
-		ValidaLeilao valida = new ValidaLeilao();
 		ActionDone done = new ActionDone();
 		JDBCProdutoDAO produto = new JDBCProdutoDAO();
 		JDBCLoteProdutoDAO lt = new JDBCLoteProdutoDAO();

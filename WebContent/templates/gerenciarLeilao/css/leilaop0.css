@@ -104,29 +104,49 @@ a:hover
 }
 #Button2
 {
-   border: 1px #A9A9A9 solid;
-   background-color: #F0F0F0;
-   color: #000000;
+   color: #ffffff;
    font-family: Arial;
    font-size: 13px;
-   -moz-box-shadow: 3px 3px 3px #000000;
-   -webkit-box-shadow: 3px 3px 3px #000000;
-   box-shadow: 3px 3px 3px #000000;
+  box-shadow: 3px 3px 3px #006dcc;
 }
 #Button3
 {
-   border: 1px #A9A9A9 solid;
-   background-color: #F0F0F0;
-   color: #000000;
+   color: #ffffff;
    font-family: Arial;
    font-size: 13px;
-   -moz-box-shadow: 3px 3px 3px #000000;
-   -webkit-box-shadow: 3px 3px 3px #000000;
-   box-shadow: 3px 3px 3px #000000;
+   box-shadow: 3px 3px 3px #006dcc;
+}
+#Button1
+{
+   color: #ffffff;
+   font-family: Arial;
+   font-size: 13px;
+  box-shadow: 3px 3px 3px #000000;
 }
 
 .img {
-    left: 155px;
+    left: 232px;
     position: absolute;
-    top: 40px;
+    top: 50px;
+}
+
+#mascara{
+    display:none;
+    position:absolute;
+    left:0;
+    top:0;
+    z-index:9000;
+    background-color:#000;
+}
+ 
+.fecharLeilaop0{display:block; text-align:right;}
+
+.window{
+    display:none;
+    position:absolute;
+    left:0;
+    top:0;
+    z-index:9900;
+    padding:10px;
+    border-radius:10px;
 }

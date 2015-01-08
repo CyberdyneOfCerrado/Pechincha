@@ -27,24 +27,16 @@
 }
 #Button1
 {
-   border: 1px #A9A9A9 solid;
-   background-color: #F0F0F0;
    color: #ffffff;
    font-family: Arial;
    font-size: 15px;
-   -moz-box-shadow: 3px 3px 3px #000000;
-   -webkit-box-shadow: 3px 3px 3px #000000;
    box-shadow: 3px 3px 3px #000000;
 }
 #Button2
 {
-   border: 1px #A9A9A9 solid;
-   background-color: #F0F0F0;
    color: #ffffff;
    font-family: Arial;
    font-size: 20px;
-   -moz-box-shadow: 3px 3px 3px #000000;
-   -webkit-box-shadow: 3px 3px 3px #000000;
    box-shadow: 3px 3px 3px #000000;
 }
 #wb_Text1 
