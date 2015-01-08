@@ -54,6 +54,7 @@ $.post("q",{
          });
         }catch(ex){
             document.write(resposta);
+            location.reload();
         }
     });
 }
