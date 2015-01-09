@@ -4,7 +4,6 @@ package module1.pechincha.useCases;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -133,7 +132,6 @@ public class ManterProdutos  extends ModelController{
 				for(String i : cats){
 					daoprod.insert(new CategoriaProduto(0,Integer.valueOf(i),pkprodinsert));
 				}
-//				ad.setMessage("Ocorreu tudo bem." + resp);
 				
 				return listar(da);
 			}
@@ -158,7 +156,49 @@ public class ManterProdutos  extends ModelController{
 		ad.setUseCase(da.getUseCase());
 		ad.setStatus(true);
 		ad.setProcessed(true);
+		
+		List<Categoria> listcats = new JDBCCategoriaDAO().list();
+		ad.setData("categorias_all", listcats);
+		
+		String confirm = (String)da.getData("confirm");
+		
+		if ( confirm == null){
+			try{
+				int idusuario = Integer.valueOf((String)da.getData("idusuario")),
+					idproduto = Integer.valueOf((String)da.getData("idproduto"));
+				
+				JDBCProdutoDAO daoprod = new JDBCProdutoDAO();
+				Produto prod =  daoprod.select(idproduto);
+				if ( prod != null){
+					if ( prod.getFkUsuario() != idusuario){
+						return ad;
+					}
+					ad.setData("titulo", prod.getTitulo());
+					ad.setData("descricao", prod.getDescricao());
+					ad.setData("preco", prod.getPreco());
+					ad.setData("quantidade", prod.getQuantidade());
+					JDBCImagemDAO img = new JDBCImagemDAO();
+					List<Imagem> imagens = img.list(idproduto);
+					
+					ad.setData("imagens", imagens);
+				
+					List<CategoriaProduto> catprod = new JDBCCategoriaProdutoDAO().list(idproduto);
+					ArrayList<Integer> catssel = new ArrayList<Integer>();
 
+					for (CategoriaProduto cp : catprod){
+						catssel.add(cp.getFkCategoria());
+					}
+					ad.setData("catsel", catssel);
+					ad.setData("idusuario", idusuario);
+				}
+			}catch(Exception e){
+				e.printStackTrace();
+				ad.setMessage("Erro.");
+			}
+		}else{
+			
+		}
+		
 		return ad;
 	};
 	
@@ -252,18 +292,24 @@ public class ManterProdutos  extends ModelController{
 			List<Categoria> listcats = new JDBCCategoriaDAO().list();
 			ad.setData("categorias", listcats);
 			
+			System.out.println(usuario);
+			
 			ArrayList<DoAction> list = new ArrayList<DoAction>();
 			for (Produto pr : prods){
 				DoAction prod = new DoAction(null, null);
+				System.out.println("pk prod :" + pr.getPk());
 				prod.setData("idusuario", usuario);
 				prod.setData("idproduto", pr.getPk());
 				prod.setData("titulo", pr.getTitulo());
 				prod.setData("descricao", pr.getDescricao());
 				prod.setData("preco", pr.getPreco());
 				
-				Imagem img = new JDBCImagemDAO().list(pr.getPk()).get(0);
-				prod.setData("img", img.getPk() + "." + img.getFormato());
-				list.add(prod);
+				List<Imagem> imgs = new JDBCImagemDAO().list(pr.getPk());
+				if ( imgs.size() > 0){
+					Imagem img = imgs.get(0);
+					prod.setData("img", img.getPk() + "." + img.getFormato());
+					list.add(prod);
+				}
 			}
 			ad.setData("produtos", list);
 		}catch(Exception e){

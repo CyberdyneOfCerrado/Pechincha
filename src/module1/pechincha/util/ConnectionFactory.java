@@ -14,7 +14,7 @@ public class ConnectionFactory {
 		if( c == null){
 			try{
 				Class.forName("org.postgresql.Driver"); 
-				return c = DriverManager.getConnection("jdbc:postgresql://g4group.me:5432/"+bd,user,password);
+				return c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/"+bd,user,password);
 			}catch(SQLException | ClassNotFoundException e){
 				throw new RuntimeException("Erro ao retornar a conexão do banco de dados: Classe: ConnectionFactory", e);
 			}

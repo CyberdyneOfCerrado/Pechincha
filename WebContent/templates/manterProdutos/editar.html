@@ -1,0 +1,59 @@
+<form enctype="multipart/form-data" method="post">
+	<h3>${resultado}</h3>
+	<h4>Parte 1 - Título do produto</h4>
+<!--<p>Usuário: <input type="text" name="idusuario" size="102" value="1"></p> -->
+	<p><input type="text" name="titulo" size="132" ></p><br>
+	
+	<h4>Parte 2 - Selecione imagem(s) do produto (min: 1; máx: 5)</h4>
+	
+	<table style="position: relative" cellspacing="100">
+		<tr>
+			<!-- $BeginBlock Imagem -->
+			<td>
+				<img id="img${imgid}" src="templates/imagens/${img}" style="width: 240px; height: 320px;">
+				<h6><a class="rem${imgid}">Remover</a></h6>
+				<br/></br></br>
+			</td>
+			<td>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			</td>
+			<!-- $EndBlock Imagem -->
+		</tr>
+	</table>
+	<div id="imginput">
+		<br>
+		<!-- $BeginBlock NovaImagem -->
+		<p><input name="imagem${x}" type="file" /></p>
+		<!-- $EndBlock NovaImagem -->
+	</div>
+	<br>
+	<h4>Parte 3 - Informe a(s) categoria(s) relacionada(s)</h4>
+		
+	<table style="left: 10px; width: 35%;">
+		<tbody>
+			<tr>
+				<td>
+					<div id="painel_categorias" style="overflow-y: auto; max-height:370px; ">
+						<div class="checkbox">
+						<!-- $BeginBlock Categoria -->
+							<label>
+								<h6><input type="checkbox" name="categoria" value="${pk}" ${checked}>${descricao}</h6>
+							</label>
+						<!-- $EndBlock Categoria -->
+						</div>
+					</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>	
+	
+	<br>
+	<h4>Parte 4 - Descrição do produto</h4>
+	<textarea rows="10" cols="120" name="descricao">${descricao}</textarea><br>
+	<h4>Parte 5 - Valor unitário do produto (min: R$ 0,10; máx: R$1.000.000,00)</h4>
+	<h6>O valor do produto é: R$ <input type="number" name="preco" min="0.1" max="1000000" value="${preco}" step="0.1" size="5"><h6><br>
+	<h4>Parte 6 - Quantidade de produtos (min: 1; máx: 100)</h4>
+	<h6>Este cadastro contém <input type="number" name="quantidade" min="1" max="100" value="${quantidade}"> unidade(s)</h6><br/>
+	<input type="hidden" name="confirm" value="true" />
+	<div align="center"><input type="submit" value="Editar Produto" /></div>
+</form>

@@ -1,4 +1,4 @@
-<table style="position: absolute; left: -10px; width: 18%;">
+<table style="position: absolute; left: 10px; width: 18%;">
 	<tbody>
 		<tr>
 			<th>
@@ -11,9 +11,13 @@
 				<div id="categorias">	
 					<form method = "post">						
 						<div id="painel_categorias" style="overflow-y: auto; height:340px; ">
+						<div class="checkbox">
 						<!-- $BeginBlock Categoria -->
-							<h6><input type="checkbox" name="categoria" value="${pk}">${descricao}</h6>
+							<label>
+								<h6><input type="checkbox" name="categoria" value="${pk}">${descricao}</h6>
+							</label>
 						<!-- $EndBlock Categoria -->
+						</div>
 						<input id="uc" type="hidden" name="useCase" value="manterProdutos">
 						<input id="uc" type="hidden" name="action" value="listar">
 						<input id="uc" type="hidden" name="idusuario" value="${idusuario}">
@@ -28,7 +32,7 @@
 		</tr>
 	</tbody>
 </table>
-<table style="position: absolute; right: 10px; width: 80%;" >
+<table style="position: absolute; right: 10px; width: 77%;" >
 		<tr>
 			<th>
 				<h4>Produtos cadastrados</h4>
@@ -44,7 +48,7 @@
 							<h3>${resultado}</h3>
 							<!-- $BeginBlock Produto -->
 							<td>
-								</div><img src="templates/imagens/${img}" height="176px" width="144px"></br>
+								<img class="img-rounded" src="templates/imagens/${img}" alt="176x144" style="width: 176px; height: 144px;"></br>
 								<a href="q?useCase=manterProdutos&action=visualizar&idusuario=${idusuario}&idproduto=${idproduto}&redirect=false"><h6>${titulo}</h6></a>
 								<h6>R$ ${preco}</h6>
 								<h6><a href="q?useCase=manterProdutos&action=editar&idusuario=${idusuario}&idproduto=${idproduto}&redirect=false">Editar</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="q?useCase=manterProdutos&action=remover&idusuario=${idusuario}&idproduto=${idproduto}&confirm=false&redirect=false">Remover</a></h6>

@@ -1,20 +1,26 @@
-	<h4>${titulo}</h4>
-	<!-- $BeginBlock Imagem -->
-		<img src="templates/imagens/${img}"height="240" width="320">
-	<!-- $EndBlock Imagem -->
-	<h5>Descrição</h5>
-	<textarea rows="10" cols="100" readonly>${descricao}</textarea>
-	
-	<br>
-	<h4>Categorias: ${categorias}</h4>
-	<h4>Valor unitário: R$ ${preco}</h4>
-	<h4>Quantidade: ${quantidade}</h4>
-	<form method = "get">	
-		<input id="uc" type="hidden" name="useCase" value="manterProdutos">
-		<input id="uc" type="hidden" name="action" value="listar">
-		<input id="uc" type="hidden" name="idusuario" value="${idusuario}">
-		<input id="uc" type="hidden" name="redirect" value="false">					
-		<div align="center">
-			<button type="submit">Voltar para Meus Produtos</button>
-		</div>
-	</form>
+<div class="panel panel-primary">
+	<div class="panel-heading">
+		<h3 class="panel-title">${titulo}</h3>
+	</div>
+	<div class="panel-body">
+		<!-- $BeginBlock Imagem -->
+			<img src="templates/imagens/${img}" style="width: 240px; height: 320px;">
+		<!-- $EndBlock Imagem -->
+		<h5>Descrição</h5>
+		<textarea class="form-control" rows="10" cols="100" readonly style="width: auto !important;">${descricao}</textarea>
+		
+		<br>
+		<h4>Categorias: <small>${categorias}</small></h4>
+		<h4>Valor unitário: <small>R$ ${preco}</small></h4>
+		<h4>Quantidade: <small>${quantidade}</small></h4>
+		<form method = "get">	
+			<input id="uc" type="hidden" name="useCase" value="manterProdutos">
+			<input id="uc" type="hidden" name="action" value="listar">
+			<input id="uc" type="hidden" name="idusuario" value="${idusuario}">
+			<input id="uc" type="hidden" name="redirect" value="false">					
+			<div align="center">
+				<button type="submit">Voltar para Meus Produtos</button>
+			</div>
+		</form>
+	</div>
+</div>
