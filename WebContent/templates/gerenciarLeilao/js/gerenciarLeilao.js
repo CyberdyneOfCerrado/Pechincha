@@ -59,6 +59,35 @@ $.post("q",{
     });
 }
 
+function concluir(){
+$.post("q",$("#done").serialize()).done(
+    function(resposta){
+        try{
+            var obj = jQuery.parseJSON(resposta);
+            document.getElementById("modal1").click();
+            if(obj.erro===false){
+                document.getElementById("etapaFinal").value="concluir";
+                document.getElementById("done").submit();
+            }else{
+                $("#mensagem").text(obj.erro);
+                $("#mascara").click( function(){
+                     $(this).hide();
+                     $(".window").hide();
+                 });
+                $('.fechar').click(function(ev){
+                     ev.preventDefault();
+                     $("#mascara").hide();
+                     $(".window").hide();
+                 });
+            }
+        }catch(ex){
+            console.log(resposta);
+        }
+    });
+}
+
+
+
 function postar(acao){
 	document.getElementById(acao).submit();
 }
@@ -110,3 +139,18 @@ $(document).ready(function(){
         $(".window").hide();
     });
 });
+
+function valorLote(){
+    $('#valorPersonalizado').val((document.getElementById('checkval').checked? 'true' : 'false'));
+}
+
+function somar(id){
+    var temp="#valorTemp"+id+"";
+    var temp1="qtd"+id+"";
+    var temp2="#preco"+id+"";
+    var temp3="#valor"+id+"";
+    $(temp).text(((document.getElementById(temp1).value)*($(temp2).val())));
+    $(temp3).val(((document.getElementById(temp1).value)*($(temp2).val())));
+}
+
+function adicionar(id){$('#adicionado'+id+'').val((document.getElementById('checkpr'+id+'').checked? 'true' : 'false'));}

@@ -1,129 +1,38 @@
 <div>
+<link rel="stylesheet" href="templates/gerenciarLeilao/css/leilaop1.css" media="screen">
 <link rel="stylesheet" href="templates/lib/css/css.css" media="screen">
 <link rel="stylesheet" href="templates/lib/css/style.css" media="screen">
-<style type="text/css">
-a
-{
-   color: #0000FF;
-   text-decoration: underline;
-}
-a:visited
-{
-   color: #800080;
-}
-a:active
-{
-   color: #FF0000;
-}
-a:hover
-{
-   color: #0000FF;
-   text-decoration: underline;
-}
-</style>
-<style type="text/css">
-#Layer1
-{
-   background-color: transparent;
-   background-repeat: repeat;
-   background-position: center top;
-}
-#wb_Text1 
-{
-   background-color: transparent;
-   border: 0px #000000 solid;
-   padding: 0;
-   text-align: left;
-}
-#wb_Text1 div
-{
-   text-align: left;
-}
-#wb_Text2 
-{
-   background-color: transparent;
-   border: 0px #000000 solid;
-   padding: 0;
-   text-align: left;
-}
-#wb_Text2 div
-{
-   text-align: left;
-}
-#wb_Text3 
-{
-   background-color: transparent;
-   border: 0px #000000 solid;
-   padding: 0;
-   text-align: left;
-}
-#wb_Text3 div
-{
-   text-align: left;
-}
-#Editbox1
-{
-   border: 1px #A9A9A9 solid;
-   background-color: #FFFFFF;
-   color :#000000;
-   font-family: Arial;
-   font-size: 13px;
-   text-align: left;
-   vertical-align: middle;
-   -moz-box-shadow: 3px 3px 3px #000000;
-   -webkit-box-shadow: 3px 3px 3px #000000;
-   box-shadow: 3px 3px 3px #000000;
-}
-#Button1
-{
-   border: 1px #A9A9A9 solid;
-   background-color: #F0F0F0;
-   color: #000000;
-   font-family: Arial;
-   font-size: 17px;
-   -moz-box-shadow: 3px 3px 3px #000000;
-   -webkit-box-shadow: 3px 3px 3px #000000;
-   box-shadow: 3px 3px 3px #000000;
-}
-#Button2
-{
-   border: 1px #A9A9A9 solid;
-   background-color: #F0F0F0;
-   color: #000000;
-   font-family: Arial;
-   font-size: 17px;
-   -moz-box-shadow: 3px 3px 3px #000000;
-   -webkit-box-shadow: 3px 3px 3px #000000;
-   box-shadow: 3px 3px 3px #000000;
-}
-#Layer2
-{
-   background-color: #FAFAFA;
-   -moz-box-shadow: 3px 3px 3px #000000;
-   -webkit-box-shadow: 3px 3px 3px #000000;
-   box-shadow: 3px 3px 3px #000000;
-}
-</style>
-<div id="Layer1" style="position:absolute;text-align:left;left:156px;top:4px;width:898px;height:564px;z-index:8;" title="">
-<div id="wb_Text1" style="position:absolute;left:376px;top:9px;width:252px;height:33px;z-index:0;text-align:left;">
-<span style="color:#000000;font-family:Arial;font-size:29px;">Criar um leilão</span></div>
-<div id="wb_Text2" style="position:absolute;left:342px;top:60px;width:297px;height:23px;z-index:1;text-align:left;">
-<span style="color:#FF0000;font-family:Arial;font-size:20px;">Adicione produtos ao seu lote</span></div>
-<div id="wb_Text3" style="position:absolute;left:298px;top:457px;width:219px;height:19px;z-index:3;text-align:left;">
-<span style="color:#000000;font-family:Arial;font-size:16px;"><strong>Valor personalizado do lote</strong></span></div>
+<script src="templates/gerenciarLeilao/js/gerenciarLeilao.js"></script>
+<a href="#janela1" id="modal1" rel="modal"></a>
+<div class="window" id="janela1">
+		<a href="#" class="fechar close">&times;</a>
+        <div class="alert alert-block">
+        <h4>Oops!</h4>
+    	<span id="mensagem"></span>
+    	<span><br />Cheque o erro para continuar criando o seu leilão!</span>
+    	</div>
+</div>
+<div id="mascara"></div>
+<div id="Layer1" style="position:absolute;text-align:left;left:162px;top:25px;width:898px;height:540px;z-index:5;" title="">
+<a style="position:absolute;left:7px;top:131px;width:115px;height:63px;z-index:2;" onclick="postar('etapa')" class="btn btn-inverse" name="home" id="Button3"><i class="icon-home icon-white"></i><h4 class="texto">Home</h4></a>
+<img src="templates/gerenciarLeilao/img/carrinho.png" class="img"></img>
+<div id="wb_Text1" style="position:absolute;left:415px;top:50px;width:252px;height:23px;z-index:3;text-align:left;">
+<h3 style="color:#000000;font-family:Arial;font-size:29px;">Criar um leilão</h3></div>
+<div id="wb_Text3" style="position:absolute;left:298px;top:500px;width:219px;height:19px;z-index:3;text-align:left;">
+<span class="txtconteudo" style="font-family:Arial;font-size:16px;"><strong>Valor personalizado do lote</strong></span></div>
 <form class="form-search" action="q" method="post">
-<input type="submit" id="Button1" name="cancelarLeilao" value="Cancelar" style="position:absolute;left:355px;top:503px;width:108px;height:46px;z-index:5;">
+<input type="submit" id="Button1" name="cancelarLeilao" value="Cancelar" class="btn btn-primary" style="position:absolute;left:380px;top:550px;width:95px;height:37px;z-index:5;">
 <input type="hidden" id="etapa" name="etapa" value="historico"/>
 <input type="hidden" id="redirect" name="redirect" value="false"/>
 <input type="hidden" id="userCase" name="useCase" value="gerenciarLeilao"/>
 <input type="hidden" id="action" name="action" value="historicoLeilao"/>
 <input type="hidden" id="idleiloeiro" name="idleiloeiro" value="${idleiloeiro}"/>
 </form>
-<form class="form-search" action="q" method="post">
-<input type="number" id="valorBox" style="position:absolute;left:515px;top:454px;width:251px;height:24px;line-height:24px;z-index:4;" name="valorBox" value="0" min="0" max="10000" />
-<input type="checkbox" id="checkval" value="true" name="checkval" onclick="(function(){$('#valorPersonalizado').val((document.getElementById('checkval').checked? 'true' : 'false'));})();" style="position:absolute;left:273px;top:458px;z-index:2;" />
+<form id="done" class="form-search" action="q" method="post">
+<input type="number" id="valorBox" style="position:absolute;left:520px;top:493px;width:251px;height:24px;line-height:24px;z-index:4;" name="valorBox" value="0" min="0" max="10000" />
+<input type="checkbox" id="checkval" value="true" name="checkval" onclick="valorLote()" style="position:absolute;left:273px;top:500px;z-index:2;" />
 <input type="hidden" id="redirect" name="redirect" value="false"/>
-<input type="hidden" id="etapa" name="etapa" value="concluir"/>
+<input type="hidden" id="etapaFinal" name="etapa" value="check"/>
 <input type="hidden" id="valorPersonalizado" name="valorPersonalizado" value="false" />
 <input type="hidden" id="useCase" name="useCase" value="gerenciarLeilao"/>
 <input type="hidden" id="action" name="action" value="criarLeilao"/>
@@ -132,33 +41,35 @@ a:hover
 <input type="hidden" id="etiqueta" name="etiqueta" value="${etiqueta}"/>
 <input type="hidden" id="descricao" name="descricao" value="${descricao}"/>
 <input type="hidden" id="tempolimite" name="tempolimite" value="${tempolimite}"/>
-<input type="submit" id="Button2" name="Concluir" value="Concluir" style="position:absolute;left:490px;top:503px;width:108px;height:46px;z-index:6;">
-<div id="Layer2" style="position:absolute;text-align:left;left:58px;top:107px;width:784px;height:323px;z-index:7; overflow-y: scroll;" title="">
+<input type="button" id="Button2" name="Concluir" class="btn btn-primary" onclick="concluir()" value="Concluir" style="position:absolute;left:515px;top:550px;width:95px;height:37px;z-index:6;">
+<div id="neblina" style="position:absolute;text-align:left;left:162px;top:132px;width:784px;height:480px;z-index:0;"></div>
+<div id="Layer2" style="position:absolute;text-align:left;left:162px;top:132px;width:784px;height:350px;z-index:4; overflow-y: scroll;" title="">
 <table class="table table-striped">
 	<tr>
-		<td class="tabela">Produto</td>
-		<td class="tabela">Unidades produto</td>
-		<td class="tabela">Unidades lote</td>
-		<td class="tabela">Preço unitário </td>
-		<td class="tabela">Preço x unidades</td>
-		<td class="tabela">Adicionado</td>
+		<td class="tabela" style="text-align:center;"style="text-align:center;">Produto</td>
+		<td class="tabela" style="text-align:center;">Unidades produto</td>
+		<td class="tabela" style="text-align:center;">Unidades lote</td>
+		<td class="tabela" style="text-align:center;">Preço unitário </td>
+		<td class="tabela" style="text-align:center;">Preço x unidades</td>
+		<td class="tabela" style="text-align:center;">Adicionado</td>
 	</tr>
 <!-- $BeginBlock produto -->
 	<tr>
-			<td class="tabela">${produto}</td>
-			<td class="tabela">${quantidade}</td>
-			<td class="tabela"><input id="qtd${idproduto}" name="quantidadeLote" type="number" value="0" min="0" max="${quantidade}" onclick="(function somar(){$('#valor${idproduto}').val($('#qtd${idproduto}').val()*$('#preco${idproduto}').val());})();"/></td>
-			<td class="tabela"><input type="text" style="width:50px;" id="preco${idproduto}" name="precoProd" value="${preco}" readonly /></td>
-			<td class="tabela"><input type="text" style="width:50px;" id="valor${idproduto}" name="precoLote" value="0.00" readonly /></td>
-			<td><input type="checkbox" id="checkpr${idproduto}" name="checkpr${idproduto}" onclick="(function(){$('#adicionado${idproduto}').val((document.getElementById('checkpr${idproduto}').checked? 'true' : 'false'));})();" /></td>
+			<td class="tabela txtconteudo" style="text-align:center;">${produto}</td>
+			<td class="tabela txtconteudo" style="text-align:center;">${quantidade}</td>
+			<td class="tabela txtconteudo" style="text-align:center;"><input id="qtd${idproduto}" name="quantidadeLote" type="number" value="0" min="0" max="${quantidade}" onclick="somar('${idproduto}')"/></td>
+			<td class="tabela txtconteudo" style="text-align:center;"><span style="width:50px;">${preco}</span></td>
+			<td class="tabela txtconteudo" style="text-align:center;"><span style="width:50px;" id="valorTemp${idproduto}">0.00</span></td>
+			<td style="text-align:center;"><input type="checkbox" id="checkpr${idproduto}" name="checkpr${idproduto}" onclick="adicionar('${idproduto}')" /></td>
 			<input type="hidden" name="adicionado" id="adicionado${idproduto}" value="false"/>
 			<input type="hidden" name="idproduto" id="idproduto" value="${idproduto}" />
 			<input type="hidden" name="quantidade" id="quantidade" value="${quantidade}" />
+			<input type="hidden" id="valor${idproduto}" name="precoLote" value="0.00"/>
+			<input type="hidden" id="preco${idproduto}" name="precoProd" value="${preco}"/>
 	</tr>
 <!-- $EndBlock produto -->
 </table>
 </form>
 </div>
-${message}
 </div>
 </div>

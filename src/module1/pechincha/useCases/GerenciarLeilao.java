@@ -39,6 +39,14 @@ public class GerenciarLeilao extends ModelController {
 		return "gerenciarLeilao";
 	}
 	public ActionDone criarLeilao(DoAction action){
+		String[] quantidadeLote;
+		String[] precoLote;
+		String[] idproduto;
+		String[] quantidade;
+		String[] precoProd;
+		String[] adicionado;
+		float valorPerson;
+		float valorTrue;
 		LoteProduto loteProduto;
 		ValidaLeilao valida = new ValidaLeilao();
 		ValidaLote validaLote = new ValidaLote();
@@ -82,17 +90,45 @@ public class GerenciarLeilao extends ModelController {
 			done.setProcessed(true);
 			done.setStatus(true);
 			return done;
-		case "concluir":
-			String[] quantidadeLote=(String[])action.getData("quantidadeLote_array");
-			String[] precoLote=(String[])action.getData("precoLote_array");
-			String[] idproduto=(String[])action.getData("idproduto_array");
-			String[] quantidade=(String[])action.getData("quantidade_array");
-			String[] precoProd=(String[])action.getData("precoProd_array");
-			String[] adicionado=(String[])action.getData("adicionado_array");
-			float valorPerson=Float.parseFloat((String) action.getData("valorBox"));
-			float valorTrue=0;
+		case "check":
+			quantidadeLote=(String[])action.getData("quantidadeLote_array");
+			precoLote=(String[])action.getData("precoLote_array");
+			idproduto=(String[])action.getData("idproduto_array");
+			quantidade=(String[])action.getData("quantidade_array");
+			precoProd=(String[])action.getData("precoProd_array");
+			adicionado=(String[])action.getData("adicionado_array");
+			valorPerson=Float.parseFloat((String) action.getData("valorBox"));
+			valorTrue=0;
 			boolean valido=validaLote.validar(quantidadeLote, precoLote, idproduto, quantidade, precoProd,valorPerson,adicionado);
 			if(valido){
+				done.setUseCase(action.getUseCase());
+				done.setAction("leilaop1erro");
+				done.setProcessed(true);
+				done.setStatus(true);
+				String temp= "{ \"erro\" : false }";
+				done.setData("message",temp);
+				done.setData("index","false");
+				return done;
+			}
+			else{
+				done.setUseCase(action.getUseCase());
+				done.setAction("leilaop1erro");
+				done.setProcessed(true);
+				done.setStatus(true);
+				String temp= "{ \"erro\" : \"Cheque novamente o cadastro do lote de produto, deve existir pelomenos um produto!\"}";
+				done.setData("message",temp);
+				done.setData("index","false");
+				return done;
+			}
+		case "concluir":
+			quantidadeLote=(String[])action.getData("quantidadeLote_array");
+			precoLote=(String[])action.getData("precoLote_array");
+			idproduto=(String[])action.getData("idproduto_array");
+			quantidade=(String[])action.getData("quantidade_array");
+			precoProd=(String[])action.getData("precoProd_array");
+			adicionado=(String[])action.getData("adicionado_array");
+			valorPerson=Float.parseFloat((String) action.getData("valorBox"));
+			valorTrue=0;
 				le.setEtiqueta(String.valueOf(action.getData("etiqueta")));
 				le.setDescricao(String.valueOf(action.getData("descricao")));
 				le.setIdLeiloeiro(Integer.parseInt((String) action.getData("idleiloeiro")));
@@ -145,19 +181,7 @@ public class GerenciarLeilao extends ModelController {
 				done.setStatus(true);
 				StorageLeilaoEnvironments.iniciarAmbienteLeilao(le);
 				return done;
-			}else{
-				done.setUseCase(action.getUseCase());
-				done.setData("etiqueta",String.valueOf(action.getData("descricao")));
-				done.setData("idleiloeiro", String.valueOf(action.getData("idleiloeiro")));
-				done.setData("tempo", String.valueOf(action.getData("tempolimite")));
-				done.setData("nickname",String.valueOf(action.getData("nickname")));
-				done.setAction("leilaop1");
-				done.setData("message", "Houve um erro no cadastro do lote!");
-				done.setProcessed(true);
-				done.setStatus(true);
-				return done;
 			}
-		}
 		return done;
 	}
 	

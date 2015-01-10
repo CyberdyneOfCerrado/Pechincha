@@ -80,7 +80,7 @@ public class ValidaLeilao {
 			return done;
 		}
 		le = leilaoDao.searchEtiqueta(leilao.getEtiqueta());
-		if(leilao.getEtiqueta().length()<=20 && le==null)
+		if(leilao.getEtiqueta().length()<=20 && le==null && !leilao.getEtiqueta().equals(""))
 			done.setData("valida",true); else {
 				done.setUseCase("gerenciarLeilao");
 				done.setAction("leilaop0erro");
@@ -90,7 +90,7 @@ public class ValidaLeilao {
 				done.setData("etiqueta", action.getData("etiqueta"));
 				done.setData("tempolimite", action.getData("tempolimite"));
 				done.setData("descricao", action.getData("descricao"));
-				done.setData("erro", "A etiqueta informada já existe!");
+				done.setData("erro", "Nenhuma etiqueta informada ou a etiqueta informada já existe!");
 				done.setData("tipo", "1");
 				done.setData("valida",false);
 				return done;

@@ -32,6 +32,9 @@ public class GerenciarLeilaoView extends ViewController{
 		case "leilaop0erro":
 			retorno = leilaop0erro(ad); 
 		break;
+		case "leilaop1erro":
+			retorno = leilaop1erro(ad); 
+		break;
 		case "historico":
 			retorno = getHistorico(ad); 
 		break;
@@ -48,6 +51,9 @@ public class GerenciarLeilaoView extends ViewController{
 	public String leilaop0erro(ActionDone ad){
 		return (String) ad.getData("message");
 	}
+	public String leilaop1erro(ActionDone ad){
+		return (String) ad.getData("message");
+	}
 	public String leilaop1(ActionDone ad){
 		String pathi = getSevletContext()+getUseCase()+"leilaop1"+".html";
 		MiniTemplator index = super.startMiniTemplator(pathi);
@@ -58,9 +64,6 @@ public class GerenciarLeilaoView extends ViewController{
 		index.setVariable("tempolimite", String.valueOf(ad.getData("tempo")));
 		index.setVariable("nickname", String.valueOf(ad.getData("nickname")));
 		index.setVariable("idleiloeiro", String.valueOf(ad.getData("idleiloeiro")));
-		if(String.valueOf(ad.getData("message")).equals(" ")){
-			index.setVariable("message"," ");
-		}else index.setVariable("message", "<div id=\"wb_Text5\" style=\"background:red;position:absolute;left:55px;top:440px;width:292px;height:19px;z-index:9;text-align:left;\"><span style=\"color:#FFFFFF;font-family:Arial;font-size:17px;\"><strong>"+String.valueOf(ad.getData("message"))+"</strong></span></div>");
 		for (Produto produto:list){
 			index.setVariable("produto", produto.getTitulo());
 			index.setVariable("quantidade", produto.getQuantidade());
