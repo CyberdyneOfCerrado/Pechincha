@@ -1,8 +1,4 @@
 <div>
-<link rel="stylesheet" href="templates/gerenciarLeilao/css/leilaop1.css" media="screen">
-<link rel="stylesheet" href="templates/lib/css/css.css" media="screen">
-<link rel="stylesheet" href="templates/lib/css/style.css" media="screen">
-<script src="templates/gerenciarLeilao/js/gerenciarLeilao.js"></script>
 <a href="#janela1" id="modal1" rel="modal"></a>
 <div class="window" id="janela1">
 		<a href="#" class="fechar close">&times;</a>
@@ -13,6 +9,10 @@
     	</div>
 </div>
 <div id="mascara"></div>
+<link rel="stylesheet" href="templates/gerenciarLeilao/css/leilaop1.css" media="screen">
+<link rel="stylesheet" href="templates/lib/css/css.css" media="screen">
+<link rel="stylesheet" href="templates/lib/css/style.css" media="screen">
+<script src="templates/gerenciarLeilao/js/gerenciarLeilao.js"></script>
 <div id="Layer1" style="position:absolute;text-align:left;left:162px;top:25px;width:898px;height:540px;z-index:5;" title="">
 <a style="position:absolute;left:7px;top:131px;width:115px;height:63px;z-index:2;" onclick="postar('etapa')" class="btn btn-inverse" name="home" id="Button3"><i class="icon-home icon-white"></i><h4 class="texto">Home</h4></a>
 <img src="templates/gerenciarLeilao/img/carrinho.png" class="img"></img>
@@ -60,7 +60,7 @@
 	<tr>
 			<td class="tabela txtconteudo" style="text-align:center;">${produto}</td>
 			<td class="tabela txtconteudo" style="text-align:center;">${quantidade}</td>
-			<td class="tabela txtconteudo" style="text-align:center;"><input id="qtd${idproduto}" name="quantidadeLote" type="number" value="0" min="0" max="${quantidade}" onclick="somar('${idproduto}')"/></td>
+			<td class="tabela txtconteudo" style="text-align:center;"><input id="qtd${idproduto}" name="quantidadeLote" style="width:50px;" type="number" value="0" min="0" max="${quantidade}" onclick="somar('${idproduto}')"/></td>
 			<td class="tabela txtconteudo" style="text-align:center;"><span style="width:50px;">${preco}</span></td>
 			<td class="tabela txtconteudo" style="text-align:center;"><span style="width:50px;" id="valorTemp${idproduto}">0.00</span></td>
 			<td style="text-align:center;"><input type="checkbox" id="checkpr${idproduto}" name="checkpr${idproduto}" onclick="adicionar('${idproduto}')" /></td>

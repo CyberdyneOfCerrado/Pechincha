@@ -115,7 +115,7 @@ public class GerenciarLeilao extends ModelController {
 				done.setAction("leilaop1erro");
 				done.setProcessed(true);
 				done.setStatus(true);
-				String temp= "{ \"erro\" : \"Cheque novamente o cadastro do lote de produto, deve existir pelomenos um produto!\"}";
+				String temp= "{ \"erro\" : \"Cheque novamente o cadastro do lote de produto, deve existir pelomenos um produto adicionado!\"}";
 				done.setData("message",temp);
 				done.setData("index","false");
 				return done;
