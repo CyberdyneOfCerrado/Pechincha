@@ -20,6 +20,9 @@
 <h3 style="color:#000000;font-family:Arial;font-size:29px;">Criar um leilão</h3></div>
 <div id="wb_Text3" style="position:absolute;left:298px;top:500px;width:219px;height:19px;z-index:3;text-align:left;">
 <span class="txtconteudo" style="font-family:Arial;font-size:16px;"><strong>Valor personalizado do lote</strong></span></div>
+<div id="total" style="position:absolute;left:298px;top:465px;width:419px;height:19px;z-index:3;text-align:left;">
+<span class="txtconteudo" style="font-family:Arial;font-size:16px;"><strong>Valor total de produtos adicionados : R$ </strong></span>
+<span id="valortotal" class="txtconteudo" >0.00</span></div>
 <form class="form-search" action="q" method="post">
 <input type="submit" id="Button1" name="cancelarLeilao" value="Cancelar" class="btn btn-primary" style="position:absolute;left:380px;top:550px;width:95px;height:37px;z-index:5;">
 <input type="hidden" id="etapa" name="etapa" value="historico"/>
@@ -41,9 +44,9 @@
 <input type="hidden" id="etiqueta" name="etiqueta" value="${etiqueta}"/>
 <input type="hidden" id="descricao" name="descricao" value="${descricao}"/>
 <input type="hidden" id="tempolimite" name="tempolimite" value="${tempolimite}"/>
-<input type="button" id="Button2" name="Concluir" class="btn btn-primary" onclick="concluir()" value="Concluir" style="position:absolute;left:515px;top:550px;width:95px;height:37px;z-index:6;">
+<input type="button" id="Button2" name="Concluir" class="btn btn-primary" onclick="concluir()" value="Concluir" style="position:absolute;left:580px;top:550px;width:95px;height:37px;z-index:6;">
 <div id="neblina" style="position:absolute;text-align:left;left:162px;top:132px;width:784px;height:480px;z-index:0;"></div>
-<div id="Layer2" style="position:absolute;text-align:left;left:162px;top:132px;width:784px;height:350px;z-index:4; overflow-y: scroll;" title="">
+<div id="Layer2" style="position:absolute;text-align:left;left:162px;top:132px;width:784px;height:330px;z-index:4; overflow-y: scroll;" title="">
 <table class="table table-striped">
 	<tr>
 		<td class="tabela" style="text-align:center;"style="text-align:center;">Produto</td>

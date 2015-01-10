@@ -1,9 +1,7 @@
 package module1.pechincha.viewUseCases;
 
-import java.util.ArrayList;
-import java.util.List;
 
-import org.json.JSONObject;
+import java.util.List;
 
 import biz.source_code.miniTemplator.MiniTemplator;
 import module1.pechincha.cruds.JDBCProdutoDAO;
@@ -77,7 +75,7 @@ public class GerenciarLeilaoView extends ViewController{
 	public String getHistorico(ActionDone ad){
 		String pathi = getSevletContext()+getUseCase()+"historicoLeilao"+".html";
 		MiniTemplator index = super.startMiniTemplator(pathi);
-		JDBCProdutoDAO pr = new JDBCProdutoDAO();
+		@SuppressWarnings("unchecked")
 		List<Leilao> list=(List<Leilao>) ad.getData("lista");
 		if(ad.getData("message").equals("ok")){
 			return (String) ad.getData("message");

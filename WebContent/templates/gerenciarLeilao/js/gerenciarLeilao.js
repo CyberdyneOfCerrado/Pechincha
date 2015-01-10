@@ -149,8 +149,21 @@ function somar(id){
     var temp1="qtd"+id+"";
     var temp2="#preco"+id+"";
     var temp3="#valor"+id+"";
-    $(temp).text(((document.getElementById(temp1).value)*($(temp2).val())));
-    $(temp3).val(((document.getElementById(temp1).value)*($(temp2).val())));
+    $(temp).text(((document.getElementById(temp1).value)*($(temp2).val())).toFixed(2));
+    $(temp3).val(((document.getElementById(temp1).value)*($(temp2).val())).toFixed(2));
 }
 
-function adicionar(id){$('#adicionado'+id+'').val((document.getElementById('checkpr'+id+'').checked? 'true' : 'false'));}
+function adicionar(id){
+    var temp="#valorTemp"+id+"";
+    $('#adicionado'+id+'').val((document.getElementById('checkpr'+id+'').checked? 'true' : 'false'));
+    var valorP = parseFloat($(temp).text());
+    var valorT = parseFloat($("#valortotal").text());
+    alert(typeof($("#adicionado"+id+"").val()));
+    if($("#adicionado"+id+"").val()==="true"){
+        valorT+=valorP;
+        $("#valortotal").text(valorT.toFixed(2));
+    }else{
+        valorT-=valorP;
+        $("#valortotal").text(valorT.toFixed(2));
+    }
+}
