@@ -144,8 +144,7 @@ public class ManterProdutos  extends ModelController{
 			e.printStackTrace();
 			ad.setMessage("Erro desconhecido ou erro ao converter valores.");
 			return ad;
-		}		
-//		return ad;
+		}
 	};
 	
 	public ActionDone editar ( DoAction da ){
@@ -158,7 +157,7 @@ public class ManterProdutos  extends ModelController{
 		ad.setProcessed(true);
 		
 		List<Categoria> listcats = new JDBCCategoriaDAO().list();
-		ad.setData("categorias_all", listcats);
+		ad.setData("categorias", listcats);
 		
 		String confirm = (String)da.getData("confirm");
 		

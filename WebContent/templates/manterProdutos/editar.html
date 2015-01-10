@@ -1,8 +1,27 @@
+<script type="text/javascript">	 
+	var imgrem = [];
+	
+	function remover(val){
+		$('#divimg' + val).remove();
+		
+		imgrem.push(val);
+		var arrstr = JSON.stringify(imgrem).substring(1);
+		arrstr = arrstr.substring(0,arrstr.length-1);
+		
+		$('#imgrem').val(arrstr);
+		
+		var qte = $('[name^="imagem"]'),
+		val = (qte ? qte.length+1 : 1);
+
+		$('#imginput').append('<p><input name="imagem' + val + '" type="file" /></p>');
+	}
+</script>
+
 <form enctype="multipart/form-data" method="post">
 	<h3>${resultado}</h3>
 	<h4>Parte 1 - Título do produto</h4>
 <!--<p>Usuário: <input type="text" name="idusuario" size="102" value="1"></p> -->
-	<p><input type="text" name="titulo" size="132" ></p><br>
+	<p><input type="text" name="titulo" size="132" value="${titulo}"></p><br>
 	
 	<h4>Parte 2 - Selecione imagem(s) do produto (min: 1; máx: 5)</h4>
 	
@@ -11,10 +30,9 @@
 			<!-- $BeginBlock Imagem -->
 				<td>
 					<div id="divimg${imgid}">
-						<img id="img${imgid}" src="templates/imagens/${img}" style="width: 240px; height: 320px;">
+						<img id="img${imgid}" src="templates/imagens/${img}" style="width: 320px; height: 240px;">
 						<h6><a class="rem${imgid}" onclick="remover(${imgid})">Remover</a></h6>
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<br/><br/><br/>
 					</div>
 				</td>
 			<!-- $EndBlock Imagem -->
@@ -54,6 +72,8 @@
 	<h6>O valor do produto é: R$ <input type="number" name="preco" min="0.1" max="1000000" value="${preco}" step="0.1" size="5"><h6><br>
 	<h4>Parte 6 - Quantidade de produtos (min: 1; máx: 100)</h4>
 	<h6>Este cadastro contém <input type="number" name="quantidade" min="1" max="100" value="${quantidade}"> unidade(s)</h6><br/>
+	<input type="hidden" name="idusuario" value="${idusuario}" />
 	<input type="hidden" name="confirm" value="true" />
+	<input id="imgrem" type="hidden" name="imgrem" value="" />
 	<div align="center"><input type="submit" value="Editar Produto" /></div>
 </form>

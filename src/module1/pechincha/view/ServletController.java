@@ -77,12 +77,12 @@ public class ServletController {
 		} else {
 			// Se ação informada for do tipo 'redirect=true' os dados não devem
 			// ser enviados p/ o UseCaseController
-			if (da.getData("redirect").equals("false")) {
+			if (!Boolean.valueOf((String)da.getData("redirect"))) {
 				ad = ucc.chooseUserCase(da);
 				ad.setData("redirect", "false");
 			} else {
 				ad = new ActionDone(da.getUseCase(), da.getAction(),
-						da.getHashtable());// copiando o DA p/ o AC
+				da.getHashtable());// copiando o DA p/ o AC
 			}
 		}
 		return readActionDone(ad);// abre o pacote de ação concluída e o manda

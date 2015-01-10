@@ -36,6 +36,10 @@ public class ManterProdutosView extends ViewController {
 			case "remover":
 				retorno = remover(ad);
 				break;
+			
+			case "editar":
+				retorno = editar(ad);
+				break;
 		}
 		return retorno;
 	}
@@ -85,7 +89,7 @@ public class ManterProdutosView extends ViewController {
 			temp.addBlock("Imagem");
 		}
 		
-		for (int i = 1; i <= imagens.size(); i++){
+		for (int i = 1; i <= (5-imagens.size()); i++){
 			temp.setVariable("i",i);
 			temp.addBlock("NovaImagem");
 		}
