@@ -48,6 +48,20 @@ public class ValidaLeilao {
 				done.setData("valida",false);
 				return done;
 			}
+			if(hora==0 && minutos==0){
+				done.setUseCase("gerenciarLeilao");
+				done.setAction("leilaop0erro");
+				done.setProcessed(true);
+				done.setStatus(false);
+				done.setData("idleiloeiro", action.getData("idleiloeiro"));
+				done.setData("etiqueta", action.getData("etiqueta"));
+				done.setData("tempolimite", action.getData("tempolimite"));
+				done.setData("descricao", action.getData("descricao"));
+				done.setData("erro", "Tem certeza que o tempo será zero?");
+				done.setData("tipo", "3");
+				done.setData("valida",false);
+				return done;
+			}
 			segundos+=minutos*60;
 			done.setData("tempo", segundos);
 			done.setData("valida",true);

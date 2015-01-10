@@ -2,6 +2,8 @@ package module1.pechincha.useCases;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Properties;
 
@@ -225,8 +227,10 @@ public class GerenciarLeilao extends ModelController {
 	public boolean finalizarLeilao(Leilao leilao){
 		JDBCLeilaoDAO update =new JDBCLeilaoDAO();
 		JDBCLoteProdutoDAO lt =new JDBCLoteProdutoDAO();
-		Calendar data = Calendar.getInstance(); 
-		String tempo = String.valueOf(data.get(Calendar.DAY_OF_MONTH))+"/"+ String.valueOf(data.get(Calendar.MONTH))+"/"+String.valueOf(data.get(Calendar.YEAR));
+		Date dataCal = new Date();  
+		GregorianCalendar data = new GregorianCalendar();  
+		data.setTime(dataCal);  
+		String tempo = String.valueOf(data.get(Calendar.DAY_OF_MONTH))+"/"+ String.valueOf(data.get(Calendar.MONTH)+1)+"/"+String.valueOf(data.get(Calendar.YEAR));
 		leilao.setTermino(tempo);
 		lt.delete(leilao.getIdLeilao());
 		leilao.setAtivo(false);
