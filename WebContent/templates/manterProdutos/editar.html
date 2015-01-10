@@ -9,21 +9,21 @@
 	<table style="position: relative" cellspacing="100">
 		<tr>
 			<!-- $BeginBlock Imagem -->
-			<td>
-				<img id="img${imgid}" src="templates/imagens/${img}" style="width: 240px; height: 320px;">
-				<h6><a class="rem${imgid}">Remover</a></h6>
-				<br/></br></br>
-			</td>
-			<td>
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			</td>
+				<td>
+					<div id="divimg${imgid}">
+						<img id="img${imgid}" src="templates/imagens/${img}" style="width: 240px; height: 320px;">
+						<h6><a class="rem${imgid}" onclick="remover(${imgid})">Remover</a></h6>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<br/><br/><br/>
+					</div>
+				</td>
 			<!-- $EndBlock Imagem -->
 		</tr>
 	</table>
 	<div id="imginput">
 		<br>
 		<!-- $BeginBlock NovaImagem -->
-		<p><input name="imagem${x}" type="file" /></p>
+		<p><input name="imagem${i}" type="file" /></p>
 		<!-- $EndBlock NovaImagem -->
 	</div>
 	<br>

@@ -196,12 +196,112 @@ public class ManterProdutos  extends ModelController{
 				ad.setMessage("Erro.");
 			}
 		}else{
+			Produto prod = new Produto();
+			prod.setTitulo((String)da.getData("titulo"));
+			prod.setDescricao((String)da.getData("descricao"));		
 			
+			String cat = ((String)da.getData("categoria"));
+			
+			if ( cat == null ){
+				ad.setMessage("Nenhuma categoria.");
+				return ad;
+			}
+			
+			try{
+				prod.setPreco(Float.valueOf((String)da.getData("preco")));
+				prod.setQuantidade(Integer.valueOf((String)da.getData("quantidade")));
+				prod.setFkUsuario(Integer.valueOf(((String)da.getData("idusuario")).split(",")[0]));
+						
+				JDBCProdutoDAO manterproduto = new JDBCProdutoDAO();
+				if ( manterproduto.validar(prod)){
+					int pkprodinsert = manterproduto.insertReturningPk(prod);
+					
+					GetFileUpload fup = new GetFileUpload();
+					String path = (String)da.getData("storageContext"),
+							separador = (String)da.getData("pathSeparador");
+					path += separador + "imagens";
+					fup.setPath(path);
+					fup.setSeparador(separador);
+					int cont=0;
+					
+					ArrayList<DoAction> imagens = new ArrayList<DoAction>();
+					for (int i = 1; i <= 5; i++){
+						FileItemStream img = (FileItemStream)((DoAction)da.getData("imagem" + i)).getData("file");
+						
+						if (img != null && !img.getName().isEmpty()){
+							imagens.add((DoAction)da.getData("imagem" + i));
+						}
+					}
+					
+					if ( imagens.size() == 0){
+						manterproduto.delete(pkprodinsert);
+						ad.setMessage("Nenhuma imagem.");
+						return ad;
+					}
+					
+					for (DoAction img : imagens){
+						ByteArrayOutputStream baos = (ByteArrayOutputStream)img.getData("data");
+						
+						if ( baos.size() > fup.getMaxSizeAllowed()){
+							baos.close();
+							continue;
+						}
+						
+						FileItemStream fis = (FileItemStream)img.getData("file");
+						String name = fis.getName();
+						String formato = name.substring(name.lastIndexOf(".")+1);
+						System.out.println(formato);
+						Imagem imag = new Imagem(0, pkprodinsert, formato, baos.toByteArray());
+						JDBCImagemDAO insimg = new JDBCImagemDAO();
+						
+						if ( !insimg.validar(imag)){
+							ad.setMessage("Dados inconsistentes.");
+							manterproduto.delete(pkprodinsert);
+							return ad;
+						}
+						int pknewimg = insimg.insertReturningPk(imag);
+						imag.setPk(pknewimg);
+						
+						System.out.println("PK da imagem: " + pknewimg);
+						
+						long sizeread = fup.saveFile(baos, Integer.toString(pknewimg) + "." + formato);
+						if ( sizeread == -1 || sizeread > fup.getMaxSizeAllowed()){
+							insimg.delete(pknewimg);
+						}else{
+							cont++;
+						}
+						if ( cont == 5){
+							break;
+						}
+					}
+				
+					if ( cont == 0 ){
+						manterproduto.delete(pkprodinsert);
+						ad.setMessage("Nenhuma imagem.");
+						return ad;
+					}
+					JDBCCategoriaProdutoDAO daoprod = new JDBCCategoriaProdutoDAO(); 
+					String[] cats = cat.split(",");
+					for(String i : cats){
+						daoprod.insert(new CategoriaProduto(0,Integer.valueOf(i),pkprodinsert));
+					}
+					
+					return listar(da);
+				}
+				else{
+					ad.setMessage("Dados inconsistentes.");
+					return ad;
+				}
+			}
+			catch(Exception e){
+				e.printStackTrace();
+				ad.setMessage("Erro desconhecido ou erro ao converter valores.");
+				return ad;
+			}
 		}
 		
 		return ad;
 	};
-	
 	public ActionDone remover ( DoAction da ){
 		ActionDone ad = new ActionDone();
 		

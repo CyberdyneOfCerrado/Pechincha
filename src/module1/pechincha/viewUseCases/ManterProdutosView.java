@@ -5,6 +5,7 @@ import java.util.List;
 
 import biz.source_code.miniTemplator.MiniTemplator;
 import module1.pechincha.model.Categoria;
+import module1.pechincha.model.Imagem;
 import module1.pechincha.util.ActionDone;
 import module1.pechincha.util.DoAction;
 import module1.pechincha.view.ViewController;
@@ -70,6 +71,40 @@ public class ManterProdutosView extends ViewController {
 		temp.setVariable("preco",Float.toString((float)ad.getData("preco")));
 		temp.setVariable("quantidade",Integer.toString((int)ad.getData("quantidade")));
 		temp.setVariable("categorias",(String)ad.getData("categorias"));
+		return temp.generateOutput();
+	}
+	private String editar(ActionDone ad){		
+		MiniTemplator temp = super.startMiniTemplator(super.getTemplate(ad)); 
+		temp.setVariable("titulo",(String)ad.getData("titulo"));
+		
+		List<Imagem> imagens = (List<Imagem>)ad.getData("imagens");
+		
+		for (Imagem img : imagens){
+			temp.setVariable("imgid",img.getPk());			
+			temp.setVariable("img",img.getPk() + "." + img.getFormato());
+			temp.addBlock("Imagem");
+		}
+		
+		for (int i = 1; i <= imagens.size(); i++){
+			temp.setVariable("i",i);
+			temp.addBlock("NovaImagem");
+		}
+		
+		List<Categoria> listcats = (List<Categoria>)ad.getData("categorias");
+		List<Integer> catssel = (List<Integer>)ad.getData("catsel");
+		
+		for (Categoria cat : listcats){
+			temp.setVariable("pk", cat.getPk());
+			temp.setVariable("checked", (catssel.contains(cat.getPk()) ? "checked" : ""));
+			temp.setVariable("descricao", cat.getDescricao());
+			
+			temp.addBlock("Categoria");
+		}
+
+		temp.setVariable("idusuario",Integer.toString((int)ad.getData("idusuario")));
+		temp.setVariable("descricao",(String)ad.getData("descricao"));
+		temp.setVariable("preco",Float.toString((float)ad.getData("preco")));
+		temp.setVariable("quantidade",Integer.toString((int)ad.getData("quantidade")));
 		return temp.generateOutput();
 	}
 	private String listar(ActionDone ad){
