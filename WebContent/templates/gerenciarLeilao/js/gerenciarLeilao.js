@@ -158,7 +158,6 @@ function adicionar(id){
     $('#adicionado'+id+'').val((document.getElementById('checkpr'+id+'').checked? 'true' : 'false'));
     var valorP = parseFloat($(temp).text());
     var valorT = parseFloat($("#valortotal").text());
-    alert(typeof($("#adicionado"+id+"").val()));
     if($("#adicionado"+id+"").val()==="true"){
         valorT+=valorP;
         $("#valortotal").text(valorT.toFixed(2));
