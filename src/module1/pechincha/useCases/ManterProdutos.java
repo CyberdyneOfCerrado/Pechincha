@@ -50,7 +50,7 @@ public class ManterProdutos  extends ModelController{
 		String cat = ((String)da.getData("categoria"));
 		
 		if ( cat == null ){
-			ad.setMessage("Nenhuma categoria.");
+			ad.setMessage("Nenhuma categoria selecionada.");
 			return ad;
 		}
 		
@@ -82,7 +82,7 @@ public class ManterProdutos  extends ModelController{
 				
 				if ( imagens.size() == 0){
 					manterproduto.delete(pkprodinsert);
-					ad.setMessage("Nenhuma imagem.");
+					ad.setMessage("Nenhuma imagem enviada.");
 					return ad;
 				}
 				
@@ -102,14 +102,12 @@ public class ManterProdutos  extends ModelController{
 					JDBCImagemDAO insimg = new JDBCImagemDAO();
 					
 					if ( !insimg.validar(imag)){
-						ad.setMessage("Dados inconsistentes.");
+						ad.setMessage("Ao menos uma imagem deve ser enviada, com dimensões entre 640x480 e 1920x1080.");
 						manterproduto.delete(pkprodinsert);
 						return ad;
 					}
 					int pknewimg = insimg.insertReturningPk(imag);
 					imag.setPk(pknewimg);
-					
-					System.out.println("PK da imagem: " + pknewimg);
 					
 					long sizeread = fup.saveFile(baos, Integer.toString(pknewimg) + "." + formato);
 					if ( sizeread == -1 || sizeread > fup.getMaxSizeAllowed()){
@@ -124,7 +122,7 @@ public class ManterProdutos  extends ModelController{
 			
 				if ( cont == 0 ){
 					manterproduto.delete(pkprodinsert);
-					ad.setMessage("Nenhuma imagem.");
+					ad.setMessage("Nenhuma imagem enviada.");
 					return ad;
 				}
 				JDBCCategoriaProdutoDAO daoprod = new JDBCCategoriaProdutoDAO(); 
