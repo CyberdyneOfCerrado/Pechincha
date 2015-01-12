@@ -141,18 +141,45 @@ function somar(id){
     var temp3="#valor"+id+"";
     $(temp).text(((document.getElementById(temp1).value)*($(temp2).val())).toFixed(2));
     $(temp3).val(((document.getElementById(temp1).value)*($(temp2).val())).toFixed(2));
+    var val1=parseFloat(document.getElementById("temp").value);
+    var val2=parseFloat($(temp).text());
+    if(val1<val2){
+        if($("#adicionado"+id+"").val()==="true"){
+            var valorP = parseFloat($(temp).text());
+            var valorT = parseFloat($("#valortotal").text());
+            var pr= parseFloat($(temp2).val());
+            valorT+=pr;
+            $("#valortotal").text(valorT.toFixed(2));
+            $("#temp").val($(temp).text());
+        }
+        $("#temp").val(valorP);
+    }
+    if(val1>val2){
+        if($("#adicionado"+id+"").val()==="true"){
+            var valorP = parseFloat($(temp).text());
+            var valorT = parseFloat($("#valortotal").text());
+            var pr= parseFloat($(temp2).val());
+            valorT-=pr;
+            $("#valortotal").text(valorT.toFixed(2));
+            $("#temp").val($(temp).text());
+        }
+        $("#temp").val(valorP);
+    }
 }
 
 function adicionar(id){
     var temp="#valorTemp"+id+"";
     $('#adicionado'+id+'').val((document.getElementById('checkpr'+id+'').checked? 'true' : 'false'));
+    $('#temp').val($(temp).text());
     var valorP = parseFloat($(temp).text());
     var valorT = parseFloat($("#valortotal").text());
     if($("#adicionado"+id+"").val()==="true"){
         valorT+=valorP;
         $("#valortotal").text(valorT.toFixed(2));
     }else{
+        if(valorT>0){
         valorT-=valorP;
         $("#valortotal").text(valorT.toFixed(2));
+        }
     }
 }

@@ -24,7 +24,7 @@
 <strong><span id="valortotal" class="txtconteudo" style="font-family:Arial;font-size:17px;" >0.00</span></strong>
 </div>
 <form class="form-search" action="q" method="post">
-<input type="submit" id="Button1" name="cancelarLeilao" value="Cancelar" class="btn btn-primary" style="position:absolute;left:380px;top:550px;width:95px;height:37px;z-index:5;">
+<input type="submit" id="Button1" name="cancelarLeilao" value="Cancelar" class="btn btn-primary" style="position:absolute;left:380px;top:550px;width:95px;height:37px;z-index:5;"/>
 <input type="hidden" id="etapa" name="etapa" value="historico"/>
 <input type="hidden" id="redirect" name="redirect" value="false"/>
 <input type="hidden" id="userCase" name="useCase" value="gerenciarLeilao"/>
@@ -65,10 +65,11 @@
 			<td class="tabela txtconteudo" style="text-align:center; padding-top: 57px;width: 147px; height: 95px;">${produto}</td>
 			<td class="tabela txtconteudo" style="text-align:center;width:176px;height:144px;"><img src="templates/imagens/${img}" alt="176x144" style="width:176px;height:144px;"></br></td>
 			<td class="tabela txtconteudo" style="text-align:center; padding-top: 57px;width: 114px; height: 95px;">${quantidade}</td>
+			<input type="hidden" id="temp" value="0"/>
 			<td class="tabela txtconteudo" style="text-align:center; padding-top: 57px;width: 144px; height: 95px;"><input id="qtd${idproduto}" name="quantidadeLote" style="width:50px;" type="number" value="0" min="0" max="${quantidade}" onclick="somar('${idproduto}')"/></td>
 			<td class="tabela txtconteudo" style="text-align:center; padding-top: 57px;width: 127px; height: 95px;"><span style="width:50px;">${preco}</span></td>
 			<td class="tabela txtconteudo" style="text-align:center; padding-top: 57px; width: 127px; height: 95px;"><span style="width:50px;" id="valorTemp${idproduto}">0.00</span></td>
-			<td style="text-align: center;width: 65px; height: 144px;"><input type="checkbox" id="checkpr${idproduto}" name="checkpr${idproduto}" onclick="adicionar('${idproduto}')" /></td>
+			<td style="text-align: center;width: 65px; height: 144px;padding-top: 57px;"><input type="checkbox" id="checkpr${idproduto}" name="checkpr${idproduto}" onclick="adicionar('${idproduto}')" /></td>
 			<input type="hidden" name="adicionado" id="adicionado${idproduto}" value="false"/>
 			<input type="hidden" name="idproduto" id="idproduto" value="${idproduto}" />
 			<input type="hidden" name="quantidade" id="quantidade" value="${quantidade}" />
