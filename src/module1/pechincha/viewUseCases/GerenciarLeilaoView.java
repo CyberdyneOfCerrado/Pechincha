@@ -4,7 +4,9 @@ package module1.pechincha.viewUseCases;
 import java.util.List;
 
 import biz.source_code.miniTemplator.MiniTemplator;
+import module1.pechincha.cruds.JDBCImagemDAO;
 import module1.pechincha.cruds.JDBCProdutoDAO;
+import module1.pechincha.model.Imagem;
 import module1.pechincha.model.Leilao;
 import module1.pechincha.model.Produto;
 import module1.pechincha.util.ActionDone;
@@ -63,6 +65,11 @@ public class GerenciarLeilaoView extends ViewController{
 		index.setVariable("nickname", String.valueOf(ad.getData("nickname")));
 		index.setVariable("idleiloeiro", String.valueOf(ad.getData("idleiloeiro")));
 		for (Produto produto:list){
+			List<Imagem> imgs = new JDBCImagemDAO().list(produto.getPk());
+			if ( imgs.size() > 0){
+				Imagem img = imgs.get(0);
+				index.setVariable("img", img.getPk() + "." + img.getFormato());
+			}
 			index.setVariable("produto", produto.getTitulo());
 			index.setVariable("quantidade", produto.getQuantidade());
 			index.setVariable("preco",String.valueOf(produto.getPreco()));

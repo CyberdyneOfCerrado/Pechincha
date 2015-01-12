@@ -14,10 +14,9 @@
 <link rel="stylesheet" href="templates/lib/css/style.css" media="screen">
 <script src="templates/gerenciarLeilao/js/gerenciarLeilao.js"></script>
 <div id="Layer1" style="position:absolute;text-align:left;left:162px;top:25px;width:898px;height:540px;z-index:5;" title="">
-<a style="position:absolute;left:7px;top:131px;width:115px;height:63px;z-index:2;" onclick="postar('etapa')" class="btn btn-inverse" name="home" id="Button3"><i class="icon-home icon-white"></i><h4 class="texto">Home</h4></a>
 <img src="templates/gerenciarLeilao/img/carrinho.png" class="img"></img>
-<div id="wb_Text1" style="position:absolute;left:415px;top:50px;width:252px;height:23px;z-index:3;text-align:left;">
-<h3 style="color:#000000;font-family:Arial;font-size:29px;">Criar um leilão</h3></div>
+<div id="wb_Text1" style="position:absolute;left:360px;top:50px;width:300px;height:23px;z-index:3;text-align:left;">
+<h3 style="color:#000000;font-family:Arial;font-size:29px;">Adicionar produtos</h3></div>
 <div id="wb_Text3" style="position:absolute;left:298px;top:500px;width:219px;height:19px;z-index:3;text-align:left;">
 <span class="txtconteudo" style="font-family:Arial;font-size:16px;"><strong>Valor personalizado do lote</strong></span></div>
 <div id="total" style="position:absolute;left:298px;top:465px;width:419px;height:19px;z-index:3;text-align:left;">
@@ -45,26 +44,31 @@
 <input type="hidden" id="etiqueta" name="etiqueta" value="${etiqueta}"/>
 <input type="hidden" id="descricao" name="descricao" value="${descricao}"/>
 <input type="hidden" id="tempolimite" name="tempolimite" value="${tempolimite}"/>
-<input type="button" id="Button2" name="Concluir" class="btn btn-primary" onclick="concluir()" value="Concluir" style="position:absolute;left:580px;top:550px;width:95px;height:37px;z-index:6;">
-<div id="neblina" style="position:absolute;text-align:left;left:162px;top:132px;width:784px;height:480px;z-index:0;"></div>
-<div id="Layer2" style="position:absolute;text-align:left;left:162px;top:132px;width:784px;height:330px;z-index:4; overflow-y: scroll;" title="">
+<input type="button" id="Button2" name="Concluir" class="btn btn-primary" onclick="concluir()" value="Concluir" style="position:absolute;left:510px;top:550px;width:95px;height:37px;z-index:6;">
+<div id="neblina" style="position:absolute;text-align:left;left:22px;top:132px;width:995px;height:480px;z-index:0;"></div>
+<div id="Layer3" style="position:absolute;text-align:left;left:22px;top:132px;width:995px;height:330px;z-index:4;" title="">
 <table class="table table-striped">
 	<tr>
-		<td class="tabela" style="text-align:center;"style="text-align:center;">Produto</td>
-		<td class="tabela" style="text-align:center;">Unidades produto</td>
-		<td class="tabela" style="text-align:center;">Unidades lote</td>
-		<td class="tabela" style="text-align:center;">Preço unitário </td>
+		<td class="tabela" style="text-align: center; width: 16%; padding-left: 8px;">Produto</td>
+		<td class="tabela" style="text-align: center; width: 22.8%; height: 40px;"></td>
+		<td class="tabela" style="text-align: center; padding-left: 8px;width:12.4%">Unidades produto</td>
+		<td class="tabela" style="text-align: center; padding-left: 8px; padding-right: 8px;width:16%">Unidades lote</td>
+		<td class="tabela" style="text-align: center; padding-left: 8px;width:15.3%">Preço unitário </td>
 		<td class="tabela" style="text-align:center;">Preço x unidades</td>
 		<td class="tabela" style="text-align:center;">Adicionado</td>
 	</tr>
+</table>
+<div id="Layer2" style="position:absolute;text-align:left;top:57px;width:995px;height:273px;z-index:4; overflow-y: scroll;" title="">
+<table class="table table-striped">
 <!-- $BeginBlock produto -->
 	<tr>
-			<td class="tabela txtconteudo" style="text-align:center;">${produto}</td>
-			<td class="tabela txtconteudo" style="text-align:center;">${quantidade}</td>
-			<td class="tabela txtconteudo" style="text-align:center;"><input id="qtd${idproduto}" name="quantidadeLote" style="width:50px;" type="number" value="0" min="0" max="${quantidade}" onclick="somar('${idproduto}')"/></td>
-			<td class="tabela txtconteudo" style="text-align:center;"><span style="width:50px;">${preco}</span></td>
-			<td class="tabela txtconteudo" style="text-align:center;"><span style="width:50px;" id="valorTemp${idproduto}">0.00</span></td>
-			<td style="text-align:center;"><input type="checkbox" id="checkpr${idproduto}" name="checkpr${idproduto}" onclick="adicionar('${idproduto}')" /></td>
+			<td class="tabela txtconteudo" style="text-align:center; padding-top: 57px;">${produto}</td>
+			<td class="tabela txtconteudo" style="text-align:center;"><img src="templates/imagens/${img}" alt="176x144" style="width: 176px; height: 144px;"></br></td>
+			<td class="tabela txtconteudo" style="text-align:center; padding-top: 57px;">${quantidade}</td>
+			<td class="tabela txtconteudo" style="text-align:center; padding-top: 57px;"><input id="qtd${idproduto}" name="quantidadeLote" style="width:50px;" type="number" value="0" min="0" max="${quantidade}" onclick="somar('${idproduto}')"/></td>
+			<td class="tabela txtconteudo" style="text-align:center; padding-top: 57px;"><span style="width:50px;">${preco}</span></td>
+			<td class="tabela txtconteudo" style="text-align:center; padding-top: 57px;"><span style="width:50px;" id="valorTemp${idproduto}">0.00</span></td>
+			<td style="text-align: center; width: 65px;"><input type="checkbox" id="checkpr${idproduto}" name="checkpr${idproduto}" onclick="adicionar('${idproduto}')" /></td>
 			<input type="hidden" name="adicionado" id="adicionado${idproduto}" value="false"/>
 			<input type="hidden" name="idproduto" id="idproduto" value="${idproduto}" />
 			<input type="hidden" name="quantidade" id="quantidade" value="${quantidade}" />
