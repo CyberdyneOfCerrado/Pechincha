@@ -5,6 +5,7 @@ package module1.pechincha.useCases;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.fileupload.FileItemStream;
@@ -60,6 +61,7 @@ public class ManterProdutos  extends ModelController{
 			prod.setFkUsuario(Integer.valueOf(((String)da.getData("idusuario")).split(",")[0]));
 					
 			JDBCProdutoDAO manterproduto = new JDBCProdutoDAO();
+
 			if ( manterproduto.validar(prod)){
 				int pkprodinsert = manterproduto.insertReturningPk(prod);
 				
@@ -208,7 +210,15 @@ public class ManterProdutos  extends ModelController{
 				prod.setPreco(Float.valueOf((String)da.getData("preco")));
 				prod.setQuantidade(Integer.valueOf((String)da.getData("quantidade")));
 				prod.setFkUsuario(Integer.valueOf(((String)da.getData("idusuario")).split(",")[0]));
-						
+								
+				List<String> imgs = null;
+					
+				String strimgrem = (String)da.getData("imgrem");
+				
+				if ( strimgrem != null){
+					imgs = Arrays.asList(((String)da.getData("imgrem")).split(","));
+				}
+
 				JDBCProdutoDAO manterproduto = new JDBCProdutoDAO();
 				if ( manterproduto.validar(prod)){
 					int pkprodinsert = manterproduto.insertReturningPk(prod);
