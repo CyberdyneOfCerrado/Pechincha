@@ -57,6 +57,28 @@ public class JDBCLoteProdutoDAO extends DAOBehavior<LoteProduto> {
 		return null;
 	}
 
+    public boolean existeLote(int pk){
+		try {
+		PreparedStatement ps = c.prepareStatement("select fkproduto from loteproduto where loteproduto.fkproduto="+pk); 
+		ResultSet result = ps.executeQuery();
+		while(result.next()){
+			if(result.getInt("fkproduto")==pk){
+				result.close();
+				ps.close();
+				return true;
+			}
+			else {
+				result.close();
+				ps.close();
+				return false;
+			}
+		}
+		}catch (SQLException e) {
+		throw new RuntimeException("Erro ao listar dados. Classe JDBCLoteProdutoDAO", e); 
+	}
+		return false;
+}
+    
 	@Override
 	public void update(LoteProduto arg) {
 		// TODO Auto-generated method stub
