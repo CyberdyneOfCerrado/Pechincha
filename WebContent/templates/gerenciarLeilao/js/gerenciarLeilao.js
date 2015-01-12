@@ -25,17 +25,8 @@ function enviar(Idleilao,Idleiloeiro,UseCase,Action,Redirect){
     		});
 }
 
-function criarLeilao(Etapa,Redirect,UserCase,Action,Idleiloeiro){
-$.post("q",{
-    etapa : Etapa,
-    redirect : Redirect,
-    useCase : UserCase,
-    action : Action,
-    idleiloeiro : Idleiloeiro,
-    etiqueta : document.getElementById("etiqueta").value,
-    tempolimite : document.getElementById("tempolimite").value,
-    descricao : document.getElementById("descricao").value
-}).done(
+function criarLeilao(){
+$.post("q",$("#passo01").serialize()).done(
     function(resposta){
         try{
         var obj = jQuery.parseJSON(resposta);
@@ -53,8 +44,7 @@ $.post("q",{
              focar(obj);
          });
         }catch(ex){
-            document.write(resposta);
-            location.reload();
+            document.getElementById("passo01").submit();
         }
     });
 }

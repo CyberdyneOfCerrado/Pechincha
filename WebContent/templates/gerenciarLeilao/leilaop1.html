@@ -50,7 +50,7 @@
 <table class="table table-striped">
 	<tr>
 		<td class="tabela" style="text-align: center; width: 16%; padding-left: 8px;">Produto</td>
-		<td class="tabela" style="text-align: center; width: 22.8%; height: 40px;"></td>
+		<td class="tabela" style="text-align: center; width: 19%; height: 40px;"></td>
 		<td class="tabela" style="text-align: center; padding-left: 8px;width:12.4%">Unidades produto</td>
 		<td class="tabela" style="text-align: center; padding-left: 8px; padding-right: 8px;width:16%">Unidades lote</td>
 		<td class="tabela" style="text-align: center; padding-left: 8px;width:15.3%">Preço unitário </td>
@@ -62,13 +62,13 @@
 <table class="table table-striped">
 <!-- $BeginBlock produto -->
 	<tr>
-			<td class="tabela txtconteudo" style="text-align:center; padding-top: 57px;">${produto}</td>
-			<td class="tabela txtconteudo" style="text-align:center;"><img src="templates/imagens/${img}" alt="176x144" style="width: 176px; height: 144px;"></br></td>
-			<td class="tabela txtconteudo" style="text-align:center; padding-top: 57px;">${quantidade}</td>
-			<td class="tabela txtconteudo" style="text-align:center; padding-top: 57px;"><input id="qtd${idproduto}" name="quantidadeLote" style="width:50px;" type="number" value="0" min="0" max="${quantidade}" onclick="somar('${idproduto}')"/></td>
-			<td class="tabela txtconteudo" style="text-align:center; padding-top: 57px;"><span style="width:50px;">${preco}</span></td>
-			<td class="tabela txtconteudo" style="text-align:center; padding-top: 57px;"><span style="width:50px;" id="valorTemp${idproduto}">0.00</span></td>
-			<td style="text-align: center; width: 65px;"><input type="checkbox" id="checkpr${idproduto}" name="checkpr${idproduto}" onclick="adicionar('${idproduto}')" /></td>
+			<td class="tabela txtconteudo" style="text-align:center; padding-top: 57px;width: 147px; height: 95px;">${produto}</td>
+			<td class="tabela txtconteudo" style="text-align:center;width:176px;height:144px;"><img src="templates/imagens/${img}" alt="176x144" style="width:176px;height:144px;"></br></td>
+			<td class="tabela txtconteudo" style="text-align:center; padding-top: 57px;width: 114px; height: 95px;">${quantidade}</td>
+			<td class="tabela txtconteudo" style="text-align:center; padding-top: 57px;width: 144px; height: 95px;"><input id="qtd${idproduto}" name="quantidadeLote" style="width:50px;" type="number" value="0" min="0" max="${quantidade}" onclick="somar('${idproduto}')"/></td>
+			<td class="tabela txtconteudo" style="text-align:center; padding-top: 57px;width: 127px; height: 95px;"><span style="width:50px;">${preco}</span></td>
+			<td class="tabela txtconteudo" style="text-align:center; padding-top: 57px; width: 127px; height: 95px;"><span style="width:50px;" id="valorTemp${idproduto}">0.00</span></td>
+			<td style="text-align: center;width: 65px; height: 144px;"><input type="checkbox" id="checkpr${idproduto}" name="checkpr${idproduto}" onclick="adicionar('${idproduto}')" /></td>
 			<input type="hidden" name="adicionado" id="adicionado${idproduto}" value="false"/>
 			<input type="hidden" name="idproduto" id="idproduto" value="${idproduto}" />
 			<input type="hidden" name="quantidade" id="quantidade" value="${quantidade}" />
