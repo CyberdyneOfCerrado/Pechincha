@@ -150,7 +150,9 @@ function somar(id){
             var pr= parseFloat($(temp2).val());
             valorT+=pr;
             $("#valortotal").text(valorT.toFixed(2));
+            $("#valortotal").text(valorT.toFixed(2));
             $("#temp").val($(temp).text());
+            $(temp3).val(valorP);
         }
         $("#temp").val(valorP);
     }
@@ -162,6 +164,7 @@ function somar(id){
             valorT-=pr;
             $("#valortotal").text(valorT.toFixed(2));
             $("#temp").val($(temp).text());
+            $(temp3).val(valorP);
         }
         $("#temp").val(valorP);
     }
