@@ -11,7 +11,6 @@ public class HomeView extends ViewController {
 
 	public HomeView(String sevletContext, String useCase) {
 		super(sevletContext, useCase);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -44,8 +43,14 @@ public class HomeView extends ViewController {
 	    
 		for(ManagerLeilao ml : array){
 			MiniTemplator m = super.startMiniTemplator(getSevletContext()+"home"+super.getSeparador()+"box.html"); 
-			
-			m.setVariable("tipo", "");
+			m.setVariable("idL", ml.getLeilao().getIdLeilao());
+			String tipo = ""; 
+				if( ml.getLanceCorrente() == ml.getLeilao().getLanceInicial())
+					tipo = "boxAlertaSemLance"; 
+				else if( ml.getTempoCorrente() <= 1500 )
+					tipo = "boxAlertaTempoLimite"; 
+				
+			m.setVariable("tipo", tipo);
 			m.setVariable("online",ml.getOnline());
 			m.setVariable("tempo", ml.getTempoCorrente());
 			m.setVariable("etiqueta",ml.getLeilao().getEtiqueta());
@@ -54,11 +59,13 @@ public class HomeView extends ViewController {
 			m.setVariable("leiloeiro", ml.getLeilao().getNickname());
 			result += m.generateOutput();
 		}
+		
 		return result;
 	}
 
 	private String home(ActionDone ad) {
 		MiniTemplator temp = super.startMiniTemplator(super.getTemplate(ad)); 
+		temp.setVariable("idEmissor",(String) ad.getData("idEmissor"));
 		return temp.generateOutput();
 	}
 
