@@ -139,22 +139,25 @@ function somar(id){
     var temp1="qtd"+id+"";
     var temp2="#preco"+id+"";
     var temp3="#valor"+id+"";
+    if($('#IDtemp').val()!==id && $("#adicionado"+id+"").val()==="true")$('#temp').val($(temp).text());
     $(temp).text(((document.getElementById(temp1).value)*($(temp2).val())).toFixed(2));
     $(temp3).val(((document.getElementById(temp1).value)*($(temp2).val())).toFixed(2));
-    var val1=parseFloat(document.getElementById("temp").value);
-    var val2=parseFloat($(temp).text());
-    if(val1<val2){
+    var valTemp=parseFloat(document.getElementById("temp").value);
+    var valC=parseFloat($(temp).text());
+    if(valTemp<valC){
         if($("#adicionado"+id+"").val()==="true"){
             var valorP = parseFloat($(temp).text());
             var valorT = parseFloat($("#valortotal").text());
             var pr= parseFloat($(temp2).val());
             valorT+=pr;
             $("#valortotal").text(valorT.toFixed(2));
+            $("#valortotal").text(valorT.toFixed(2));
             $("#temp").val($(temp).text());
+            $(temp3).val(valorP);
+            $("#temp").val(valorP);
         }
-        $("#temp").val(valorP);
     }
-    if(val1>val2){
+    if(valTemp>valC){
         if($("#adicionado"+id+"").val()==="true"){
             var valorP = parseFloat($(temp).text());
             var valorT = parseFloat($("#valortotal").text());
@@ -162,23 +165,26 @@ function somar(id){
             valorT-=pr;
             $("#valortotal").text(valorT.toFixed(2));
             $("#temp").val($(temp).text());
+            $(temp3).val(valorP);
+            $("#temp").val(valorP);
         }
-        $("#temp").val(valorP);
     }
+    $('#IDtemp').val(id);
 }
 
 function adicionar(id){
     var temp="#valorTemp"+id+"";
     $('#adicionado'+id+'').val((document.getElementById('checkpr'+id+'').checked? 'true' : 'false'));
+    $('#IDtemp').val(id);
     $('#temp').val($(temp).text());
-    var valorP = parseFloat($(temp).text());
+    var valorC = parseFloat($(temp).text());
     var valorT = parseFloat($("#valortotal").text());
     if($("#adicionado"+id+"").val()==="true"){
-        valorT+=valorP;
+        valorT+=valorC;
         $("#valortotal").text(valorT.toFixed(2));
     }else{
         if(valorT>0){
-        valorT-=valorP;
+        valorT-=valorC;
         $("#valortotal").text(valorT.toFixed(2));
         }
     }
