@@ -26,7 +26,11 @@ public class Chat {
 		//Difirenciar:
 		//1 Usuário normal; 
 		//2 Usuário com o maior lance; 
-		//3 Usuário que é o Dono do leilão. 		
+		//3 Usuário que é o Dono do leilão. 	
+		//4 Retirar qualquer tipo de html que possa ser indevidamente incorporado à página. 
+		
+		messager.setMsg(messager.getMsg().replaceAll("<[^>]*>", ""));
+	
 		if( userSession.getIdUser() == maiorLance.getIdUser())
 			return MessegerFactory.createMessegerMaiorLance(messager.getUserName(),messager.getMsg());
 		if( userSession.getIdUser() == leilao.getIdLeiloeiro())

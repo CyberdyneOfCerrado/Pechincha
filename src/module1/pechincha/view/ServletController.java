@@ -29,7 +29,7 @@ import biz.source_code.miniTemplator.MiniTemplator.TemplateSyntaxException;
 
 //Cria o pacote geral de comunicação da aplicação 'DoAction' e gerencia as classes geradoreas de conteúdo.
 public class ServletController {
-	private String servletContext;
+	private static String servletContext;
 	private UseCaseController ucc;
 	private Hashtable<String, ViewController> listViews;
 	String separador;
@@ -194,4 +194,8 @@ public class ServletController {
 		return index.generateOutput();
 		}else return conteudo;
 	};
+	
+	public static String getServletContext() {
+		return servletContext;
+	}
 }
