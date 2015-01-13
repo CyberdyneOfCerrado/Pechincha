@@ -31,7 +31,7 @@ public class Home extends ModelController {
 		}
 		
 		ad.setData("list",list); 
-		ad.setData("concatToIndex","false");
+		ad.setData("index","false");
 		
 		//Por enquanto eu não vou fazer nada aqui. 
 		//Identificando o pacote

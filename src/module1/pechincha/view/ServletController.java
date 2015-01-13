@@ -81,8 +81,7 @@ public class ServletController {
 				ad = ucc.chooseUserCase(da);
 				ad.setData("redirect", "false");
 			} else {
-				ad = new ActionDone(da.getUseCase(), da.getAction(),
-				da.getHashtable());// copiando o DA p/ o AC
+				ad = new ActionDone(da.getUseCase(), da.getAction(),da.getHashtable());// copiando o DA p/ o AC
 			}
 		}
 		return readActionDone(ad);// abre o pacote de ação concluída e o manda
