@@ -1,5 +1,6 @@
 package module2.pechincha.manager;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Hashtable;
 
@@ -145,7 +146,8 @@ public class ManagerLeilao extends Thread {
 	private void finalizar(UserSession userSession) {
 			//Previnir que o leiloeiro finalizem em nenhum lance. 
 	    	if ( maiorLance.getSession() != null ) {
-	    	boolean result = gl.finalizarLeilao(this.leilao);
+	    	boolean result=false;
+			result = gl.finalizarLeilao(this.leilao);
 			// Pegar a sessão do maior lance e do leiloeiro;
 			// Preparar mensagem para ambos.
 			// Enviar mensagem de acordo de compra unicast.

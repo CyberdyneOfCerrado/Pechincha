@@ -21,8 +21,8 @@ public class WebSocketController {
 	   public WebSocketController(){
 		   StorageLeilaoEnvironments.initialize();
 		   //public Leilao(int idLeilao, String etiqueta, int tempoLimite, int idLeiloeiro, float lanceInicial,String descricao,int comprador, ArrayList<LoteProduto> produto,String nickname,boolean ativo){
-		   for(int a = 0 ; a < 2 ; a++)
-		   StorageLeilaoEnvironments.iniciarAmbienteLeilao( new Leilao(a,"Gerado automaticamente "+a ,1500, 1 ,2000.00f,"nada",33,null,"Allyson",false, 0) );
+/*		   for(int a = 0 ; a < 50 ; a++)
+		   StorageLeilaoEnvironments.iniciarAmbienteLeilao( new Leilao(a,"Gerado automaticamente "+a ,1500, 1 ,2000.00f,"nada",33,null,"Allyson",false, 0) );*/
 		   
 	   }; 
 	   

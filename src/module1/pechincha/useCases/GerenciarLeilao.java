@@ -1,5 +1,6 @@
 package module1.pechincha.useCases;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -15,6 +16,8 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import biz.source_code.miniTemplator.MiniTemplator;
+import biz.source_code.miniTemplator.MiniTemplator.TemplateSyntaxException;
 import module1.pechincha.controllers.ModelController;
 import module1.pechincha.cruds.JDBCLeilaoDAO;
 import module1.pechincha.cruds.JDBCLoteProdutoDAO;
@@ -26,6 +29,7 @@ import module1.pechincha.model.Usuario;
 import module1.pechincha.model.Produto;
 import module1.pechincha.util.ActionDone;
 import module1.pechincha.util.DoAction;
+import module1.pechincha.view.ServletController;
 import module2.pechincha.manager.StorageLeilaoEnvironments;
 
 public class GerenciarLeilao extends ModelController {
@@ -204,7 +208,7 @@ public class GerenciarLeilao extends ModelController {
 	}
 	
 	
-	public ActionDone processaEmail(DoAction action){
+	public ActionDone processaEmail(DoAction action) throws IOException{
 		ActionDone done = new ActionDone();
 		Leilao leilao = null;
 		JDBCLeilaoDAO leilaoDao = new JDBCLeilaoDAO();
@@ -238,7 +242,7 @@ public class GerenciarLeilao extends ModelController {
 		return enviarEmail(leilao);
 	}
 	
-	public boolean enviarEmail(Leilao leilao) {
+	public boolean enviarEmail(Leilao leilao){
 		String nome="";
 		String msg="";
 		String destino="";
@@ -258,7 +262,7 @@ public class GerenciarLeilao extends ModelController {
 		return true;
 		}else{
 			nome=leiloeiro.getNomeCompleto();
-			msg="Informamos que o senhor(a) "+comprador.getNomeCompleto()+" efetuou uma compra no seu leilão, </ br>Voce pode entrar em contato com o mesmo com os seguinte dados:</ br><ul><li>Skype: "+comprador.getSkype()+"</li><li>E-mail: "+comprador.getEmailPrincipal()+"</li><li>Telefone fixo: "+comprador.getTelFixo()+"</li><li>Telefone celular: "+comprador.getTelCelular()+"</li></ul></ br><h1>Agradecemos aos nossos clientes pela preferência</h1>";
+			msg="<span>Informamos que o senhor(a) "+comprador.getNomeCompleto()+" efetuou uma compra no seu leilão. <br />Voce pode entrar em contato com o mesmo com os seguinte dados:<br /><ul><li>Skype: "+comprador.getSkype()+"</li><li>E-mail: "+comprador.getEmailPrincipal()+"</li><li>Telefone fixo: "+comprador.getTelFixo()+"</li><li>Telefone celular: "+comprador.getTelCelular()+"</li></ul><br /><h1>Agradecemos aos nossos clientes pela preferência</h1></span>";
 			destino=leiloeiro.getEmailPrincipal();
 			if(!mail(nome,msg,destino)){
 				destino=leiloeiro.getEmailAlternativo();
@@ -267,7 +271,7 @@ public class GerenciarLeilao extends ModelController {
 				}
 			}
 			nome=comprador.getNomeCompleto();
-			msg="É um prazer informar que o senhor(a) efetuou uma compra de "+leiloeiro.getNomeCompleto()+" no Pechincha.com, </ br>Voce pode entrar em contato com o mesmo para concluir sua compra pelos seguintes canais de comunicação:</ br><ul><li>Skype: "+leiloeiro.getSkype()+"</li><li>E-mail: "+leiloeiro.getEmailPrincipal()+"</li><li>Telefone fixo: "+leiloeiro.getTelFixo()+"</li><li>Telefone celular: "+leiloeiro.getTelCelular()+"</li></ul></ br><h1>Agradecemos aos nossos clientes pela preferência</h1>";
+			msg="<span>É um prazer informar que o senhor(a) efetuou uma compra de "+leiloeiro.getNomeCompleto()+" no Pechincha.com. <br />Voce pode entrar em contato com o mesmo para concluir sua compra pelos seguintes canais de comunicação:<br /><ul><li>Skype: "+leiloeiro.getSkype()+"</li><li>E-mail: "+leiloeiro.getEmailPrincipal()+"</li><li>Telefone fixo: "+leiloeiro.getTelFixo()+"</li><li>Telefone celular: "+leiloeiro.getTelCelular()+"</li></ul><br /><h1>Agradecemos aos nossos clientes pela preferência</h1></span>";
 			destino=comprador.getEmailPrincipal();
 			if(!mail(nome,msg,destino)){
 				destino=comprador.getEmailAlternativo();
@@ -281,7 +285,19 @@ public class GerenciarLeilao extends ModelController {
 	private synchronized boolean  mail(String nome,String msg,String destino){
 		final String username = "pechincha@g4group.me";
 	    final String password = "pechincha123";
-
+	    String separador=System.getProperty("file.separator");
+	    MiniTemplator mail=null;
+		try {
+			mail = new MiniTemplator(ServletController.getServletContext()+separador+"gerenciarLeilao"+separador+"mail.html");
+		} catch (TemplateSyntaxException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	    mail.setVariable("mensagem", msg);
+	    String html = mail.generateOutput();
 	    Properties props = new Properties();
 	    props.put("mail.smtp.auth", true);
 	    props.put("mail.smtp.host", "g4group.me");
@@ -303,7 +319,7 @@ public class GerenciarLeilao extends ModelController {
 	        message.setRecipients(Message.RecipientType.TO,
 	                InternetAddress.parse(destino));
 	        message.setSubject("Informe Pechincha");
-	        String builder ="<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\"><html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"><title>Untitled Page</title><meta name=\"generator\" content=\"WYSIWYG Web Builder 9 - http://www.wysiwygwebbuilder.com\"><style type=\"text/css\">body{ background-color: #FFFFFF; color: #000000; font-family: Arial; font-size: 13px; margin: 0; padding: 0;}</style><style type=\"text/css\">a{ color: #0000FF; text-decoration: underline;}a:visited{ color: #800080;}a:active{ color: #FF0000;}a:hover{ color: #0000FF; text-decoration: underline;}</style><style type=\"text/css\">#Layer1{ background-color: transparent; background-image: url(http://g4group.me/convenience-store-background1.jpg); background-repeat: repeat; background-position: left top;}#wb_texto { background-color: transparent; border: 2px #FFFF00 solid; -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; padding: 0; text-align: left; -moz-box-shadow: 3px 3px 3px #000000; -webkit-box-shadow: 3px 3px 3px #000000; box-shadow: 3px 3px 3px #000000;}#wb_texto div{ text-align: left;}</style></head><body><div id=\"Layer1\" style=\"position:absolute;text-align:left;left:0px;top:0px;width:898px;height:698px;z-index:2;\" title=\"Pechincha\"><div id=\"wb_TextArt1\" style=\"position:absolute;left:32px;top:17px;width:381px;height:127px;z-index:0;\"><img src=\"https://g4group.me/img0001.png\" id=\"TextArt1\" alt=\"Pechincha.com\" title=\"Pechincha.com\" style=\"border-width:0;width:381px;height:127px;\"></div><div id=\"wb_texto\" style=\"position:absolute;left:29px;top:175px;width:837px;height:46px;z-index:1;text-align:left;\"><span style=\"color:#000000;font-family:Arial;font-size:20px;\">Boa tarde senhor(a) "+nome+",</ br>"+msg+"</span></div></div></body></html>";
+	        String builder =html;
 	        message.setText(builder, "utf-8", "html");
 	        Transport.send(message);
 	        System.out.println("Done");
