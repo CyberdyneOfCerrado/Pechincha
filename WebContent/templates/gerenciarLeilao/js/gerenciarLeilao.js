@@ -54,11 +54,11 @@ $.post("q",$("#done").serialize()).done(
     function(resposta){
         try{
             var obj = jQuery.parseJSON(resposta);
-            document.getElementById("modal1").click();
             if(obj.erro===false){
                 document.getElementById("etapaFinal").value="concluir";
                 document.getElementById("done").submit();
             }else{
+            	document.getElementById("modal1").click();
                 $("#mensagem").text(obj.erro);
                 $("#mascara").click( function(){
                      $(this).hide();
