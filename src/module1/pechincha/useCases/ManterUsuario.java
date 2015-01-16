@@ -120,10 +120,10 @@ public class ManterUsuario extends ModelController {
 		if(user.getEmailPrincipal().length()<10 || user.getEmailPrincipal().length()>100 || user.getEmailPrincipal().equals("")){
 			return check("Erro no campo E-mail principal! O campo deve conter entre 10 a 100 caracteres.","6",false);
 		}
-		if(user.getEmailAlternativo().length()>100 || user.getEmailAlternativo().equals("")){
+		if(user.getEmailAlternativo().length()>100){
 			return check("Erro no campo E-mail alternativo! O campo deve conter entre 10 a 100 caracteres.","7",false);
 		}
-		if(user.getSkype().length()>100 || user.getSkype().equals("")){
+		if(user.getSkype().length()>100){
 			return check("Erro no campo Skype! O campo deve conter ate 100 caracteres.","8",false);
 		}
 		if(user.getTelCelular().length()<11 || user.getTelCelular().length()>13 || user.getTelCelular().equals("")){
