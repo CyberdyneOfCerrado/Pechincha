@@ -26,6 +26,7 @@ public class ManterUsuario extends ModelController {
 		switch(etapa){
 		case "check":
 			user.setNomeCompleto(String.valueOf(action.getData("nomeCompleto")));
+			user.setDataNascimento(String.valueOf(action.getData("dataDeNascimento")));
 			user.setSenha(String.valueOf(action.getData("senha")));
 			user.setNickname(String.valueOf(action.getData("nickname")));
 			user.setEmailPrincipal(String.valueOf(action.getData("email")));
@@ -84,7 +85,7 @@ public class ManterUsuario extends ModelController {
 		String temp=user.getDataNascimento();
 		int d=Integer.parseInt(temp.substring(0,2));
 		int m=Integer.parseInt(temp.substring(3,5));
-		int a=Integer.parseInt(temp.substring(6,8));
+		int a=Integer.parseInt(temp.substring(6,10));
 		if(d>31 || d<1 || m>12 || m<1 || a<1900 || temp==null){
 			return check("Erro no campo Data de Nascimento!","5",false);
 		}
@@ -98,10 +99,10 @@ public class ManterUsuario extends ModelController {
 			return check("Erro no campo Skype!","8",false);
 		}
 		if(user.getTelCelular().length()<11 || user.getTelCelular().length()>13 || user.getTelCelular().equals("")){
-			check("Erro no campo Telefone Celular!","9",false);
+			return check("Erro no campo Telefone Celular, este campo deverá ter a seguinte máscara: '0xx55558888'","9",false);
 		}
 		if(user.getTelFixo().length()>13 || user.getTelFixo().equals("")){
-			return check("Erro no campo Telefone Fixo!","10",false);
+			return check("Erro no campo Telefone Fixo, este campo deverá ter a seguinte máscara: '0xx55558888'","10",false);
 		}
 		return check("false","null",true);
 	}
