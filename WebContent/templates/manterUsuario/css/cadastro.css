@@ -1,35 +1,35 @@
 #bloco{
-	width:800px;
-	position:absolute;
-	left:275px;
-	height: 1200px;
+  width:800px;
+  position:absolute;
+  left:275px;
+  height: 1200px;
 }
 #cadastro{
-	position:relative;
-	top:50px;
-	width: 800px;
-	height: 1000px;
-	padding-left: 20px;
+  position:relative;
+  top:50px;
+  width: 800px;
+  height: 1000px;
+  padding-left: 20px;
 }
 label{
-	padding-top: 30px;
-	font-size: 20px;
+  padding-top: 30px;
+  font-size: 20px;
 }
 input{
-	padding-bottom: 30px;
-	width: 600px;
+  padding-bottom: 30px;
+  width: 600px;
 }
-span{
-	color:red;
-	font-size: 15px;
-	padding-left: 5px;
+.alerta{
+  color:red;
+  font-size: 15px;
+  padding-left: 5px;
 }
 #neblina{
-	position:absolute;
-	width: 800px;
-	height: 970px;
-	top:100px;
-	background-color: #ffffff;
+  position:absolute;
+  width: 800px;
+  height: 970px;
+  top:100px;
+  background-color: #ffffff;
     opacity: .4;
     box-shadow: 3px 3px 3px #000000;
 }
@@ -39,9 +39,9 @@ h1 {
     top: 20px;
 }
 .botao{
-	width: 100px;
-	height: 50px;
-	font-size: 20px;
+  width: 100px;
+  height: 50px;
+  font-size: 20px;
 }
 
 #concluir {
@@ -53,6 +53,12 @@ h1 {
     left: 270px;
     position: relative;
     top: 70px;
+}
+ 
+.img {
+    left: 232px;
+    position: absolute;
+    top: 50px;
 }
 
 #mascara{

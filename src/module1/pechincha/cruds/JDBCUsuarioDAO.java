@@ -51,12 +51,9 @@ public class JDBCUsuarioDAO extends DAOBehavior<Usuario> {
 			if(result.next()){
 				temp.setPk(result.getInt("pk"));
 				temp.setNomeCompleto(result.getString("nomecompleto"));
-				temp.setCpf(result.getString("cpf"));
-				temp.setNomeApresentação(result.getString("nomeapresentacao"));
 				temp.setNickname(result.getString("nickname"));
 				temp.setSenha(result.getString("senha"));
 				temp.setDataNascimento(result.getString("datanascimento"));
-				temp.setEndereco(result.getString("endereco"));
 				temp.setEmailPrincipal(result.getString("emailprincipal"));
 				temp.setEmailAlternativo(result.getString("emailalternativo"));
 				temp.setSkype(result.getString("skype"));

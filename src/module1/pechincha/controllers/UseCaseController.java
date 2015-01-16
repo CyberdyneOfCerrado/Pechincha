@@ -8,6 +8,7 @@ import module1.pechincha.useCases.GerenciarLeilao;
 import module1.pechincha.useCases.Home;
 import module1.pechincha.useCases.ManterGalinha;
 import module1.pechincha.useCases.ManterProdutos;
+import module1.pechincha.useCases.ManterUsuario;
 import module1.pechincha.util.ActionDone;
 import module1.pechincha.util.DoAction;
 
@@ -23,6 +24,7 @@ public class UseCaseController {
 		listUserCase.put("manterGalinha", new ManterGalinha());
 		listUserCase.put("gerenciarLeilao", new GerenciarLeilao());
 		listUserCase.put("manterProdutos", new ManterProdutos());
+		listUserCase.put("manterUsuario", new ManterUsuario());
 		listUserCase.put("home", new Home());
 		
 	};

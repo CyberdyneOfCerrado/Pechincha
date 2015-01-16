@@ -4,12 +4,9 @@ import module1.pechincha.util.ReflectiveModel;
 
 public class Usuario extends ReflectiveModel {
 	private String nomeCompleto;
-	private String cpf;
-	private String nomeApresentação;
 	private String nickname;
 	private String senha;
 	private String dataNascimento;
-	private String endereco;
 	private String emailPrincipal;
 	private String emailAlternativo;
 	private String skype;
@@ -22,12 +19,9 @@ public class Usuario extends ReflectiveModel {
 			String skype, String telCelular, String telFixo) {
 		super();
 		this.nomeCompleto = nomeCompleto;
-		this.cpf = cpf;
-		this.nomeApresentação = nomeApresentação;
 		this.nickname = nickname;
 		this.senha = senha;
 		this.dataNascimento = dataNascimento;
-		this.endereco = endereco;
 		this.emailPrincipal = emailPrincipal;
 		this.emailAlternativo = emailAlternativo;
 		this.skype = skype;
@@ -48,18 +42,6 @@ public class Usuario extends ReflectiveModel {
 	public void setNomeCompleto(String nomeCompleto) {
 		this.nomeCompleto = nomeCompleto;
 	}
-	public String getCpf() {
-		return cpf;
-	}
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
-	}
-	public String getNomeApresentação() {
-		return nomeApresentação;
-	}
-	public void setNomeApresentação(String nomeApresentação) {
-		this.nomeApresentação = nomeApresentação;
-	}
 	public String getNickname() {
 		return nickname;
 	}
@@ -77,12 +59,6 @@ public class Usuario extends ReflectiveModel {
 	}
 	public void setDataNascimento(String dataNascimento) {
 		this.dataNascimento = dataNascimento;
-	}
-	public String getEndereco() {
-		return endereco;
-	}
-	public void setEndereco(String endereco) {
-		this.endereco = endereco;
 	}
 	public String getEmailPrincipal() {
 		return emailPrincipal;
