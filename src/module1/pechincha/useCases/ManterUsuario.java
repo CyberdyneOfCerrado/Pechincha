@@ -10,7 +10,7 @@ public class ManterUsuario extends ModelController {
 
 	@Override
 	public String[] getActions() {
-		String[] actions = {"cadastrar"};
+		String[] actions = {"incluirUsuario"};
 		return actions;
 	}
 
@@ -19,7 +19,7 @@ public class ManterUsuario extends ModelController {
 		return "manterUsuario";
 	}
 	
-	public ActionDone cadastrar(DoAction action){
+	public ActionDone incluirUsuario(DoAction action){
 		String etapa=String.valueOf(action.getData("etapa"));
 		Usuario user=new Usuario();
 		ActionDone done;
@@ -46,6 +46,14 @@ public class ManterUsuario extends ModelController {
 			return done;
 			
 		case "cadastrar":
+			user.setNomeCompleto(String.valueOf(action.getData("nomeCompleto")));
+			user.setSenha(String.valueOf(action.getData("senha")));
+			user.setNickname(String.valueOf(action.getData("nickname")));
+			user.setEmailPrincipal(String.valueOf(action.getData("email")));
+			user.setEmailAlternativo(String.valueOf(action.getData("emailAlternativo")));
+			user.setSkype(String.valueOf(action.getData("skype")));
+			user.setTelCelular(String.valueOf(action.getData("telefoneCelular")));
+			user.setTelFixo(String.valueOf(action.getData("telefoneFixo")));
 			break;
 		case "cadastro":
 			done=new ActionDone();
