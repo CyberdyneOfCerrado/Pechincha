@@ -24,25 +24,35 @@ public class JDBCUsuarioDAO extends DAOBehavior<Usuario> {
 		 };
 	@Override
 	public void insert(Usuario arg) {
-		String sql = "Insert into usuario (etiqueta,descricao,comprador,ativo,idLeiloeiro,lanceInicial,tempoLimite,nickname,precolote,termino) values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) "; 
+	}
+	
+	public int insertReturningPk(Usuario arg) {
+		String sql = "insert into usuario (nomecompleto,nickname,senha,datanascimento,emailprincipal,emailalternativo,skype,telcelular,telfixo) values(?,?,?,?,?,?,?,?,?) returning pk"; 
 		try {
 			PreparedStatement ps = c.prepareStatement(sql);
-			ps.setString(1,arg.getEtiqueta());
-			ps.setString(2, arg.getDescricao());
-			ps.setInt(3, arg.getComprador());
-			ps.setBoolean(4, arg.isAtivo());
-			ps.setInt(5, arg.getIdLeiloeiro());
-			ps.setFloat(6, arg.getLanceInicial());
-			ps.setInt(7,arg.getTempoLimite());
-			ps.setString(8, arg.getNickname());
-			ps.setFloat(9, arg.getPrecolote());
-			ps.setString(10, arg.getTermino());
-			ps.execute();
+			ps.setString(1,arg.getNomeCompleto());
+			ps.setString(2, arg.getNickname());
+			ps.setString(3, arg.getSenha());
+			ps.setString(4, arg.getDataNascimento());
+			ps.setString(5, arg.getEmailPrincipal());
+			ps.setString(6, arg.getEmailAlternativo());
+			ps.setString(7,arg.getSkype());
+			ps.setString(8, arg.getTelCelular());
+			ps.setString(9, arg.getTelFixo());
+			ResultSet result=ps.executeQuery();
+			int pk = 0;
+			while(result.next()){
+				pk = result.getInt("pk");
+				break;
+			}
+			result.close();
 			ps.close();
+			return pk;
 		} catch (SQLException e) {
-			throw new RuntimeException("Erro ao inserir dados. Classe JDBCLeilaoDAO", e); 
+			throw new RuntimeException("Erro ao inserir dados. Classe JDBCUsuarioDAO", e); 
 		}
-	}
+	}	
+	
 
 	@Override
 	public void delete(int pk) {
