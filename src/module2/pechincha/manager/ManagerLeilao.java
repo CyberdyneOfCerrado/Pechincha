@@ -15,7 +15,7 @@ import module2.pechincha.util.MessegerFactory;
 import module2.pechincha.util.UserSession;
 
 public class ManagerLeilao extends Thread {
-	
+
 	private final int TIME_DELAY = 1 * 1000;
 
 	private float lanceCorrente;
@@ -32,12 +32,12 @@ public class ManagerLeilao extends Thread {
 		while (tempoCorrente >= 0) {
 			sleep(TIME_DELAY);
 			tempoCorrente--;
-			System.out.println("Manager verificando se o tempo já acabou: "
-					+ tempoCorrente);
+			// System.out.println("Manager verificando se o tempo já acabou: "+
+			// tempoCorrente);
 		}
-		//Finalização automática.
-		if( !done )
-		finalizar();
+		// Finalização automática.
+		if (!done)
+			finalizar();
 	};
 
 	public ManagerLeilao(Leilao leilao) {
@@ -62,27 +62,27 @@ public class ManagerLeilao extends Thread {
 		// Ações:
 		// 1: Resolver a mensagem conforme a ação do TipoMsg;
 		switch (messeger.getTipoMsg()) {
-		case MENSAGEM:
-			chat(peers.get(messeger.getIdEmissor()), messeger);
-			break;
-		case HANDSHAKE:
-			generateCallback(peers.get(messeger.getIdEmissor()), messeger);
-			break;
-		case LANCE:
-			lance(peers.get(messeger.getIdEmissor()), messeger);
-			break;
-		case FINALIZAR:
-			finalizar(peers.get(messeger.getIdEmissor()));
-			break;
-		default:
-			break;
+			case MENSAGEM :
+				chat(peers.get(messeger.getIdEmissor()), messeger);
+				break;
+			case HANDSHAKE :
+				generateCallback(peers.get(messeger.getIdEmissor()), messeger);
+				break;
+			case LANCE :
+				lance(peers.get(messeger.getIdEmissor()), messeger);
+				break;
+			case FINALIZAR :
+				finalizar(peers.get(messeger.getIdEmissor()));
+				break;
+			default :
+				break;
 		}
 	};
 
 	public synchronized void removeSession(UserSession userSession) {
 		if (!peers.containsKey(userSession.getIdUser()))
 			return;
-		System.err.println("Clientes conectados removendo " + peers.size()+ " Leilao " + leilao.getIdLeilao());
+		System.err.println("Clientes conectados removendo " + peers.size() + " Leilao " + leilao.getIdLeilao());
 		peers.remove(userSession.getIdUser());
 		this.feedOffline(peers.size());
 	};
@@ -90,7 +90,7 @@ public class ManagerLeilao extends Thread {
 	public synchronized void addSession(UserSession userSession) {
 		if (peers.containsKey(userSession.getIdUser()))
 			return;
-		System.err.println("Clientes conectados adicionando " + peers.size()+ " Leilao " + leilao.getIdLeilao());
+		System.err.println("Clientes conectados adicionando " + peers.size() + " Leilao " + leilao.getIdLeilao());
 		feedOnline(peers.size() + 1);
 		peers.put(userSession.getIdUser(), userSession);
 	};
@@ -122,7 +122,7 @@ public class ManagerLeilao extends Thread {
 	private void chat(UserSession userSession, Messeger messeger) {
 		boolean valida = chat.validarMensagem(messeger);
 		if (valida) {
-			messeger = chat.diferenciarUsuario(messeger, userSession,maiorLance, leilao);
+			messeger = chat.diferenciarUsuario(messeger, userSession, maiorLance, leilao);
 			msgBroadcast(messeger);
 		}
 	};
@@ -136,17 +136,16 @@ public class ManagerLeilao extends Thread {
 			// funcionar
 			leilao.setComprador(maiorLance.getIdUser());
 
-			msgBroadcast(MessegerFactory.createMessegerLance(
-					String.valueOf(lanceCorrente), userSession.getNickname()));
+			msgBroadcast(MessegerFactory.createMessegerLance(String.valueOf(lanceCorrente), userSession.getNickname()));
 		} else {
-			msgUnicast(userSession,MessegerFactory.createMessegerLanceInvalido());
+			msgUnicast(userSession, MessegerFactory.createMessegerLanceInvalido());
 		}
 	};
 
 	private void finalizar(UserSession userSession) {
-			//Previnir que o leiloeiro finalizem em nenhum lance. 
-	    	if ( maiorLance.getSession() != null ) {
-	    	boolean result=false;
+		// Previnir que o leiloeiro finalizem em nenhum lance.
+		if (maiorLance.getSession() != null) {
+			boolean result = false;
 			result = gl.finalizarLeilao(this.leilao);
 			// Pegar a sessão do maior lance e do leiloeiro;
 			// Preparar mensagem para ambos.
@@ -155,26 +154,26 @@ public class ManagerLeilao extends Thread {
 			// conectados.
 
 			String msg = "Os dados de acordo de comprar foram eviados para o seu email.";
-			String msgFalha = "O leilão fui finalizado, porém houve uma falha ao enviar os emails."; 
+			String msgFalha = "O leilão fui finalizado, porém houve uma falha ao enviar os emails.";
 			String msgDone = "O leilão foi encerrado.";
 
 			if (maiorLance.getSession().isOpen()) {
 
-				msgUnicast(maiorLance,MessegerFactory.createMessegerFinalizar( ((!result) ? msgFalha : msg)  ));
+				msgUnicast(maiorLance, MessegerFactory.createMessegerFinalizar(((!result) ? msgFalha : msg)));
 				peers.remove(maiorLance.getIdUser());
 			}
 
 			if (userSession.getSession().isOpen()) {
-				msgUnicast(userSession,MessegerFactory.createMessegerFinalizar( ((!result) ? msgFalha : msg)  ));
+				msgUnicast(userSession, MessegerFactory.createMessegerFinalizar(((!result) ? msgFalha : msg)));
 				peers.remove(userSession.getIdUser());
 			}
 
 			msgBroadcast(MessegerFactory.createMessegerFinalizar(msgDone));
 			this.tempoCorrente = 0;
-			this.done = true; 
+			this.done = true;
 
 		} else {
-			msgUnicast(userSession,MessegerFactory.createMessegerFinalizar("Você não pode finalizar sem lances."));
+			msgUnicast(userSession, MessegerFactory.createMessegerFinalizar("Você não pode finalizar sem lances."));
 		}
 	};
 
@@ -186,12 +185,12 @@ public class ManagerLeilao extends Thread {
 		String msg = "Os dados de acordo de compra foram eviados para o seu email.";
 		String msgDone = "O leilão foi encerrado.";
 
-		if (maiorLance != null){
+		if (maiorLance != null) {
 			msgUnicast(maiorLance, MessegerFactory.createMessegerFinalizar(msg));
 			peers.remove(maiorLance.getIdUser());
 		}
 
-		if (leiloeiro != null){
+		if (leiloeiro != null) {
 			msgUnicast(leiloeiro, MessegerFactory.createMessegerFinalizar(msg));
 			peers.remove(leiloeiro.getIdUser());
 		}
@@ -215,7 +214,7 @@ public class ManagerLeilao extends Thread {
 		msg += leilao.getEtiqueta() + ";";
 		msg += peers.size() + ";";
 		msg += lanceCorrente + ";";
-		msg += (maiorLance.getNickname() != null) ? maiorLance.getNickname()+ ";" : "Ninguém ainda" + ";";
+		msg += (maiorLance.getNickname() != null) ? maiorLance.getNickname() + ";" : "Ninguém ainda" + ";";
 		msg += leilao.getNickname() + ";";
 
 		msgUnicast(userSession, MessegerFactory.createMessegerCallback(msg));
@@ -242,7 +241,7 @@ public class ManagerLeilao extends Thread {
 			e.printStackTrace();
 		}
 	};
-	
+
 	public float getLanceCorrente() {
 		return lanceCorrente;
 	};
@@ -255,7 +254,7 @@ public class ManagerLeilao extends Thread {
 		return tempoCorrente;
 	};
 
-	public int getOnline(){
+	public int getOnline() {
 		return peers.size();
-	}; 
+	};
 }
