@@ -129,7 +129,7 @@ public class ManterUsuario extends ModelController {
 		if(user.getTelCelular().length()<11 || user.getTelCelular().length()>13 || user.getTelCelular().equals("")){
 			return check("Erro no campo Telefone Celular, este campo deverá ter a seguinte máscara: '0xx55558888'","9",false);
 		}
-		if(user.getTelFixo().length()>13 || user.getTelFixo().equals("")){
+		if(user.getTelFixo().length()>13){
 			return check("Erro no campo Telefone Fixo, este campo deverá ter a seguinte máscara: '0xx55558888'","10",false);
 		}
 		return check("false","null",true);
