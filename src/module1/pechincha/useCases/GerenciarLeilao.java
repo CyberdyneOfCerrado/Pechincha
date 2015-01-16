@@ -231,11 +231,22 @@ public class GerenciarLeilao extends ModelController {
 	public boolean finalizarLeilao(Leilao leilao){
 		JDBCLeilaoDAO update =new JDBCLeilaoDAO();
 		JDBCLoteProdutoDAO lt =new JDBCLoteProdutoDAO();
+		JDBCProdutoDAO daoprod = new JDBCProdutoDAO();
 		Date dataCal = new Date();  
 		GregorianCalendar data = new GregorianCalendar();  
 		data.setTime(dataCal);  
 		String tempo = String.valueOf(data.get(Calendar.DAY_OF_MONTH))+"/"+ String.valueOf(data.get(Calendar.MONTH)+1)+"/"+String.valueOf(data.get(Calendar.YEAR));
 		leilao.setTermino(tempo);
+		JDBCUsuarioDAO search = new JDBCUsuarioDAO();
+		Usuario comprador = search.select(leilao.getComprador());
+		if(comprador!=null){
+		List<Produto> temp=lt.produtosVendidos(leilao.getIdLeilao());
+			for(Produto prodTemp:temp){
+				Produto prod =  daoprod.select(prodTemp.getPk());
+				prod.setQuantidade(prod.getQuantidade()-prodTemp.getQuantidade());
+				daoprod.update(prod);
+			}
+		}
 		lt.delete(leilao.getIdLeilao());
 		leilao.setAtivo(false);
 		update.update(leilao);

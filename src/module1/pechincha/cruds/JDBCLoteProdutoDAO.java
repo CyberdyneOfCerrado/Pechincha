@@ -110,5 +110,27 @@ public class JDBCLoteProdutoDAO extends DAOBehavior<LoteProduto> {
 		}
 		return list;
 	}
+	
+	public List<Produto> produtosVendidos(int idleilao) {
+		List<Produto> list = new ArrayList<Produto>();
+		
+		try {
+			PreparedStatement ps = c.prepareStatement("select * from loteproduto where fkleilao=?");
+			ps.setInt(1,idleilao);
+			ResultSet result = ps.executeQuery();
+			while(result.next()){
+				Produto temp = new Produto();
+				temp.setPk(result.getInt("fkproduto"));
+				temp.setQuantidade(result.getInt("quantidade"));
+				list.add(temp);
+			}
+			result.close();
+			ps.close();
+		
+		} catch (SQLException e) {
+			throw new RuntimeException("Erro ao listar dados. Classe JDBCLoteProdutoDAO", e); 
+		}
+		return list;
+	}
 
 }

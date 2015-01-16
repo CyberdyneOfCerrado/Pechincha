@@ -69,13 +69,14 @@ public class JDBCLeilaoDAO extends DAOBehavior<Leilao>{
 			throw new RuntimeException("Erro ao inserir dados. Classe JDBCLeilaoDAO", e); 
 		}
 	}
-
+	
 	@Override
 	public void delete(int pk) {
 		// TODO Auto-generated method stub
 		
 	}
 
+	
 	@Override
 	public List<Leilao> list() {
 		List<Leilao> list = new ArrayList<Leilao>();
