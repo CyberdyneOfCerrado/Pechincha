@@ -120,7 +120,7 @@ div#alertas{
 .fixIcon{
 	color: white;
 	margin: 3px !important;
-	font-size:10px;
+	font-size:13px;
 	
 }
 #lance-footer-right i {
@@ -192,7 +192,7 @@ div#container-chat div#top-chat ul li{
 	float:left; 
 	margin-top:8px;
 	margin-left:5px;
-	font-size:6em;
+	font-size:3em;
 	color: white; 
 }
 #botao-aumentar:hover{
@@ -203,7 +203,7 @@ div#container-chat div#top-chat ul li{
 #botao-lance{
 	float:right; 
 	margin-top:8px;
-	font-size:6em;
+	font-size:3em;
 	color: white; 
 }
 
@@ -215,7 +215,7 @@ div#container-chat div#top-chat ul li{
 #valor-lance{
 	position:relative;
 	top:5px;
-	left:20px;
+	left:50px;
 	font-family: Tahoma, Helvetica; 
 	font-size:40px;
 	color: white;

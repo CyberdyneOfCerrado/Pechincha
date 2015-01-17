@@ -40,7 +40,7 @@ public class SecurityFilter implements Filter {
 		HttpServletRequest r = (HttpServletRequest) request;
 		
 		
-		System.out.println("[PASSEI PELO FILTRO DE SEGURANÇA],Session: "+ r.getSession());
+		//System.out.println("[PASSEI PELO FILTRO DE SEGURANÇA],Session: "+ r.getSession());
 		// pass the request along the filter chain
 		chain.doFilter(request, response);
 	}
