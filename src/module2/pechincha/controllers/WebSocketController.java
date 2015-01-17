@@ -3,6 +3,7 @@ package module2.pechincha.controllers;
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.Map;
+import java.util.Random;
 
 import javax.websocket.Session;
 
@@ -16,13 +17,16 @@ import module2.pechincha.util.UserSession;
 public class WebSocketController {
 	private static Map<Session, UserSession> peers = Collections.synchronizedMap(new Hashtable<Session, UserSession>());
 
-	public WebSocketController(){
-		   StorageLeilaoEnvironments.initialize();
-		   //public Leilao(int idLeilao, String etiqueta, int tempoLimite, int idLeiloeiro, float lanceInicial,String descricao,int comprador, ArrayList<LoteProduto> produto,String nickname,boolean ativo){
-	   for(int a = 1 ; a < 2 ; a++)
-		   StorageLeilaoEnvironments.iniciarAmbienteLeilao( new Leilao(a,"Gerado automaticamente "+a ,1500, 1 ,2000.00f,"nada",33,null,"Allyson",false, 0) );
-		   
-	   };
+	public WebSocketController() {
+		StorageLeilaoEnvironments.initialize();
+		// public Leilao(int idLeilao, String etiqueta, int tempoLimite, int
+		// idLeiloeiro, float lanceInicial,String descricao,int comprador,
+		// ArrayList<LoteProduto> produto,String nickname,boolean ativo){
+		Random rand = new Random(); 
+		for (int a = 0; a < 24; a++)
+			StorageLeilaoEnvironments.iniciarAmbienteLeilao(new Leilao(a, "Gerado automaticamente " + a, 1500 + rand.nextInt(10000), 1, 50.00f + rand.nextInt(5000), "nada", 33, null,"Allyson", false, 0));
+
+	};
 
 	// Em caso de uma mensagem do tipo HandShake, este método deve registrar a
 	// Session a variável peers.
