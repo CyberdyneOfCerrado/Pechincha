@@ -98,3 +98,19 @@ $(document).ready(function(){
         $(id).show();  
     });
 });
+
+function alterar(){
+    $.post("q",{
+        userCase : "manterUsuario",
+        action : "alterarDados",
+        id : $("#iduser").val()
+    });
+}
+
+function excluir(){
+    $.post("q",{
+        userCase : "manterUsuario",
+        action : "excluirConta",
+        id : $("#iduser").val()
+    });
+}

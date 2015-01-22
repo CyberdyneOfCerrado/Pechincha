@@ -1,0 +1,48 @@
+			<div>
+			<script src="templates/manterUsuario/js/manterUsuario.js"></script>
+			<link rel="stylesheet" href="templates/lib/css/css.css" media="screen">
+			<link rel="stylesheet" href="templates/lib/css/style.css" media="screen">
+			<link rel="stylesheet" href="templates/manterUsuario/css/meusDados.css" media="screen">
+					<div id="bloco">
+						<img src="carrinho.png" class="img"></img>
+						<h1>Meus Dados</h1>
+						<div id="neblina"></div>
+						<form class="form-search" action="q" id="cadastro" method="post">
+							<div class="control-group info" id="1">
+							<label for="nomeCompleto">Nome Completo : </label>
+							<span>${nome}</span><br />
+							</div>
+							<div class="control-group info" id="4">
+							<label for="nickname">Nickname : </label>
+							<span>${nickname}</span><br />
+							</div>
+							<div class="control-group info" id="5">	
+							<label for="dataDeNascimento">Data de Nascimento : </label>
+							<span>${data}</span><br />
+							</div>
+							<div class="control-group info" id="6">
+							<label for="email">E-mail : </label>
+							<span>${mail}</span><br />
+							</div>
+							<div class="control-group info" id="7">
+							<label for="emailAlternativo">E-mail Alternativo : </label>
+							<span>${mailAlt}</span><br />
+							</div>
+							<div class="control-group info" id="8">
+							<label for="skype">Skype : </label>
+							<span>${skype}</span><br />
+							</div>
+							<div class="control-group info" id="9">
+							<label for="telefoneCelular">Telefone Celular : </label>
+							<span>${cel}</span><br />
+							</div>
+							<div class="control-group info" id="10">
+							<label for="telefoneFixo">Telefone Fixo : </label>
+							<span>${fixo}</span><br />
+							</div>
+							<input type="hidden" id="iduser" value="${id}" />
+							<input type="button" id="alterar" class="btn btn-primary botao" onclick="alterar()" value="Alterar Dados" />
+							<input type="button" id="excluir" class="btn btn-primary botao" onclick="excluir()" value="Excluir Conta" />
+						</form>
+				</div>
+			</div>

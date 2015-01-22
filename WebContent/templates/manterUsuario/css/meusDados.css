@@ -1,0 +1,64 @@
+#bloco{
+  width:800px;
+  position:absolute;
+  left:275px;
+  height: 770px;
+}
+#cadastro{
+  position:relative;
+  top:50px;
+  width: 800px;
+  height: 550px;
+  padding-left: 20px;
+}
+label{
+  padding-top: 30px;
+  font-size: 20px;
+  color:blue;
+}
+.alerta{
+  color:red;
+  font-size: 15px;
+  padding-left: 5px;
+}
+#neblina{
+  position:absolute;
+  width: 800px;
+  height: 550px;
+  top:100px;
+  background-color: #ffffff;
+    opacity: .4;
+    box-shadow: 3px 3px 3px #000000;
+}
+h1 {
+    left: 290px;
+    position: relative;
+    top: 20px;
+}
+.botao{
+  width: 100px;
+  height: 50px;
+  font-size: 20px;
+}
+
+#alterar {
+    left: 200px;
+    position: relative;
+    top: 70px;
+}
+#excluir {
+    left: 250px;
+    position: relative;
+    top: 70px;
+}
+span{
+  padding-top: 30px;
+  font-size: 20px;
+    color:blue;
+}
+
+.img {
+    left: 60px;
+    position: absolute;
+    top: 50px;
+}
