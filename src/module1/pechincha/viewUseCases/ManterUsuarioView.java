@@ -29,9 +29,13 @@ public class ManterUsuarioView extends ViewController {
 	}
 
 	private String login(ActionDone ad) {
-		MiniTemplator temp = super.startMiniTemplator(super.getTemplate(ad));
-		ad.setData("index","false");
-		return temp.generateOutput();
+		if (!ad.isProcessed()) {
+			MiniTemplator temp = super.startMiniTemplator(super.getTemplate(ad));
+			ad.setData("index", "false");
+			return temp.generateOutput();
+		}else{
+			return (String) ad.getData("loginStatus"); 
+		}
 	}
 
 	public String cadastroerro(ActionDone ad) {

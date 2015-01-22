@@ -15,6 +15,7 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="templates/lib/js/bootstrap.min.js"></script>
 <script src="templates/manterUsuario/js/login.js"></script>
+<script src="templates/manterUsuario/js/md5.js"></script>
 <!-- Não apaga a treta maligna abaixo -->
 <!--[if it IE 9]>
 			<script src="templates/lib/js/html5shiv.js"></script>
@@ -197,7 +198,7 @@ body {
 
 					<div class="control-group">
 						<div class="controls">
-							<button type="submit" class="btn" id="botao">Login</button>
+							<a class="btn" id="botao">Login</a>
 						</div>
 					</div>
 				</div>
@@ -211,10 +212,7 @@ body {
 
 
 		</div>
-
-		<div class="alert alert-error">
-			<button type="button" class="close" data-dismiss="alert">&times;</button>
-			<strong>Atenção!</strong> O seu usuário ou senha estão incorretos.
+		<div id="error">	
 		</div>
 		<!-- Fim -->
 	</div>

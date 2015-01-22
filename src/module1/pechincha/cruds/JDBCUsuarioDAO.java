@@ -19,29 +19,51 @@ import module1.pechincha.util.ConnectionFactory;
  */
 public class JDBCUsuarioDAO extends DAOBehavior<Usuario> {
 	private Connection c;
-	public JDBCUsuarioDAO(){
-		  c = ConnectionFactory.getConnection();
-		 };
+	public JDBCUsuarioDAO() {
+		c = ConnectionFactory.getConnection();
+	};
 	@Override
 	public void insert(Usuario arg) {
 	}
-	
-	public int insertReturningPk(Usuario arg) {
-		String sql = "insert into usuario (nomecompleto,nickname,senha,datanascimento,emailprincipal,emailalternativo,skype,telcelular,telfixo) values(?,?,?,?,?,?,?,?,?) returning pk"; 
+
+	public int verifyLogin(Usuario us) {
+		String sql = "select pk from usuario where  senha = ? and  emailprincipal = ?";
+
 		try {
 			PreparedStatement ps = c.prepareStatement(sql);
-			ps.setString(1,arg.getNomeCompleto());
+			ps.setString(1, us.getSenha());
+			ps.setString(2, us.getEmailPrincipal());
+			ResultSet result = ps.executeQuery();
+
+			int pk = -1;
+			while (result.next()) {
+				pk = result.getInt("pk");
+				break;
+			}
+			if (pk != -1)
+				return pk;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return -1;
+	};
+
+	public int insertReturningPk(Usuario arg) {
+		String sql = "insert into usuario (nomecompleto,nickname,senha,datanascimento,emailprincipal,emailalternativo,skype,telcelular,telfixo) values(?,?,?,?,?,?,?,?,?) returning pk";
+		try {
+			PreparedStatement ps = c.prepareStatement(sql);
+			ps.setString(1, arg.getNomeCompleto());
 			ps.setString(2, arg.getNickname());
 			ps.setString(3, arg.getSenha());
 			ps.setString(4, arg.getDataNascimento());
 			ps.setString(5, arg.getEmailPrincipal());
 			ps.setString(6, arg.getEmailAlternativo());
-			ps.setString(7,arg.getSkype());
+			ps.setString(7, arg.getSkype());
 			ps.setString(8, arg.getTelCelular());
 			ps.setString(9, arg.getTelFixo());
-			ResultSet result=ps.executeQuery();
+			ResultSet result = ps.executeQuery();
 			int pk = 0;
-			while(result.next()){
+			while (result.next()) {
 				pk = result.getInt("pk");
 				break;
 			}
@@ -49,15 +71,14 @@ public class JDBCUsuarioDAO extends DAOBehavior<Usuario> {
 			ps.close();
 			return pk;
 		} catch (SQLException e) {
-			throw new RuntimeException("Erro ao inserir dados. Classe JDBCUsuarioDAO", e); 
+			throw new RuntimeException("Erro ao inserir dados. Classe JDBCUsuarioDAO", e);
 		}
-	}	
-	
+	}
 
 	@Override
 	public void delete(int pk) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -68,13 +89,13 @@ public class JDBCUsuarioDAO extends DAOBehavior<Usuario> {
 
 	@Override
 	public Usuario select(int pk) {
-		Usuario temp=null;
+		Usuario temp = null;
 		try {
 			PreparedStatement ps = c.prepareStatement("select * from usuario where pk = ?");
-			ps.setInt(1,pk);
+			ps.setInt(1, pk);
 			ResultSet result = ps.executeQuery();
 			temp = new Usuario();
-			if(result.next()){
+			if (result.next()) {
 				temp.setPk(result.getInt("pk"));
 				temp.setNomeCompleto(result.getString("nomecompleto"));
 				temp.setNickname(result.getString("nickname"));
@@ -87,12 +108,12 @@ public class JDBCUsuarioDAO extends DAOBehavior<Usuario> {
 				temp.setTelFixo(result.getString("telfixo"));
 				result.close();
 				ps.close();
-			}else{
+			} else {
 				System.err.println("O usuário pesquisado não existe");
-				temp=null;
+				temp = null;
 			}
-		}catch (SQLException e) {
-			throw new RuntimeException("Erro ao procurar dados. Classe JDBCUsuarioDAO", e); 
+		} catch (SQLException e) {
+			throw new RuntimeException("Erro ao procurar dados. Classe JDBCUsuarioDAO", e);
 		}
 		return temp;
 	}
@@ -100,7 +121,7 @@ public class JDBCUsuarioDAO extends DAOBehavior<Usuario> {
 	@Override
 	public void update(Usuario arg) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

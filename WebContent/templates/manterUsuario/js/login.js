@@ -67,11 +67,21 @@ $.parse_url = function(url) {
 }
 
 $('document').ready(function() {
-	$('#botao').click(enviarDados($('#email').val(),$('#senha').val())); 
-	
+	$('#botao').click(function() {
+		if($('#email').val() '' || $('#senha').val() == '') showError("Preencha os campos corretamente")
+		enviarDados($('#email').val(), md5($('#senha').val()));
+	});
+
 });
 
+function showError(message) {
+	var html = "<div class='alert alert-error'> <button type='button' class='close' data-dismiss='alert'>&times;</button> <strong>Atenção!</strong>"+message+"</div>";
+	$('#error').append(html);
+}
+
 function enviarDados(email, senha) {
+	console.log(email + " " + senha);
+
 	$.post("q", {
 		useCase : 'manterUsuario',
 		action : 'login',
@@ -79,6 +89,6 @@ function enviarDados(email, senha) {
 		'senha' : senha,
 		redirect : 'false'
 	}).done(function(data) {
-		alert(data); 
+		if(data == 'false') showError("Usuário ou senha incorreto."); 
 	});
 }

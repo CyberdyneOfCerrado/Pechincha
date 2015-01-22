@@ -3,6 +3,10 @@ package module1.pechincha.useCases;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 
+import javax.servlet.http.HttpSession;
+
+import org.apache.catalina.Session;
+
 import module1.pechincha.controllers.ModelController;
 import module1.pechincha.cruds.JDBCUsuarioDAO;
 import module1.pechincha.model.Leilao;
@@ -14,7 +18,7 @@ public class ManterUsuario extends ModelController {
 
 	@Override
 	public String[] getActions() {
-		String[] actions = {"incluirUsuario"};
+		String[] actions = {"incluirUsuario","login"};
 		return actions;
 	}
 
@@ -171,7 +175,25 @@ public class ManterUsuario extends ModelController {
 
 	public ActionDone login(DoAction da) {
 		ActionDone ad = new ActionDone();
-
+		String email = (String) da.getData("email");
+		String senha = (String) da.getData("senha");
+		
+		JDBCUsuarioDAO daoUsuario = new JDBCUsuarioDAO(); 
+		Usuario us = new Usuario(); 
+		us.setSenha(senha);
+		us.setEmailPrincipal(email);
+		int result = daoUsuario.verifyLogin(us); 
+		
+		if(result != -1){ // -1 significa que não há um registro no banco de dadosk; 
+			HttpSession s = (HttpSession) ad.getData("Session"); 
+			s.setAttribute("id", String.valueOf(result));
+			s.setAttribute("login","true");
+			ad.setData("loginStatus","true" );
+		}else{
+			ad.setData("loginStatus","false" );
+		}
+		
+		ad.setData("index","false");
 		// Por enquanto eu não vou fazer nada aqui.
 		// Identificando o pacote
 		ad.setAction(da.getAction());
