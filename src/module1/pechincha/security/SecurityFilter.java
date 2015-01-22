@@ -10,6 +10,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * Servlet Filter implementation class SecurityFilter
@@ -17,12 +18,12 @@ import javax.servlet.http.HttpServletRequest;
 @WebFilter("/SecurityFilter")
 public class SecurityFilter implements Filter {
 
-    /**
-     * Default constructor. 
-     */
-    public SecurityFilter() {
-        // TODO Auto-generated constructor stub
-    }
+	/**
+	 * Default constructor.
+	 */
+	public SecurityFilter() {
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
 	 * @see Filter#destroy()
@@ -35,13 +36,18 @@ public class SecurityFilter implements Filter {
 	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
 	 */
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-		// TODO Auto-generated method stub
-		// place your code here
-		HttpServletRequest r = (HttpServletRequest) request;
-		
-		
-		//System.out.println("[PASSEI PELO FILTRO DE SEGURANÇA],Session: "+ r.getSession());
-		// pass the request along the filter chain
+		Security security = new Security();
+		HttpServletRequest re = (HttpServletRequest) request;
+		HttpSession session = re.getSession();
+
+		boolean acess = security.permissao((String) session.getAttribute("login"), (String) request.getParameter("useCase"),
+				(String) request.getParameter("action"));
+
+		if (!acess) {
+			request.setAttribute("security", "true");
+		} else {
+			request.setAttribute("security", "false");
+		}
 		chain.doFilter(request, response);
 	}
 

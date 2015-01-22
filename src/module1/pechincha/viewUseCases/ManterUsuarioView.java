@@ -5,27 +5,40 @@ import module1.pechincha.util.ActionDone;
 import module1.pechincha.view.ViewController;
 
 public class ManterUsuarioView extends ViewController {
+
 	public ManterUsuarioView(String sevletContext, String useCase) {
 		super(sevletContext, useCase);
 	}
+
 	@Override
 	public String choose(ActionDone ad) {
 		String action = ad.getAction();
 		String retorno = "";
-		switch(action){
-		case "cadastroerro":
-			retorno=cadastroerro(ad);
-		break;
-		case "cadastro":
-			retorno=cadastro(ad);
-		break;
+		switch (action) {
+			case "cadastroerro" :
+				retorno = cadastroerro(ad);
+				break;
+			case "cadastro" :
+				retorno = cadastro(ad);
+				break;
+			case "login" :
+				retorno = login(ad);
+				break;
 		}
 		return retorno;
 	}
-	public String cadastroerro(ActionDone ad){
+
+	private String login(ActionDone ad) {
+		MiniTemplator temp = super.startMiniTemplator(super.getTemplate(ad));
+		ad.setData("index","false");
+		return temp.generateOutput();
+	}
+
+	public String cadastroerro(ActionDone ad) {
 		return (String) ad.getData("message");
 	}
-	public String cadastro(ActionDone ad){
+
+	public String cadastro(ActionDone ad) {
 		MiniTemplator temp = super.startMiniTemplator(super.getTemplate(ad));
 		return temp.generateOutput();
 	}

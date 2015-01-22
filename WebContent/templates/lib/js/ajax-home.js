@@ -61,9 +61,10 @@ function redirect( target, values, method ) {
 		
 		return_obj.url = url;
 		return_obj.params = obj;
-		
-		return return_obj;		
-	}  	
+
+			
+		return return_obj;
+}  	
 
 
 var count; 
