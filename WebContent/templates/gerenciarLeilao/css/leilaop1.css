@@ -98,14 +98,14 @@ a:hover
 }
 #neblina{
    background-color: #ffffff;
-    opacity: .4;
+    opacity: .8;
    border: 0px #000000 solid;
    -moz-box-shadow: 3px 3px 3px #000000;
    -webkit-box-shadow: 3px 3px 3px #000000;
    box-shadow: 3px 3px 3px #000000;
 }
 .txtconteudo{
-   color:blue;
+   color:black;
 }
 #mascara{
     display:none;
