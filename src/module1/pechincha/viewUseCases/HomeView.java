@@ -2,6 +2,8 @@ package module1.pechincha.viewUseCases;
 
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpSession;
+
 import biz.source_code.miniTemplator.MiniTemplator;
 import module1.pechincha.util.ActionDone;
 import module1.pechincha.view.ViewController;
@@ -64,8 +66,9 @@ public class HomeView extends ViewController {
 	}
 
 	private String home(ActionDone ad) {
-		MiniTemplator temp = super.startMiniTemplator(super.getTemplate(ad)); 
-		temp.setVariable("idEmissor",(String) ad.getData("idEmissor"));
+		MiniTemplator temp = super.startMiniTemplator(super.getTemplate(ad));
+		HttpSession s = (HttpSession) ad.getData("Session");
+		temp.setVariable("idEmissor",(String) s.getAttribute("id"));
 		return temp.generateOutput();
 	}
 

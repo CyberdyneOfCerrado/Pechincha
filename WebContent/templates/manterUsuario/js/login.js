@@ -68,14 +68,18 @@ $.parse_url = function(url) {
 
 $('document').ready(function() {
 	$('#botao').click(function() {
-		if($('#email').val() '' || $('#senha').val() == '') showError("Preencha os campos corretamente")
+		if ($('#email').val() == '' || $('#senha').val() == '') {
+			showError("Preencha os campos corretamente");
+			return;
+		}
 		enviarDados($('#email').val(), md5($('#senha').val()));
 	});
 
 });
 
 function showError(message) {
-	var html = "<div class='alert alert-error'> <button type='button' class='close' data-dismiss='alert'>&times;</button> <strong>Atenção!</strong>"+message+"</div>";
+	var html = "<div class='alert alert-error'> <button type='button' class='close' data-dismiss='alert'>&times;</button> <strong>Atenção! </strong> "
+			+ message + "</div>";
 	$('#error').append(html);
 }
 
@@ -89,6 +93,16 @@ function enviarDados(email, senha) {
 		'senha' : senha,
 		redirect : 'false'
 	}).done(function(data) {
-		if(data == 'false') showError("Usuário ou senha incorreto."); 
+		if (data == 'false') {
+			showError("Usuário ou senha incorreto.");
+			$('#senha').val('');
+		} else {
+			redirect('q', {
+				useCase : 'home',
+				action : 'home',
+				redirect : 'true',
+				idEmissor : 1
+			}, 'POST');
+		}
 	});
 }

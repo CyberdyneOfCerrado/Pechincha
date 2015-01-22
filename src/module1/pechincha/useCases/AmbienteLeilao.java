@@ -1,5 +1,7 @@
 package module1.pechincha.useCases;
 
+import javax.servlet.http.HttpSession;
+
 import module1.pechincha.controllers.ModelController;
 import module1.pechincha.util.ActionDone;
 import module1.pechincha.util.DoAction;
@@ -11,9 +13,9 @@ public class AmbienteLeilao extends ModelController {
 		ActionDone ad = new ActionDone();
 		// Verificar aqui se o usuário que requisita a o ambiente é o leiloeiro
 		// da mesma;
+		HttpSession s = (HttpSession) da.getData("Session");
 
-		System.out.println(da.getData("userName"));
-		ad.setData("userName", "Get to BD");
+		ad.setData("userName", s.getAttribute("nickName"));
 		ad.setData("idEmissor", da.getData("idEmissor"));
 		ad.setData("idLeilao", da.getData("idLeilao"));
 

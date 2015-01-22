@@ -18,7 +18,7 @@ public class ManterUsuario extends ModelController {
 
 	@Override
 	public String[] getActions() {
-		String[] actions = {"incluirUsuario","login","meusDados"};
+		String[] actions = {"incluirUsuario", "login", "meusDados"};
 		return actions;
 	}
 
@@ -97,16 +97,14 @@ public class ManterUsuario extends ModelController {
 		JDBCUsuarioDAO userDao = new JDBCUsuarioDAO();
 		Usuario user = userDao.select(Integer.parseInt(id));
 		ActionDone done = new ActionDone();
-		done.setData("usuario",user);
+		done.setData("usuario", user);
 		done.setAction("meusDados");
 		done.setUseCase("manterUsuario");
 		done.setProcessed(true);
 		done.setStatus(true);
 		return done;
 	}
-	
-	
-	
+
 	public ActionDone validar(DoAction action) {
 		Usuario user = (Usuario) action.getData("user");
 		String confsenha = (String) action.getData("confsenha");
@@ -192,23 +190,33 @@ public class ManterUsuario extends ModelController {
 		ActionDone ad = new ActionDone();
 		String email = (String) da.getData("email");
 		String senha = (String) da.getData("senha");
-		
-		JDBCUsuarioDAO daoUsuario = new JDBCUsuarioDAO(); 
-		Usuario us = new Usuario(); 
+
+		JDBCUsuarioDAO daoUsuario = new JDBCUsuarioDAO();
+		Usuario us = new Usuario();
 		us.setSenha(senha);
 		us.setEmailPrincipal(email);
-		int result = daoUsuario.verifyLogin(us); 
-		
-		if(result != -1){ // -1 significa que não há um registro no banco de dadosk; 
-			HttpSession s = (HttpSession) ad.getData("Session"); 
+		int result = daoUsuario.verifyLogin(us);
+
+		if (result != -1) { // -1 significa que não há um registro no banco de
+							// dados;
+			HttpSession s = (HttpSession) da.getData("Session");
+			// Adicionar dados a Sessão:
+			// id = pk;
+			// login: informando se o usuário foi logado ou não (true ou false);
+			// nickName: para uso interno de outros casos de uso.
+
 			s.setAttribute("id", String.valueOf(result));
-			s.setAttribute("login","true");
-			ad.setData("loginStatus","true" );
-		}else{
-			ad.setData("loginStatus","false" );
+			s.setAttribute("login", "true");
+
+			us = daoUsuario.select(result);
+			s.setAttribute("nickName",us.getNickname()); 
+			
+			ad.setData("loginStatus", "true");
+		} else {
+			ad.setData("loginStatus", "false");
 		}
-		
-		ad.setData("index","false");
+
+		ad.setData("index", "false");
 		// Por enquanto eu não vou fazer nada aqui.
 		// Identificando o pacote
 		ad.setAction(da.getAction());
