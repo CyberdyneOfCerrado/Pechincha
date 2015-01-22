@@ -18,7 +18,7 @@ public class ManterUsuario extends ModelController {
 
 	@Override
 	public String[] getActions() {
-		String[] actions = {"incluirUsuario","login"};
+		String[] actions = {"incluirUsuario","login","meusDados"};
 		return actions;
 	}
 
@@ -92,6 +92,21 @@ public class ManterUsuario extends ModelController {
 		return null;
 	}
 
+	public ActionDone meusDados(DoAction action) {
+		String id = String.valueOf(action.getData("id"));
+		JDBCUsuarioDAO userDao = new JDBCUsuarioDAO();
+		Usuario user = userDao.select(Integer.parseInt(id));
+		ActionDone done = new ActionDone();
+		done.setData("usuario",user);
+		done.setAction("meusDados");
+		done.setUseCase("manterUsuario");
+		done.setProcessed(true);
+		done.setStatus(true);
+		return done;
+	}
+	
+	
+	
 	public ActionDone validar(DoAction action) {
 		Usuario user = (Usuario) action.getData("user");
 		String confsenha = (String) action.getData("confsenha");
