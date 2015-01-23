@@ -1,0 +1,33 @@
+<div>
+	<a href="#janela1" id="modal1" rel="modal"></a>
+	<div class="window" id="janela1">
+			<a href="#" class="fechar close">&times;</a>
+	        <div class="alert alert-error">
+	        <h4>Oops!</h4>
+	    	<span>A senha informada não coincide com a senha cadastrada!</span>
+	    	<span><br />Cheque o erro para excluir sua conta!</span>
+	    	</div>
+	</div>
+	<div id="mascara"></div>
+<script src="templates/manterUsuario/js/excluirConta.js"></script>
+<link rel="stylesheet" href="templates/lib/css/css.css" media="screen">
+<link rel="stylesheet" href="templates/lib/css/style.css" media="screen">
+<link rel="stylesheet" href="templates/manterUsuario/css/excluirConta.css" media="screen">
+		<div id="bloco">
+			<img src="templates/manterUsuario/img/carrinho.png" class="img"></img>
+			<h1>Excluir Conta</h1>
+			<div id="neblina"></div>
+			<form class="form-search" action="q" id="cadastro" method="post">
+				<label>Você realmente deseja excluir sua conta?</label><br />
+				<strong>Senha : </strong>
+				<input type="password" id="senha" name="senha" />
+				<input type="hidden" name="useCase" value="manterUsuario" />
+				<input type="hidden" name="etapa" value="excluir" />
+				<input type="hidden" name="action" value="excluirConta" />
+				<input type="hidden" name="redirect" value="false" />
+				<input type="hidden" name="id" id="user" value="${id}" />
+				<input type="button" id="confirmar" value="Confirmar exclusão" onclick="excluir()" class="btn btn-primary botao" />
+				<input type="button" id="cancelar" value="Cancelar" class="btn btn-primary botao" />
+			</form>
+		</div>
+</div>

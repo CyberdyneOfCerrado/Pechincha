@@ -77,8 +77,17 @@ public class JDBCUsuarioDAO extends DAOBehavior<Usuario> {
 
 	@Override
 	public void delete(int pk) {
-		// TODO Auto-generated method stub
-
+		String sql = "delete from usuario where pk=?";
+		PreparedStatement ps;
+		try {
+			ps = c.prepareStatement(sql);
+			ps.setInt(1,pk);
+			ps.execute();
+			ps.close();
+		} catch (SQLException e) {
+			throw new RuntimeException("Erro ao deletar dados. Classe JDBCLoteUsuarioDAO", e); 
+		}
+		
 	}
 
 	@Override

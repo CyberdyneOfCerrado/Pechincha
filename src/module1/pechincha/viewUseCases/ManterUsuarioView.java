@@ -27,6 +27,13 @@ public class ManterUsuarioView extends ViewController {
 				break;
 			case "meusDados" :
 				retorno = meusDados(ad);
+				break;
+			case "excluir":
+				retorno = excluirConta(ad);
+				break;
+			case "excluirConta":
+				retorno = telaExcluir(ad);
+				break;
 		}
 		return retorno;
 	}
@@ -39,6 +46,10 @@ public class ManterUsuarioView extends ViewController {
 		}else{
 			return (String) ad.getData("loginStatus"); 
 		}
+	}
+	
+	public String excluirConta(ActionDone ad){
+		return (String) ad.getData("message");
 	}
 	
 	public String meusDados(ActionDone ad){
@@ -60,6 +71,12 @@ public class ManterUsuarioView extends ViewController {
 		return (String) ad.getData("message");
 	}
 
+	public String telaExcluir(ActionDone ad) {
+		MiniTemplator temp = super.startMiniTemplator(super.getTemplate(ad));
+		temp.setVariable("id", String.valueOf(ad.getData("id")));
+		return temp.generateOutput();
+	}	
+	
 	public String cadastro(ActionDone ad) {
 		MiniTemplator temp = super.startMiniTemplator(super.getTemplate(ad));
 		return temp.generateOutput();

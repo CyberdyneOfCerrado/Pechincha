@@ -1,0 +1,89 @@
+#bloco {
+    height: 770px;
+    left: 275px;
+    position: absolute;
+    width: 500px;
+}
+
+#cadastro {
+    height: 450px;
+    padding-left: 20px;
+    position: relative;
+    top: 50px;
+    width: 800px;
+}
+label {
+    font-size: 20px;
+    left: 190px;
+    position: relative;
+    top: 80px;
+}
+strong {
+    font-size: 20px;
+    left: 50px;
+    position: relative;
+    top: 120px;
+}
+#neblina {
+    background-color: #ffffff;
+    box-shadow: 3px 3px 3px #000000;
+    height: 350px;
+    opacity: 0.8;
+    position: absolute;
+    top: 100px;
+    width: 800px;
+}
+h1 {
+    left: 275px;
+    position: relative;
+    top: 20px;
+}
+.botao {
+    font-size: 20px;
+    height: 50px;
+    width: 100px;
+}
+.img {
+    left: 120px;
+    position: absolute;
+    top: 50px;
+}
+#mascara{
+    display:none;
+    position:absolute;
+    left:0;
+    top:0;
+    z-index:9000;
+    background-color:#000;
+}
+ 
+.fechar{display:block; text-align:right;}
+
+.window{
+    display:none;
+    position:absolute;
+    left:0;
+    top:0;
+    z-index:9900;
+    padding:10px;
+    border-radius:10px;
+}
+
+#senha {
+    left: 50px;
+    position: relative;
+    top: 118px;
+    width: 400px;
+}
+
+#confirmar {
+    left: 210px;
+    position: absolute;
+    top: 370px;
+}
+
+#cancelar {
+    left: 450px;
+    position: absolute;
+    top: 370px;
+}

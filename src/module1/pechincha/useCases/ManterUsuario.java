@@ -5,11 +5,8 @@ import java.security.MessageDigest;
 
 import javax.servlet.http.HttpSession;
 
-import org.apache.catalina.Session;
-
 import module1.pechincha.controllers.ModelController;
 import module1.pechincha.cruds.JDBCUsuarioDAO;
-import module1.pechincha.model.Leilao;
 import module1.pechincha.model.Usuario;
 import module1.pechincha.util.ActionDone;
 import module1.pechincha.util.DoAction;
@@ -18,13 +15,47 @@ public class ManterUsuario extends ModelController {
 
 	@Override
 	public String[] getActions() {
-		String[] actions = {"incluirUsuario", "login", "meusDados"};
+		String[] actions = {"incluirUsuario", "login", "meusDados","excluirConta"};
 		return actions;
 	}
 
 	@Override
 	public String getUserCase() {
 		return "manterUsuario";
+	}
+	
+	public ActionDone excluirConta(DoAction action) {
+		String etapa = String.valueOf(action.getData("etapa"));
+		ActionDone done = null;
+		int pk=0;
+		JDBCUsuarioDAO userDao = new JDBCUsuarioDAO();
+		switch (etapa) {
+		case "telaExcluir":
+			done = new ActionDone();
+			done.setAction("excluirConta");
+			done.setData("id",String.valueOf(action.getData("id")));
+			done.setUseCase(action.getUseCase());
+			done.setProcessed(true);
+			done.setStatus(true);
+			return done;
+		case "check" :
+			pk = Integer.parseInt((String) action.getData("id"));
+			Usuario user =userDao.select(pk);
+			String senha=String.valueOf(action.getData("senha"));
+			if(user.getSenha().equals(senha)){
+				done=retorno("false","0",true,"manterUsuario","excluir");
+				return done;
+			}else{
+				done=retorno("true","0",false,"manterUsuario","excluir");
+				return done;
+			}
+		case "excluir":
+			pk = Integer.parseInt((String) action.getData("id"));
+			userDao.delete(pk);
+			done=retorno("false, O usuario foi deletado!","0",false,"manterUsuario","excluir");
+			return done;
+		}
+		return done;
 	}
 
 	public ActionDone incluirUsuario(DoAction action) {
@@ -48,9 +79,9 @@ public class ManterUsuario extends ModelController {
 				done = validar(action);
 				boolean status = (boolean) done.getData("status");
 				if (status) {
-					done = retorno("false", null, true);
+					done = retorno("false", null, true,"manterUsuario","cadastroerro");
 				} else {
-					done = retorno(String.valueOf(done.getData("erro")), String.valueOf(done.getData("tipo")), (boolean) done.getData("status"));
+					done = retorno(String.valueOf(done.getData("erro")), String.valueOf(done.getData("tipo")), (boolean) done.getData("status"),"manterUsuario","cadastroerro");
 				}
 				return done;
 
@@ -174,10 +205,10 @@ public class ManterUsuario extends ModelController {
 		return md5;
 	}
 
-	public ActionDone retorno(String erro, String tipo, boolean valida) {
+	public ActionDone retorno(String erro, String tipo, boolean valida,String useCase,String action) {
 		ActionDone done = new ActionDone();
-		done.setAction("cadastroerro");
-		done.setUseCase("manterUsuario");
+		done.setAction(action);
+		done.setUseCase(useCase);
 		done.setProcessed(true);
 		done.setStatus(valida);
 		String temp = "{ \"erro\" : \"" + erro + "\", \"tipo\" : \"" + tipo + "\", \"estado\" : " + valida + " }";
