@@ -12,7 +12,7 @@ public class AmbienteLeilao extends ModelController {
 	public ActionDone ambiente(DoAction da) {
 
 		ActionDone ad = new ActionDone();
-		JDBCLeilaoDAO daoLeilao = new  JDBCLeilaoDAO();
+		JDBCLeilaoDAO daoLeilao = new JDBCLeilaoDAO();
 		// Verificar aqui se o usuário que requisita a o ambiente é o leiloeiro
 		// da mesma;
 		HttpSession s = (HttpSession) da.getData("Session");
@@ -22,10 +22,10 @@ public class AmbienteLeilao extends ModelController {
 		ad.setData("idLeilao", da.getData("idLeilao"));
 
 		int idEmissor = Integer.parseInt(ad.getData("idEmissor").toString());
+		int idLeilao = Integer.parseInt(ad.getData("idLeilao").toString());
 
-		ad.setData("isLeiloeiro",  daoLeilao);
+		ad.setData("isLeiloeiro", daoLeilao.verificarProprietarioLeilao(idEmissor, idLeilao));
 
-		// Por enquanto eu não vou fazer nada aqui.
 		// Identificando o pacote
 		ad.setAction(da.getAction());
 		ad.setUseCase(da.getUseCase());
