@@ -101,17 +101,16 @@ public class ManterUsuario extends ModelController {
 				JDBCUsuarioDAO userDao = new JDBCUsuarioDAO();
 				int pk = userDao.insertReturningPk(user);
 				System.out.println("O usuario foi cadastrado, id:" + pk);
-				// provisorio ate que incorpore a tela home
+				HttpSession s=(HttpSession) action.getData("Session");
+				s.setAttribute("id", String.valueOf(pk));
+				s.setAttribute("login", "true");
+				s.setAttribute("nickname", user.getNickname());
 				done = new ActionDone();
-				done.setAction("cadastroerro");
-				done.setUseCase("manterUsuario");
+				done.setAction("home");
+				done.setUseCase("home");
 				done.setProcessed(true);
 				done.setStatus(true);
-				String temp = "O usuario foi cadastrado";
-				done.setData("message", temp);
-				done.setData("index", "false");
 				return done;
-				// provisorio ate que incorpore a tela home
 			case "cadastro" :
 				done = new ActionDone();
 				done.setAction("cadastro");
