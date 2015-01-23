@@ -40,6 +40,30 @@ public class JDBCLeilaoDAO extends DAOBehavior<Leilao>{
 		}
 	}
 	
+	public boolean verificarProprietarioLeilao(int pkUsuario, int pkLeilao){
+		try {
+		PreparedStatement ps = c.prepareStatement("select idleiloeiro from leilao where leilao.idleiloeiro=? and leilao.idleilao=?"); 
+		ps.setInt(1,pkUsuario);
+		ps.setInt(2,pkLeilao);
+		ResultSet result = ps.executeQuery();
+		while(result.next()){
+			if(result.getInt("idleiloeiro")==pkUsuario){
+				result.close();
+				ps.close();
+				return true;
+			}
+			else {
+				result.close();
+				ps.close();
+				return false;
+			}
+		}
+		}catch (SQLException e) {
+		throw new RuntimeException("Erro ao listar dados. Classe JDBCLoteProdutoDAO", e); 
+	}
+		return false;
+}
+	
 	public int insertReturningPk(Leilao arg){
 		String sql = "Insert into Leilao (etiqueta,descricao,comprador,ativo,idLeiloeiro,lanceInicial,tempoLimite,nickname,precolote,termino) values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) returning idleilao"; 
 		System.out.println(sql);
