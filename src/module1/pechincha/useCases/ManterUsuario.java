@@ -174,10 +174,10 @@ public class ManterUsuario extends ModelController {
 		if (user.getSkype().length() > 100) {
 			return check("Erro no campo Skype! O campo deve conter ate 100 caracteres.", "8", false);
 		}
-		if (user.getTelCelular().length() < 11 || user.getTelCelular().length() > 13 || user.getTelCelular().equals("")) {
+		if (user.getTelCelular().length() < 11 || user.getTelCelular().length() > 12 || user.getTelCelular().equals("")) {
 			return check("Erro no campo Telefone Celular, este campo deverá ter a seguinte máscara: '0xx55558888'", "9", false);
 		}
-		if (user.getTelFixo().length() > 13) {
+		if (user.getTelFixo().length() > 11) {
 			return check("Erro no campo Telefone Fixo, este campo deverá ter a seguinte máscara: '0xx55558888'", "10", false);
 		}
 		return check("false", "null", true);
