@@ -106,6 +106,7 @@ public class ManterUsuario extends ModelController {
 				s.setAttribute("login", "true");
 				s.setAttribute("nickname", user.getNickname());
 				done = new ActionDone();
+				done.setData("Session",action.getData("Session"));
 				done.setAction("home");
 				done.setUseCase("home");
 				done.setProcessed(true);
