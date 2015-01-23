@@ -1,8 +1,7 @@
-function enviar(Idleilao,Idleiloeiro,UseCase,Action,Redirect){
+function enviar(Idleilao,UseCase,Action,Redirect){
 	document.getElementById("modal3").click();
 	$.post("q",{
 			idleilao : Idleilao,
-			idleiloeiro : Idleiloeiro,
 			useCase : UseCase,
 			action : Action,
 			redirect : Redirect

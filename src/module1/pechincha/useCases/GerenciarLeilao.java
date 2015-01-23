@@ -15,6 +15,7 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpSession;
 
 import biz.source_code.miniTemplator.MiniTemplator;
 import biz.source_code.miniTemplator.MiniTemplator.TemplateSyntaxException;
@@ -61,13 +62,14 @@ public class GerenciarLeilao extends ModelController {
 		JDBCLeilaoDAO leilao = new JDBCLeilaoDAO();
 		JDBCLoteProdutoDAO loteProdutoDao = new JDBCLoteProdutoDAO();
 		JDBCUsuarioDAO us = new JDBCUsuarioDAO();
+		HttpSession s = (HttpSession) action.getData("Session");
 		Usuario user;
 		String etapa=String.valueOf(action.getData("etapa"));
 		switch(etapa){
 		case "criarLeilao":
 				le.setEtiqueta(String.valueOf(action.getData("etiqueta")));
 				le.setDescricao(String.valueOf(action.getData("descricao")));
-				le.setIdLeiloeiro(Integer.parseInt((String) action.getData("idleiloeiro")));
+				le.setIdLeiloeiro(Integer.parseInt((String)s.getAttribute("id")));
 				user=us.select(le.getIdLeiloeiro());
 				le.setNickname(user.getNickname());
 				done=valida.validar(le,action);
@@ -79,7 +81,7 @@ public class GerenciarLeilao extends ModelController {
 					done.setAction("leilaop1");
 					done.setProcessed(true);
 					done.setStatus(true);
-					done.setData("idleiloeiro", String.valueOf(action.getData("idleiloeiro")));
+					done.setData("idleiloeiro", String.valueOf(s.getAttribute("id")));
 					return done;
 				}else{
 					done.setProcessed(true);
@@ -92,7 +94,7 @@ public class GerenciarLeilao extends ModelController {
 		case "leilaop0":
 			done.setAction("leilaop0");
 			done.setUseCase(action.getUseCase());
-			done.setData("idleiloeiro",String.valueOf(action.getData("idleiloeiro")));
+			done.setData("idleiloeiro",String.valueOf(s.getAttribute("id")));
 			done.setProcessed(true);
 			done.setStatus(true);
 			return done;
@@ -137,7 +139,7 @@ public class GerenciarLeilao extends ModelController {
 			valorTrue=0;
 				le.setEtiqueta(String.valueOf(action.getData("etiqueta")));
 				le.setDescricao(String.valueOf(action.getData("descricao")));
-				le.setIdLeiloeiro(Integer.parseInt((String) action.getData("idleiloeiro")));
+				le.setIdLeiloeiro(Integer.parseInt((String)s.getAttribute("id")));
 				le.setAtivo(true);
 				user=us.select(le.getIdLeiloeiro());
 				le.setNickname(user.getNickname());
@@ -193,13 +195,14 @@ public class GerenciarLeilao extends ModelController {
 	
 	public ActionDone historicoLeilao(DoAction action){
 		ActionDone done=new ActionDone();
+		HttpSession s = (HttpSession) action.getData("Session");
 		List<Leilao> list;
 		JDBCLeilaoDAO leilao = new JDBCLeilaoDAO();
-			list=leilao.getHistorico(Integer.parseInt((String) action.getData("idleiloeiro")));
+			list=leilao.getHistorico(Integer.parseInt((String) s.getAttribute("id")));
 			done.setAction("historico");
 			done.setData("termino",false);
 			done.setUseCase(action.getUseCase());
-			done.setData("idleiloeiro",String.valueOf(action.getData("idleiloeiro")));
+			done.setData("idleiloeiro",String.valueOf((String) s.getAttribute("id")));
 			done.setData("lista", list);
 			done.setProcessed(true);
 			done.setStatus(true);
@@ -210,14 +213,15 @@ public class GerenciarLeilao extends ModelController {
 	
 	public ActionDone processaEmail(DoAction action) throws IOException{
 		ActionDone done = new ActionDone();
+		HttpSession s = (HttpSession) action.getData("Session");
 		Leilao leilao = null;
 		JDBCLeilaoDAO leilaoDao = new JDBCLeilaoDAO();
 		leilao=leilaoDao.select(Integer.parseInt((String) action.getData("idleilao")));
 		boolean statusEmail=enviarEmail(leilao);
-		List<Leilao> list=leilaoDao.getHistorico(Integer.parseInt((String) action.getData("idleiloeiro")));
+		List<Leilao> list=leilaoDao.getHistorico(Integer.parseInt((String) s.getAttribute("id")));
 		done.setAction("historico");
 		done.setUseCase(action.getUseCase());
-		done.setData("idleiloeiro",String.valueOf(action.getData("idleiloeiro")));
+		done.setData("idleiloeiro",String.valueOf(s.getAttribute("id")));
 		done.setData("lista", list);
 		if(statusEmail){
 			done.setData("message","ok");

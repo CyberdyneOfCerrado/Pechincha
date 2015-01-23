@@ -44,7 +44,6 @@ public class GerenciarLeilaoView extends ViewController{
 	
 	public String leilaop0(ActionDone ad){
 		MiniTemplator temp = super.startMiniTemplator(super.getTemplate(ad));
-		temp.setVariable("idleiloeiro",(String)ad.getData("idleiloeiro"));
 		return temp.generateOutput();
 	}
 	
@@ -63,7 +62,6 @@ public class GerenciarLeilaoView extends ViewController{
 		index.setVariable("descricao", String.valueOf(ad.getData("descricao")));
 		index.setVariable("tempolimite", String.valueOf(ad.getData("tempo")));
 		index.setVariable("nickname", String.valueOf(ad.getData("nickname")));
-		index.setVariable("idleiloeiro", String.valueOf(ad.getData("idleiloeiro")));
 		for (Produto produto:list){
 			List<Imagem> imgs = new JDBCImagemDAO().list(produto.getPk());
 			if ( imgs.size() > 0){
@@ -90,13 +88,11 @@ public class GerenciarLeilaoView extends ViewController{
 		if(ad.getData("message").equals("erro")){
 			return (String) ad.getData("message");
 		}
-		index.setVariable("idleiloeiro", String.valueOf(ad.getData("idleiloeiro")));
 		for (Leilao le:list){
 			index.setVariable("etiqueta", le.getEtiqueta());
 			index.setVariable("termino", le.getTermino());
 			index.setVariable("valor", String.valueOf(le.getPrecolote()));
 			index.setVariable("idleilao",String.valueOf(le.getIdLeilao()));
-			index.setVariable("idleiloeiro", String.valueOf(le.getIdLeiloeiro()));
 			index.addBlock("historico");
 		}
 		return index.generateOutput();

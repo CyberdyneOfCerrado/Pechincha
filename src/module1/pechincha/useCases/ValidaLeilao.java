@@ -22,7 +22,6 @@ public class ValidaLeilao {
 				done.setAction("leilaop0erro");
 				done.setProcessed(true);
 				done.setStatus(false);
-				done.setData("idleiloeiro", action.getData("idleiloeiro"));
 				done.setData("etiqueta", action.getData("etiqueta"));
 				done.setData("tempolimite", action.getData("tempolimite"));
 				done.setData("descricao", action.getData("descricao"));
@@ -39,7 +38,6 @@ public class ValidaLeilao {
 				done.setAction("leilaop0erro");
 				done.setProcessed(true);
 				done.setStatus(false);
-				done.setData("idleiloeiro", action.getData("idleiloeiro"));
 				done.setData("etiqueta", action.getData("etiqueta"));
 				done.setData("tempolimite", action.getData("tempolimite"));
 				done.setData("descricao", action.getData("descricao"));
@@ -53,7 +51,6 @@ public class ValidaLeilao {
 				done.setAction("leilaop0erro");
 				done.setProcessed(true);
 				done.setStatus(false);
-				done.setData("idleiloeiro", action.getData("idleiloeiro"));
 				done.setData("etiqueta", action.getData("etiqueta"));
 				done.setData("tempolimite", action.getData("tempolimite"));
 				done.setData("descricao", action.getData("descricao"));
@@ -70,7 +67,6 @@ public class ValidaLeilao {
 				done.setAction("leilaop0erro");
 				done.setProcessed(true);
 				done.setStatus(false);
-				done.setData("idleiloeiro", action.getData("idleiloeiro"));
 				done.setData("etiqueta", action.getData("etiqueta"));
 				done.setData("tempolimite", action.getData("tempolimite"));
 				done.setData("descricao", action.getData("descricao"));
@@ -84,7 +80,6 @@ public class ValidaLeilao {
 			done.setAction("leilaop0erro");
 			done.setProcessed(true);
 			done.setStatus(false);
-			done.setData("idleiloeiro", action.getData("idleiloeiro"));
 			done.setData("etiqueta", action.getData("etiqueta"));
 			done.setData("tempolimite", action.getData("tempolimite"));
 			done.setData("descricao", action.getData("descricao"));
@@ -100,7 +95,6 @@ public class ValidaLeilao {
 				done.setAction("leilaop0erro");
 				done.setProcessed(true);
 				done.setStatus(false);
-				done.setData("idleiloeiro", action.getData("idleiloeiro"));
 				done.setData("etiqueta", action.getData("etiqueta"));
 				done.setData("tempolimite", action.getData("tempolimite"));
 				done.setData("descricao", action.getData("descricao"));
@@ -115,7 +109,6 @@ public class ValidaLeilao {
 				done.setAction("leilaop0erro");
 				done.setProcessed(true);
 				done.setStatus(false);
-				done.setData("idleiloeiro", action.getData("idleiloeiro"));
 				done.setData("etiqueta", action.getData("etiqueta"));
 				done.setData("tempolimite", action.getData("tempolimite"));
 				done.setData("descricao", action.getData("descricao"));
