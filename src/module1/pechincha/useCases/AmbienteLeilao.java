@@ -3,6 +3,7 @@ package module1.pechincha.useCases;
 import javax.servlet.http.HttpSession;
 
 import module1.pechincha.controllers.ModelController;
+import module1.pechincha.cruds.JDBCLeilaoDAO;
 import module1.pechincha.util.ActionDone;
 import module1.pechincha.util.DoAction;
 
@@ -11,6 +12,7 @@ public class AmbienteLeilao extends ModelController {
 	public ActionDone ambiente(DoAction da) {
 
 		ActionDone ad = new ActionDone();
+		JDBCLeilaoDAO daoLeilao = new  JDBCLeilaoDAO();
 		// Verificar aqui se o usuário que requisita a o ambiente é o leiloeiro
 		// da mesma;
 		HttpSession s = (HttpSession) da.getData("Session");
@@ -21,7 +23,7 @@ public class AmbienteLeilao extends ModelController {
 
 		int idEmissor = Integer.parseInt(ad.getData("idEmissor").toString());
 
-		ad.setData("isLeiloeiro", (idEmissor == 1) ? true : false);
+		ad.setData("isLeiloeiro",  daoLeilao);
 
 		// Por enquanto eu não vou fazer nada aqui.
 		// Identificando o pacote

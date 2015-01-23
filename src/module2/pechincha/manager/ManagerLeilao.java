@@ -1,15 +1,15 @@
 package module2.pechincha.manager;
 
-import java.io.IOException;
 import java.util.Collection;
 import java.util.Hashtable;
 
 import javax.websocket.Session;
 
+import module1.pechincha.model.Lance;
 import module1.pechincha.model.Leilao;
 import module1.pechincha.useCases.GerenciarLeilao;
-import module1.pechincha.util.ActionDone;
 import module2.pechincha.useCases.Chat;
+import module2.pechincha.useCases.ManterLance;
 import module2.pechincha.util.Messeger;
 import module2.pechincha.util.MessegerFactory;
 import module2.pechincha.util.UserSession;
@@ -26,6 +26,7 @@ public class ManagerLeilao extends Thread {
 	private boolean done;
 	private Chat chat;
 	private GerenciarLeilao gl;
+	private ManterLance ml;
 
 	@Override
 	public void run() {
@@ -52,6 +53,7 @@ public class ManagerLeilao extends Thread {
 		peers = new Hashtable<>();
 		chat = new Chat();
 		gl = new GerenciarLeilao();
+		ml = new ManterLance();
 	};
 
 	public void startManager() {
@@ -127,9 +129,10 @@ public class ManagerLeilao extends Thread {
 		}
 	};
 
-	private void lance(UserSession userSession, Messeger messeger) {
+	private synchronized void lance(UserSession userSession, Messeger messeger) {
 		float novoLance = Float.parseFloat(messeger.getMsg());
-		if (novoLance > this.lanceCorrente) {
+		
+		if (ml.novoLance(leilao.getIdLeilao(), userSession.getIdUser(), novoLance)) {
 			lanceCorrente = novoLance;
 			this.maiorLance = userSession;
 			// Essa parte é vital para o caso o método finalizar do Erick
