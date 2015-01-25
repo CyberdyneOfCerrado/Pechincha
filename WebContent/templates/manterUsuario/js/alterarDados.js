@@ -101,7 +101,7 @@ $(document).ready(function(){
         $('#mascara').fadeTo("slow",0.8);
  
         var left = ($(window).width() /2) - ( $(id).width() / 2 );
-        var top = ($(document.getElementById("bloco")).height() / 2) - ( $(id).height() / 2 );
+        var top = ($(document.getElementById("bloco")).height() / 1.5) - ( $(id).height() / 2);
      
         $(id).css({'top':top,'left':left});
         $(id).show();  
