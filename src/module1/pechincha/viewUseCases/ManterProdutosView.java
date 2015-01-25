@@ -3,6 +3,8 @@ package module1.pechincha.viewUseCases;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import biz.source_code.miniTemplator.MiniTemplator;
 import module1.pechincha.model.Categoria;
 import module1.pechincha.model.Imagem;
@@ -44,8 +46,7 @@ public class ManterProdutosView extends ViewController {
 		return retorno;
 	}
 
-	private String novo(ActionDone ad) {
-		
+	private String novo(ActionDone ad) {		
 		MiniTemplator temp = super.startMiniTemplator(super.getTemplate(ad)); 
 		temp.setVariable("resultado",ad.getMessage());
 		
@@ -70,7 +71,6 @@ public class ManterProdutosView extends ViewController {
 			temp.setVariable("img",img);
 			temp.addBlock("Imagem");
 		}
-		temp.setVariable("idusuario",Integer.toString((int)ad.getData("idusuario")));
 		temp.setVariable("descricao",(String)ad.getData("descricao"));
 		temp.setVariable("preco",Float.toString((float)ad.getData("preco")));
 		temp.setVariable("quantidade",Integer.toString((int)ad.getData("quantidade")));
@@ -105,17 +105,13 @@ public class ManterProdutosView extends ViewController {
 			temp.addBlock("Categoria");
 		}
 
-		temp.setVariable("idusuario",Integer.toString((int)ad.getData("idusuario")));
 		temp.setVariable("descricao",(String)ad.getData("descricao"));
 		temp.setVariable("preco",Float.toString((float)ad.getData("preco")));
 		temp.setVariable("quantidade",Integer.toString((int)ad.getData("quantidade")));
 		return temp.generateOutput();
 	}
 	private String listar(ActionDone ad){
-		
 		MiniTemplator temp = super.startMiniTemplator(super.getTemplate(ad));
-		Object id = ad.getData("idusuario");
-		temp.setVariable("idusuario",(id.getClass().getName().contains("String") ? (String)id : Integer.toString((int)id)));
 		@SuppressWarnings("unchecked")
 		List<Categoria> listcats = (List<Categoria>)ad.getData("categorias");
 		for (Categoria cat : listcats){
@@ -134,18 +130,15 @@ public class ManterProdutosView extends ViewController {
 				temp.setVariable("titulo",(String)p.getData("titulo"));
 				temp.setVariable("img",(String)p.getData("img"));
 				temp.setVariable("preco",Float.toString((float)p.getData("preco")));
-				temp.setVariable("idusuario",Integer.toString((int)p.getData("idusuario")));
 				temp.setVariable("idproduto",Integer.toString((int)p.getData("idproduto")));
 				temp.addBlock("Produto");
 			}
 		}
 		return temp.generateOutput();
 	}
-	private String remover(ActionDone ad){
-		
+	private String remover(ActionDone ad){		
 		MiniTemplator temp = super.startMiniTemplator(super.getTemplate(ad));
 		temp.setVariable("idproduto",(String)ad.getData("idproduto"));
-		temp.setVariable("idusuario",(String)ad.getData("idusuario"));
 		temp.setVariable("titulo",(String)ad.getData("titulo"));
 		for (int i = 1; i <= 5; i++){
 			String img = (String)ad.getData("img" + i);

@@ -2,7 +2,7 @@
 	<tbody>
 		<tr>
 			<th>
-				<a href="q?useCase=manterProdutos&action=novo&idusuario=${idusuario}&redirect=false"><h5>Cadastrar produto</h5></a></br></br>
+				<a href="q?useCase=manterProdutos&action=novo"><h5>Cadastrar produto</h5></a></br></br>
 				<h4>Filtro por categorias</h4>
 			</th>
 		</tr>
@@ -20,8 +20,6 @@
 						</div>
 						<input id="uc" type="hidden" name="useCase" value="manterProdutos">
 						<input id="uc" type="hidden" name="action" value="listar">
-						<input id="uc" type="hidden" name="idusuario" value="${idusuario}">
-						<input id="uc" type="hidden" name="redirect" value="false">
 						</div>
 						<div id="botaobusca" align="center">
 							<button type="submit">Filtrar</button>
@@ -49,9 +47,9 @@
 							<!-- $BeginBlock Produto -->
 							<td>
 								<img class="img-rounded" src="templates/imagens/${img}" alt="176x144" style="width: 176px; height: 144px;"></br>
-								<a href="q?useCase=manterProdutos&action=visualizar&idusuario=${idusuario}&idproduto=${idproduto}&redirect=false"><h6>${titulo}</h6></a>
+								<a href="q?useCase=manterProdutos&action=visualizar&idproduto=${idproduto}"><h6>${titulo}</h6></a>
 								<h6>R$ ${preco}</h6>
-								<h6><a href="q?useCase=manterProdutos&action=editar&idusuario=${idusuario}&idproduto=${idproduto}&redirect=false">Editar</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="q?useCase=manterProdutos&action=remover&idusuario=${idusuario}&idproduto=${idproduto}&confirm=false&redirect=false">Remover</a></h6>
+								<h6><a href="q?useCase=manterProdutos&action=editar&idproduto=${idproduto}">Editar</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="q?useCase=manterProdutos&action=remover&idproduto=${idproduto}&confirm=false">Remover</a></h6>
 								<br/></br></br>
 							</td>
 							<td>

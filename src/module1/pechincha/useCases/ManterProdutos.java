@@ -29,7 +29,7 @@ public class ManterProdutos  extends ModelController{
 	public ActionDone novo ( DoAction da ){
 		ActionDone ad = new ActionDone();
 		HttpSession s = (HttpSession)da.getData("Session");
-		
+		ad.setData("Session", s);
 		//Identificando o pacote
 		ad.setAction(da.getAction());
 		ad.setUseCase(da.getUseCase());
@@ -155,7 +155,7 @@ public class ManterProdutos  extends ModelController{
 	public ActionDone editar ( DoAction da ){
 		ActionDone ad = new ActionDone();
 		HttpSession s = (HttpSession)da.getData("Session");
-		
+		ad.setData("Session", s);
 		//Identificando o pacote
 		ad.setAction(da.getAction());
 		ad.setUseCase(da.getUseCase());
@@ -194,7 +194,6 @@ public class ManterProdutos  extends ModelController{
 						catssel.add(cp.getFkCategoria());
 					}
 					ad.setData("catsel", catssel);
-					ad.setData("idusuario", idusuario);
 				}
 			}catch(Exception e){
 				e.printStackTrace();
@@ -318,7 +317,7 @@ public class ManterProdutos  extends ModelController{
 	public ActionDone remover ( DoAction da ){
 		ActionDone ad = new ActionDone();
 		HttpSession s = (HttpSession)da.getData("Session");
-		
+		ad.setData("Session", s);
 		//Identificando o pacote
 		ad.setAction(da.getAction());
 		ad.setUseCase(da.getUseCase());
@@ -326,8 +325,7 @@ public class ManterProdutos  extends ModelController{
 		ad.setProcessed(true);
 		
 		String confirm = (String)da.getData("confirm");
-		boolean conf = Boolean.valueOf(confirm);
-		
+		boolean conf = Boolean.valueOf(confirm);		
 		
 		try{
 			int idusuario = Integer.valueOf(((String)s.getAttribute("id"))),
@@ -339,12 +337,7 @@ public class ManterProdutos  extends ModelController{
 			if ( prod == null || prod.getFkUsuario() != idusuario){
 				return ad;
 			}
-			
-			/*
-			 * da.setData("storageContext", this.servletContext);
-		da.setData("pathSeparador", separador);
-			 */
-			
+						
 			if ( conf ){
 				JDBCImagemDAO imgs = new JDBCImagemDAO();
 				List<Imagem> list = imgs.list(idproduto);
@@ -365,7 +358,6 @@ public class ManterProdutos  extends ModelController{
 				
 				return listar(da);
 			}else{
-				ad.setData("idusuario", Integer.toString(idusuario));
 				ad.setData("idproduto", da.getData("idproduto"));
 				ad.setData("titulo", prod.getTitulo());
 				ad.setData("descricao", prod.getDescricao());
@@ -387,7 +379,7 @@ public class ManterProdutos  extends ModelController{
 	public ActionDone listar ( DoAction da ){
 		ActionDone ad = new ActionDone();
 		HttpSession s = (HttpSession)da.getData("Session");
-		
+		ad.setData("Session", s);
 		//Identificando o pacote
 		ad.setAction("listar");
 		ad.setUseCase(da.getUseCase());
@@ -395,25 +387,19 @@ public class ManterProdutos  extends ModelController{
 		ad.setProcessed(true);
 		
 		try{
-			System.out.println("ID: " + (String)da.getData("idusuario"));
 			int usuario = Integer.valueOf(((String)s.getAttribute("id")));			
 			String[] filtro = (String[])da.getData("categoria_array");
 			System.out.println("Categorias: " + filtro);
 //			List<Produto> prods = new JDBCProdutoDAO().list(usuario);
 			List<Produto> prods = new JDBCCategoriaProdutoDAO().getProdutosByCategorias(filtro,usuario);
-			System.out.println(usuario);
-			ad.setData("idusuario", usuario);
 			
 			List<Categoria> listcats = new JDBCCategoriaDAO().list();
 			ad.setData("categorias", listcats);
-			
-			System.out.println(usuario);
-			
+						
 			ArrayList<DoAction> list = new ArrayList<DoAction>();
 			for (Produto pr : prods){
 				DoAction prod = new DoAction(null, null);
 				System.out.println("pk prod :" + pr.getPk());
-				prod.setData("idusuario", usuario);
 				prod.setData("idproduto", pr.getPk());
 				prod.setData("titulo", pr.getTitulo());
 				prod.setData("descricao", pr.getDescricao());
@@ -471,7 +457,6 @@ public class ManterProdutos  extends ModelController{
 					categoria += cat.select(cp.getFkCategoria()).getDescricao() + ", ";
 				}
 				ad.setData("categorias", categoria.substring(0, categoria.lastIndexOf(",")));
-				ad.setData("idusuario", idusuario);
 				System.out.println("Processou.");
 			}
 		}catch(Exception e){
