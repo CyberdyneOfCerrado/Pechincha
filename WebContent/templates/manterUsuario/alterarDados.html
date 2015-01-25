@@ -1,0 +1,67 @@
+<div>
+<a href="#janela1" id="modal1" rel="modal"></a>
+<a href="#janela2" id="modal2" rel="modal"></a>
+<div class="window" id="janela1">
+		<a href="#" class="fechar close">&times;</a>
+        <div class="alert alert-block">
+        <h4>Oops!</h4>
+    	<span id="mensagem"></span>
+    	<span><br />Cheque o erro para alterar seus dados!</span>
+    	</div>
+</div>
+<div class="window" id="janela2">
+		<a href="#" class="fechar close">&times;</a>
+        <div class="alert alert-success">
+        <h4>Sucesso!</h4>
+    	<span id="mensagem2"></span>
+    	</div>
+</div>
+<div id="mascara"></div>
+<script src="templates/manterUsuario/js/alterarDados.js"></script>
+<link rel="stylesheet" href="templates/lib/css/css.css" media="screen">
+<link rel="stylesheet" href="templates/lib/css/style.css" media="screen">
+<link rel="stylesheet" href="templates/manterUsuario/css/alterarDados.css" media="screen">
+		<div id="bloco">
+			<h1>Alterar Dados</h1>
+			<div id="neblina"></div>
+			<form class="form-search" action="q" id="cadastro" method="post">
+				<div class="control-group info" id="1">
+				<label for="nomeCompleto">Nome Completo</label><br />
+				<input type="text" id="nomeCompleto" name="nomeCompleto" min="10" max="250" value="${nome}" /><span class="alerta">*Campo obrigatório!</span><br />
+				</div>
+				<div class="control-group info" id="4">
+				<label for="nickname">Nickname</label><br />
+				<input type="text" id="nickname" name="nickname" min="5" max="10" value="${nickname}" /><span class="alerta">*Campo obrigatório!</span><br />
+				</div>
+				<div class="control-group info" id="5">	
+				<label for="dataDeNascimento">Data de Nascimento</label><br />
+				<input type="text" id="dataDeNascimento" name="dataDeNascimento" value="${data}" /><span class="alerta">*Campo obrigatório!</span><br />
+				</div>
+				<div class="control-group info" id="6">
+				<label for="email">E-mail</label><br />
+				<input type="email" id="email" name="email" value="${mail}" /><span class="alerta">*Campo obrigatório!</span><br />
+				</div>
+				<div class="control-group info" id="7">
+				<label for="emailAlternativo">E-mail Alternativo</label><br />
+				<input type="email" id="emailAlternativo" name="emailAlternativo" value="${mailalt}" /><br />
+				</div>
+				<div class="control-group info" id="8">
+				<label for="skype">Skype</label><br />
+				<input type="text" id="skype" name="skype" min="3" max="100" value="${skype}" /><br />
+				</div>
+				<div class="control-group info" id="9">
+				<label for="telefoneCelular">Telefone Celular</label><br />
+				<input type="number" id="telefoneCelular" name="telefoneCelular" value="${cel}" /><span class="alerta">*Campo obrigatório!</span><br />
+				</div>
+				<div class="control-group info" id="10">
+				<label for="telefoneFixo">Telefone Fixo</label><br />
+				<input type="number" id="telefoneFixo" name="telefoneFixo" value="${fixo}" /><br />
+				</div>
+				<input type="hidden" id="useCase" name="useCase" value="manterUsuario" />
+				<input type="hidden" id="etapa" name="etapa" value="check" />
+				<input type="hidden" id="action" name="action" value="alterarDados" />
+				<input type="button" id="concluir" class="btn btn-primary botao" onclick="alterarCAD()" value="Concluir" />
+				<input type="button" id="senha" class="btn btn-primary botao" onclick="" value="alterarSenha" />
+			</form>
+	</div>
+</div>

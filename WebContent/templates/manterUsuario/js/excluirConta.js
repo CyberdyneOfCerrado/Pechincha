@@ -29,6 +29,10 @@ function excluir(){
 	);
 }
 
+function cancel(){
+    document.getElementById("cancela").submit();
+}
+
 $(document).ready(function(){
     $("a[rel=modal]").click( function(ev){
         ev.preventDefault();

@@ -27,7 +27,11 @@
 				<input type="hidden" name="redirect" value="false" />
 				<input type="hidden" name="id" id="user" value="${id}" />
 				<input type="button" id="confirmar" value="Confirmar exclusão" onclick="excluir()" class="btn btn-primary botao" />
-				<input type="button" id="cancelar" value="Cancelar" class="btn btn-primary botao" />
+				<input type="button" id="cancelar" value="Cancelar" onclick="cancel()" class="btn btn-primary botao" />
+			</form>
+			<form class="form-search" action="q" id="cancela" method="post">
+				<input type="hidden" name="useCase" value="manterUsuario" />
+				<input type="hidden" name="action" value="meusDados" />
 			</form>
 		</div>
 </div>

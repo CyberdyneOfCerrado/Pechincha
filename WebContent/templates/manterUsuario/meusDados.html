@@ -1,5 +1,5 @@
 			<div>
-			<script src="templates/manterUsuario/js/manterUsuario.js"></script>
+			<script src="templates/manterUsuario/js/meusDados.js"></script>
 			<link rel="stylesheet" href="templates/lib/css/css.css" media="screen">
 			<link rel="stylesheet" href="templates/lib/css/style.css" media="screen">
 			<link rel="stylesheet" href="templates/manterUsuario/css/meusDados.css" media="screen">
@@ -7,7 +7,7 @@
 						<img src="templates/manterUsuario/img/carrinho.png" class="img"></img>
 						<h1>Meus Dados</h1>
 						<div id="neblina"></div>
-						<form class="form-search" action="q" id="cadastro" method="post">
+						<div id="cadastro" class="form-search">
 							<div class="control-group info" id="1">
 							<label for="nomeCompleto">Nome Completo : </label>
 							<span>${nome}</span><br />
@@ -40,9 +40,18 @@
 							<label for="telefoneFixo">Telefone Fixo : </label>
 							<span>${fixo}</span><br />
 							</div>
-							<input type="hidden" id="iduser" value="${id}" />
-							<input type="button" id="alterar" class="btn btn-primary botao" onclick="alterar()" value="Alterar Dados" />
-							<input type="button" id="excluir" class="btn btn-primary botao" onclick="excluir()" value="Excluir Conta" />
+						</div>
+						<form class="form-search" action="q" id="alterar" method="post">
+							<input type="hidden" name="useCase" value="manterUsuario" />
+							<input type="hidden" name="action" value="alterarDados" />
+							<input type="hidden" name="etapa" value="telaAlterar" />
+							<input type="button" class="btn btn-primary botao" onclick="alte()" value="Alterar Dados" />
+						</form>
+						<form class="form-search" action="q" id="excluir" method="post">
+							<input type="hidden" name="useCase" value="manterUsuario" />
+							<input type="hidden" name="action" value="excluirConta" />
+							<input type="hidden" name="etapa" value="telaExcluir" />
+							<input type="button" class="btn btn-primary botao" onclick="exc()" value="Excluir Conta" />
 						</form>
 				</div>
 			</div>

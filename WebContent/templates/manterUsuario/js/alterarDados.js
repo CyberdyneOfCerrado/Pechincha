@@ -1,11 +1,20 @@
-function concluirCad(){
+function alterarCAD(){
 $.post("q",$("#cadastro").serialize()).done(
     function(resposta){
         try{
             var obj = jQuery.parseJSON(resposta);
             if(obj.estado===true){
-                document.getElementById("etapa").value="cadastrar";
-                document.getElementById("cadastro").submit();
+                document.getElementById("etapa").value="alterar";
+                $.post("q",$("#cadastro").serialize()).done(function(resposta){
+                    $("#mensagem2").text(obj.erro);
+                    document.getElementById("modal2").click();
+                    $('.fechar').click(function(ev){
+                         ev.preventDefault();
+                         $("#mascara").hide();
+                         $(".window").hide();
+                         focarUs(obj);
+                     });
+                });
             }else{
                     $("#mensagem").text(obj.erro);
                     document.getElementById("modal1").click();
@@ -98,3 +107,11 @@ $(document).ready(function(){
         $(id).show();  
     });
 });
+
+function excluir(){
+    $.post("q",{
+        userCase : "manterUsuario",
+        action : "excluirConta",
+        id : $("#iduser").val()
+    });
+}
