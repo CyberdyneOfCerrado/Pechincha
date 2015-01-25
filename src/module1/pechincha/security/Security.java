@@ -7,36 +7,29 @@ public class Security {
 
 	public Security() {
 		acess = new Hashtable<>();
-		// Adicinar apenas as ações que são restritas a usuários logados
+		// Adicionar ações que são permitidas sem o login; 
 
-		String[] manterAdm = {"excluir", "alterar", "cadastrar"};
-		String[] manterCliente = {"excluir", "listar"};
-		String[] manterPedido = {"excluir"};
-		String[] manterProduto = {"excluir"};
+		String[] manterUsuario = {"login", "incluir"};
 
-		acess.put("manterAdm", manterAdm);
-		acess.put("manterPedido", manterPedido);
-		acess.put("manterProduto", manterProduto);
-		acess.put("manterCliente", manterCliente);
+		acess.put("manterUsuario", manterUsuario);
 	}
 
 	// Com base na ação e caso de uso e o tipo de usuário, esse método diz se a
 	// ação e permitida
 	// ou não.
 	public boolean permissao(String login, String useCase, String action) {
-		boolean blackList = false;
-		if (useCase == null || action == null)
-			return true;
-		String[] actions = acess.get(useCase);
-		if (actions == null)
-			return true;
-		for (String a : actions) {
-			if (a.equals(action))
-				blackList = true;
+		if(login == null) return false;//não permitido, não está logado; 
+		
+		if(login.equals("false")  ){
+			boolean isInList = false;
+			if(useCase != null && action != null){
+				
+			}
+			
+		}else{
+			return true; 
 		}
-		if ((login == null || login.equals("false")) && blackList) {
-			return false;
-		}
-		return true;
+		
+		return false;//não permitida. 
 	};
 }
