@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.commons.fileupload.FileItemStream;
 
 import module1.pechincha.controllers.ModelController;
@@ -26,6 +28,7 @@ import module1.pechincha.util.GetFileUpload;
 public class ManterProdutos  extends ModelController{
 	public ActionDone novo ( DoAction da ){
 		ActionDone ad = new ActionDone();
+		HttpSession s = (HttpSession)da.getData("Session");
 		
 		//Identificando o pacote
 		ad.setAction(da.getAction());
@@ -51,14 +54,14 @@ public class ManterProdutos  extends ModelController{
 		String cat = ((String)da.getData("categoria"));
 		
 		if ( cat == null ){
-			ad.setMessage("Nenhuma categoria selecionada.");
+			ad.setMessage("Ao menos uma categoria deve ser selecionada!");
 			return ad;
 		}
-		
+
 		try{
 			prod.setPreco(Float.valueOf((String)da.getData("preco")));
 			prod.setQuantidade(Integer.valueOf((String)da.getData("quantidade")));
-			prod.setFkUsuario(Integer.valueOf(((String)da.getData("idusuario")).split(",")[0]));
+			prod.setFkUsuario(Integer.valueOf(((String)s.getAttribute("id"))));
 					
 			JDBCProdutoDAO manterproduto = new JDBCProdutoDAO();
 
@@ -84,7 +87,7 @@ public class ManterProdutos  extends ModelController{
 				
 				if ( imagens.size() == 0){
 					manterproduto.delete(pkprodinsert);
-					ad.setMessage("Nenhuma imagem enviada.");
+					ad.setMessage("Ao menos uma imagem deve ser enviada, com dimensões entre 640x480 e 1920x1080 nos formatos PNG ou JPG.");
 					return ad;
 				}
 				
@@ -104,7 +107,7 @@ public class ManterProdutos  extends ModelController{
 					JDBCImagemDAO insimg = new JDBCImagemDAO();
 					
 					if ( !insimg.validar(imag)){
-						ad.setMessage("Ao menos uma imagem deve ser enviada, com dimensões entre 640x480 e 1920x1080.");
+						ad.setMessage("Ao menos uma imagem deve ser enviada, com dimensões entre 640x480 e 1920x1080 nos formatos PNG ou JPG.");
 						manterproduto.delete(pkprodinsert);
 						return ad;
 					}
@@ -124,7 +127,7 @@ public class ManterProdutos  extends ModelController{
 			
 				if ( cont == 0 ){
 					manterproduto.delete(pkprodinsert);
-					ad.setMessage("Nenhuma imagem enviada.");
+					ad.setMessage("Ao menos uma imagem deve ser enviada, com dimensões entre 640x480 e 1920x1080.");
 					return ad;
 				}
 				JDBCCategoriaProdutoDAO daoprod = new JDBCCategoriaProdutoDAO(); 
@@ -136,19 +139,22 @@ public class ManterProdutos  extends ModelController{
 				return listar(da);
 			}
 			else{
-				ad.setMessage("Dados inconsistentes.");
+				ad.setMessage("Título do produto deve conter entre 5 e 50 caracteres; "
+						+ "valor deve estar entre 0.1 e 1000000; "
+						+ "quantidade deve ser entre 1 e 100.");
 				return ad;
 			}
 		}
 		catch(Exception e){
 			e.printStackTrace();
-			ad.setMessage("Erro desconhecido ou erro ao converter valores.");
+			ad.setMessage("Erro desconhecido. Por favor, tente novamente.");
 			return ad;
 		}
 	};
 	
 	public ActionDone editar ( DoAction da ){
 		ActionDone ad = new ActionDone();
+		HttpSession s = (HttpSession)da.getData("Session");
 		
 		//Identificando o pacote
 		ad.setAction(da.getAction());
@@ -163,7 +169,7 @@ public class ManterProdutos  extends ModelController{
 		
 		if ( confirm == null){
 			try{
-				int idusuario = Integer.valueOf((String)da.getData("idusuario")),
+				int idusuario = Integer.valueOf(((String)s.getAttribute("id"))),
 					idproduto = Integer.valueOf((String)da.getData("idproduto"));
 				
 				JDBCProdutoDAO daoprod = new JDBCProdutoDAO();
@@ -311,6 +317,7 @@ public class ManterProdutos  extends ModelController{
 	};
 	public ActionDone remover ( DoAction da ){
 		ActionDone ad = new ActionDone();
+		HttpSession s = (HttpSession)da.getData("Session");
 		
 		//Identificando o pacote
 		ad.setAction(da.getAction());
@@ -323,7 +330,7 @@ public class ManterProdutos  extends ModelController{
 		
 		
 		try{
-			int idusuario = Integer.valueOf((String)da.getData("idusuario")),
+			int idusuario = Integer.valueOf(((String)s.getAttribute("id"))),
 				idproduto = Integer.valueOf((String)da.getData("idproduto"));
 			
 			JDBCProdutoDAO daoprod = new JDBCProdutoDAO();
@@ -379,6 +386,7 @@ public class ManterProdutos  extends ModelController{
 	
 	public ActionDone listar ( DoAction da ){
 		ActionDone ad = new ActionDone();
+		HttpSession s = (HttpSession)da.getData("Session");
 		
 		//Identificando o pacote
 		ad.setAction("listar");
@@ -388,7 +396,7 @@ public class ManterProdutos  extends ModelController{
 		
 		try{
 			System.out.println("ID: " + (String)da.getData("idusuario"));
-			int usuario = Integer.valueOf(((String)da.getData("idusuario")).split(",")[0]);
+			int usuario = Integer.valueOf(((String)s.getAttribute("id")));			
 			String[] filtro = (String[])da.getData("categoria_array");
 			System.out.println("Categorias: " + filtro);
 //			List<Produto> prods = new JDBCProdutoDAO().list(usuario);
@@ -427,6 +435,7 @@ public class ManterProdutos  extends ModelController{
 	
 	public ActionDone visualizar ( DoAction da ){
 		ActionDone ad = new ActionDone();
+		HttpSession s = (HttpSession)da.getData("Session");
 		
 		//Identificando o pacote
 		ad.setAction(da.getAction());
@@ -435,7 +444,7 @@ public class ManterProdutos  extends ModelController{
 		ad.setProcessed(true);
 		
 		try{
-			int idusuario = Integer.valueOf((String)da.getData("idusuario")),
+			int idusuario = Integer.valueOf(((String)s.getAttribute("id"))),
 				idproduto = Integer.valueOf((String)da.getData("idproduto"));
 			
 			JDBCProdutoDAO daoprod = new JDBCProdutoDAO();
