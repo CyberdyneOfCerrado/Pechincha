@@ -83,8 +83,12 @@ function getAndInner(){
 		point   :  count,
 		redirect: 'false'
 	}).done(function(data){
+		if( data != ''){
 		$('#feedLeilao').append(data); 
 		count +=11;
+		}else{
+			showError('Não há leilões.'); 
+		}
 	}); 
 	
 }
@@ -101,3 +105,10 @@ function redirecionar(idL){
 		idLeilao : idL 
 			},'POST');
 }
+
+function showError(message) {
+	var html = "<div class='alert alert-error'> <button type='button' class='close' data-dismiss='alert'>&times;</button> <strong>Atenção! </strong> "
+			+ message + "</div>";
+	$('#feedLeilao').append(html);
+}
+

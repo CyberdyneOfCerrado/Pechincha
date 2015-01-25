@@ -67,15 +67,24 @@ $.parse_url = function(url) {
 }
 
 $('document').ready(function() {
-	$('#botao').click(function() {
-		if ($('#email').val() == '' || $('#senha').val() == '') {
-			showError("Preencha os campos corretamente");
-			return;
+
+	$('#botao').click(validarEnviar);
+
+	$('body').keypress(function(e) {
+		if (e.which == 13) {// apertei o enter
+			validarEnviar();
 		}
-		enviarDados($('#email').val(), md5($('#senha').val()));
 	});
 
 });
+
+function validarEnviar() {
+	if ($('#email').val() == '' || $('#senha').val() == '') {
+		showError("Preencha os campos corretamente");
+		return;
+	}
+	enviarDados($('#email').val(), md5($('#senha').val()));
+}
 
 function showError(message) {
 	var html = "<div class='alert alert-error'> <button type='button' class='close' data-dismiss='alert'>&times;</button> <strong>Atenção! </strong> "
