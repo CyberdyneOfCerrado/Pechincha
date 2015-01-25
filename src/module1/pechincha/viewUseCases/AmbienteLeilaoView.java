@@ -1,6 +1,9 @@
 package module1.pechincha.viewUseCases;
 
+import java.util.ArrayList;
+
 import biz.source_code.miniTemplator.MiniTemplator;
+import module1.pechincha.model.Imagem;
 import module1.pechincha.util.ActionDone;
 import module1.pechincha.view.ViewController;
 
@@ -8,59 +11,53 @@ public class AmbienteLeilaoView extends ViewController {
 
 	public AmbienteLeilaoView(String sevletContext, String useCase) {
 		super(sevletContext, useCase);
-	}; 
-	
+	};
 
 	@Override
 	public String choose(ActionDone ad) {
-		String resul=null;
-		switch(ad.getAction()){
-		case "ambiente":
-			resul = ambiente(ad);
-			break;
+		String resul = null;
+		switch (ad.getAction()) {
+			case "ambiente" :
+				resul = ambiente(ad);
+				break;
 		}
 		return resul;
-	}; 
-	
-	
+	};
 
 	private String ambiente(ActionDone ad) {
 		String resul = "";
-		if(ad.isProcessed()){
+		if (ad.isProcessed()) {
 			MiniTemplator temp = super.startMiniTemplator(super.getTemplate(ad));
-			
+
 			temp.setVariable("userName", (String) ad.getData("userName"));
 			temp.setVariable("idEmissor", (String) ad.getData("idEmissor"));
 			temp.setVariable("idLeilao", (String) ad.getData("idLeilao"));
-		
-			boolean isLeiloeiro = Boolean.valueOf( ad.getData("isLeiloeiro").toString());
-			
-			for(int a = 0 ; a < 10 ; a++ )temp.addBlock("ImagemProduto");
-			
+
+			boolean isLeiloeiro = Boolean.valueOf(ad.getData("isLeiloeiro").toString());
+			// Adicionando imagens ao ambiente:
+			ArrayList<Imagem> imagens = (ArrayList<Imagem>) ad.getData("imagens");
+			for (Imagem a : imagens) {
+				temp.setVariable("img", a.getPk() + "." + a.getFormato());
+				temp.addBlock("ImagemProduto");
+			}
+
 			String url = super.getTemplate(ad);
-			
-			url = url.substring(0,url.lastIndexOf(super.getSeparador())+1);
-			
+
+			url = url.substring(0, url.lastIndexOf(super.getSeparador()) + 1);
+
 			System.out.println(url);
-			if(isLeiloeiro)
+			if (isLeiloeiro)
 				url += "leiloeiro.html";
 			else
-				url += "user.html"; 
-			
+				url += "user.html";
+
 			MiniTemplator x = super.startMiniTemplator(url);
-			
+
 			temp.setVariable("botoes", x.generateOutput());
 			resul = temp.generateOutput();
-		}else{
-			MiniTemplator temp;
-			
-			if(ad.isStatus()){//Mensagem de 'tudo bem'.
-				
-			}else{
-				
-			}
-		}
+		} 
+		
 		return resul;
-	}; 
+	};
 
 }
