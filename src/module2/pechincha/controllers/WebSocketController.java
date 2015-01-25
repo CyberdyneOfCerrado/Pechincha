@@ -23,7 +23,7 @@ public class WebSocketController {
 		// idLeiloeiro, float lanceInicial,String descricao,int comprador,
 		// ArrayList<LoteProduto> produto,String nickname,boolean ativo){
 		Random rand = new Random(); 
-		for (int a = 0; a < 24; a++)
+		for (int a = 0; a < 4; a++)
 			StorageLeilaoEnvironments.iniciarAmbienteLeilao(new Leilao(a, "Gerado automaticamente " + a, 1500 + rand.nextInt(10000), 1, 50.00f + rand.nextInt(5000), "nada", 33, null,"Allyson", false, 0));
 
 	};
