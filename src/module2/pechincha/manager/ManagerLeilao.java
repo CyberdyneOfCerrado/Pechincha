@@ -148,8 +148,7 @@ public class ManagerLeilao extends Thread {
 	private void finalizar(UserSession userSession) {
 		// Previnir que o leiloeiro finalizem em nenhum lance.
 		if (maiorLance.getSession() != null) {
-			boolean result = false;
-			result = gl.finalizarLeilao(this.leilao);
+			gl.finalizarLeilao(this.leilao);
 			// Pegar a sessão do maior lance e do leiloeiro;
 			// Preparar mensagem para ambos.
 			// Enviar mensagem de acordo de compra unicast.
@@ -162,12 +161,12 @@ public class ManagerLeilao extends Thread {
 
 			if (maiorLance.getSession().isOpen()) {
 
-				msgUnicast(maiorLance, MessegerFactory.createMessegerFinalizar(((!result) ? msgFalha : msg)));
+				msgUnicast(maiorLance, MessegerFactory.createMessegerFinalizar( msg));
 				peers.remove(maiorLance.getIdUser());
 			}
 
 			if (userSession.getSession().isOpen()) {
-				msgUnicast(userSession, MessegerFactory.createMessegerFinalizar(((!result) ? msgFalha : msg)));
+				msgUnicast(userSession, MessegerFactory.createMessegerFinalizar(msg));
 				peers.remove(userSession.getIdUser());
 			}
 
