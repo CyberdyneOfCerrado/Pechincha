@@ -42,13 +42,13 @@ h1 {
 
 #alterar {
     left: 200px;
-    position: relative;
-    top: 70px;
+    position: absolute;
+    top: 680px;
 }
 #excluir {
-    left: 250px;
-    position: relative;
-    top: 70px;
+    left: 390px;
+    position: absolute;
+    top: 680px;
 }
 span{
   padding-top: 30px;

@@ -232,7 +232,7 @@ public class GerenciarLeilao extends ModelController {
 		return done;
 	}
 	
-	public boolean finalizarLeilao(Leilao leilao){
+	public void finalizarLeilao(Leilao leilao){
 		JDBCLeilaoDAO update =new JDBCLeilaoDAO();
 		JDBCLoteProdutoDAO lt =new JDBCLoteProdutoDAO();
 		JDBCProdutoDAO daoprod = new JDBCProdutoDAO();
@@ -254,7 +254,10 @@ public class GerenciarLeilao extends ModelController {
 		lt.delete(leilao.getIdLeilao());
 		leilao.setAtivo(false);
 		update.update(leilao);
-		return enviarEmail(leilao);
+		Mail mail=new Mail();
+		mail.setLeilao(leilao);
+		Thread vai=new Thread(mail);
+		vai.start();
 	}
 	
 	public boolean enviarEmail(Leilao leilao){

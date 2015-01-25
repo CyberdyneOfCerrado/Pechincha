@@ -24,6 +24,10 @@ function enviar(Idleilao,UseCase,Action,Redirect){
     		});
 }
 
+function home(){
+    document.getElementById("home").submit();
+}
+
 function criarLeilao(){
 $.post("q",$("#passo01").serialize()).done(
     function(resposta){

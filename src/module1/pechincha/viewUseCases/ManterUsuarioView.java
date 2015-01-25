@@ -34,6 +34,12 @@ public class ManterUsuarioView extends ViewController {
 			case "excluirConta":
 				retorno = telaExcluir(ad);
 				break;
+			case "alterarDados":
+				retorno = telaAlterar(ad);
+				break;
+			case "respostaAlterar":
+				retorno = respostaAlterar(ad);
+				break;	
 		}
 		return retorno;
 	}
@@ -52,6 +58,24 @@ public class ManterUsuarioView extends ViewController {
 		return (String) ad.getData("message");
 	}
 	
+	public String respostaAlterar(ActionDone ad){
+		return (String) ad.getData("message");
+	}
+	
+	public String telaAlterar(ActionDone ad){
+		Usuario user = (Usuario) ad.getData("user");
+		MiniTemplator temp = super.startMiniTemplator(super.getTemplate(ad));
+		temp.setVariable("nome", user.getNomeCompleto());
+		temp.setVariable("nickname", user.getNickname());
+		temp.setVariable("data",user.getDataNascimento());
+		temp.setVariable("mail", user.getEmailPrincipal());
+		temp.setVariable("mailalt", user.getEmailAlternativo());
+		temp.setVariable("skype", user.getSkype());
+		temp.setVariable("cel", user.getTelCelular());
+		temp.setVariable("fixo", user.getTelFixo());
+		return temp.generateOutput();	
+	}
+	
 	public String meusDados(ActionDone ad){
 		Usuario user = (Usuario) ad.getData("usuario");
 		MiniTemplator temp = super.startMiniTemplator(super.getTemplate(ad));
@@ -63,7 +87,6 @@ public class ManterUsuarioView extends ViewController {
 		temp.setVariable("skype", user.getSkype());
 		temp.setVariable("cel", user.getTelCelular());
 		temp.setVariable("fixo", user.getTelFixo());
-		temp.setVariable("id", user.getPk());
 		return temp.generateOutput();
 	}
 

@@ -15,7 +15,7 @@ public class ManterUsuario extends ModelController {
 
 	@Override
 	public String[] getActions() {
-		String[] actions = {"incluirUsuario", "login", "meusDados","excluirConta"};
+		String[] actions = {"incluirUsuario", "login", "meusDados","excluirConta","alterarDados"};
 		return actions;
 	}
 
@@ -27,19 +27,22 @@ public class ManterUsuario extends ModelController {
 	public ActionDone excluirConta(DoAction action) {
 		String etapa = String.valueOf(action.getData("etapa"));
 		ActionDone done = null;
+		HttpSession s=null;
 		int pk=0;
 		JDBCUsuarioDAO userDao = new JDBCUsuarioDAO();
 		switch (etapa) {
 		case "telaExcluir":
 			done = new ActionDone();
 			done.setAction("excluirConta");
-			done.setData("id",String.valueOf(action.getData("id")));
+			s=(HttpSession) action.getData("Session");
+			done.setData("id",String.valueOf(s.getAttribute("id")));
 			done.setUseCase(action.getUseCase());
 			done.setProcessed(true);
 			done.setStatus(true);
 			return done;
 		case "check" :
-			pk = Integer.parseInt((String) action.getData("id"));
+			s=(HttpSession) action.getData("Session");
+			pk = Integer.parseInt((String) s.getAttribute("id"));
 			Usuario user =userDao.select(pk);
 			String senha=String.valueOf(action.getData("senha"));
 			if(user.getSenha().equals(senha)){
@@ -50,14 +53,87 @@ public class ManterUsuario extends ModelController {
 				return done;
 			}
 		case "excluir":
-			pk = Integer.parseInt((String) action.getData("id"));
+			s=(HttpSession) action.getData("Session");
+			pk = Integer.parseInt((String) s.getAttribute("id"));
 			userDao.delete(pk);
-			done=retorno("false, O usuario foi deletado!","0",false,"manterUsuario","excluir");
+			s=(HttpSession) action.getData("Session");
+			s.setAttribute("id", null);
+			s.setAttribute("login", "false");
+			s.setAttribute("nickname", null);
+			done = new ActionDone();
+			done.setAction("login");
+			done.setUseCase(action.getUseCase());
+			done.setData("index", "false");
+			done.setProcessed(false);
+			done.setStatus(true);
 			return done;
 		}
 		return done;
 	}
-
+	
+	public ActionDone alterarDados(DoAction action) {	
+		String etapa = String.valueOf(action.getData("etapa"));
+		Usuario user = null;
+		ActionDone done = null;
+		JDBCUsuarioDAO userDao=null;
+		HttpSession s=null;
+		switch (etapa) {
+			case "check" :
+				user=new Usuario();
+				user.setNomeCompleto(String.valueOf(action.getData("nomeCompleto")));
+				user.setDataNascimento(String.valueOf(action.getData("dataDeNascimento")));
+				user.setNickname(String.valueOf(action.getData("nickname")));
+				user.setEmailPrincipal(String.valueOf(action.getData("email")));
+				user.setEmailAlternativo(String.valueOf(action.getData("emailAlternativo")));
+				user.setSkype(String.valueOf(action.getData("skype")));
+				user.setTelCelular(String.valueOf(action.getData("telefoneCelular")));
+				user.setTelFixo(String.valueOf(action.getData("telefoneFixo")));
+				String confsenha = String.valueOf(action.getData("confirmarSenha"));
+				action.setData("user", user);
+				action.setData("confsenha", confsenha);
+				action.setData("tipo", "2");
+				done = validar(action);
+				boolean status = (boolean) done.getData("status");
+				if (status) {
+					done = retorno("O seu cadastro foi alterado com exito!", null, true,"manterUsuario","respostaAlterar");
+				} else {
+					done = retorno(String.valueOf(done.getData("erro")), String.valueOf(done.getData("tipo")), (boolean) done.getData("status"),"manterUsuario","respostaAlterar");
+				}
+				return done;
+			case "alterar" :
+				user=new Usuario();
+				user.setNomeCompleto(String.valueOf(action.getData("nomeCompleto")));
+				user.setSenha(String.valueOf(action.getData("senha")));
+				user.setNickname(String.valueOf(action.getData("nickname")));
+				user.setDataNascimento(String.valueOf(action.getData("dataDeNascimento")));
+				user.setEmailPrincipal(String.valueOf(action.getData("email")));
+				user.setEmailAlternativo(String.valueOf(action.getData("emailAlternativo")));
+				user.setSkype(String.valueOf(action.getData("skype")));
+				user.setTelCelular(String.valueOf(action.getData("telefoneCelular")));
+				user.setTelFixo(String.valueOf(action.getData("telefoneFixo")));
+				s=(HttpSession) action.getData("Session");
+				user.setPk(Integer.parseInt((String) s.getAttribute("id")));
+				userDao = new JDBCUsuarioDAO();
+				userDao.update(user);
+				done = new ActionDone();
+				done = retorno("O seu cadastro foi alterado com exito!", null, true,"manterUsuario","respostaAlterar");
+				return done;
+			case "telaAlterar" :
+				done = new ActionDone();
+				userDao = new JDBCUsuarioDAO();
+				s=(HttpSession) action.getData("Session");
+				user=userDao.select(Integer.parseInt((String) s.getAttribute("id")));
+				done.setData("user", user);
+				done.setAction("alterarDados");
+				done.setUseCase(action.getUseCase());
+				done.setProcessed(true);
+				done.setStatus(true);
+				return done;
+		}
+			return done;
+	}
+	
+	
 	public ActionDone incluirUsuario(DoAction action) {
 		String etapa = String.valueOf(action.getData("etapa"));
 		Usuario user = new Usuario();
@@ -116,6 +192,7 @@ public class ManterUsuario extends ModelController {
 				done = new ActionDone();
 				done.setAction("cadastro");
 				done.setUseCase(action.getUseCase());
+				done.setData("index", "false");
 				done.setProcessed(true);
 				done.setStatus(true);
 				return done;
@@ -124,7 +201,8 @@ public class ManterUsuario extends ModelController {
 	}
 
 	public ActionDone meusDados(DoAction action) {
-		String id = String.valueOf(action.getData("id"));
+		HttpSession s=(HttpSession) action.getData("Session");
+		String id = String.valueOf(s.getAttribute("id"));
 		JDBCUsuarioDAO userDao = new JDBCUsuarioDAO();
 		Usuario user = userDao.select(Integer.parseInt(id));
 		ActionDone done = new ActionDone();
@@ -138,15 +216,20 @@ public class ManterUsuario extends ModelController {
 
 	public ActionDone validar(DoAction action) {
 		Usuario user = (Usuario) action.getData("user");
+		JDBCUsuarioDAO userDao = new JDBCUsuarioDAO();
 		String confsenha = (String) action.getData("confsenha");
 		if (user.getNomeCompleto().length() < 10 || user.getNomeCompleto().length() > 250 || user.getNomeCompleto().equals("")) {
 			return check("Houve um erro no campo Nome! O campo deve conter entre 10 a 250 caracteres.", "1", false);
 		}
-		if (user.getSenha().length() < 6 || user.getSenha().length() > 16 || user.getSenha().equals("")) {
-			return check("A senha informada deverá conter entre 6 a 16 dígitos!", "2", false);
+		if(action.getData("tipo")==null){
+			if (user.getSenha().length() < 6 || user.getSenha().length() > 16 || user.getSenha().equals("")) {
+				return check("A senha informada deverá conter entre 6 a 16 dígitos!", "2", false);
+			}
 		}
-		if (!user.getSenha().equals(confsenha) || user.getSenha().equals("")) {
-			return check("As senhas não conferem!", "3", false);
+		if(action.getData("tipo")==null){
+			if (!user.getSenha().equals(confsenha) || user.getSenha().equals("")) {
+				return check("As senhas não conferem!", "3", false);
+			}
 		}
 		if (user.getNickname().length() < 5 || user.getNickname().length() > 10 || user.getNickname().equals("")) {
 			return check("Erro no campo nickname! O campo deve conter entre 5 a 10 caracteres.", "4", false);
@@ -168,6 +251,9 @@ public class ManterUsuario extends ModelController {
 		if (user.getEmailPrincipal().length() < 10 || user.getEmailPrincipal().length() > 100 || user.getEmailPrincipal().equals("")) {
 			return check("Erro no campo E-mail principal! O campo deve conter entre 10 a 100 caracteres.", "6", false);
 		}
+		if(userDao.emailExiste(user.getEmailPrincipal()) && action.getData("tipo")!="2"){
+			return check("Erro no campo E-mail principal! O e-mail principal deve ser único no sistema.", "6", false);
+		}
 		if (user.getEmailAlternativo().length() > 100) {
 			return check("Erro no campo E-mail alternativo! O campo deve conter entre 10 a 100 caracteres.", "7", false);
 		}
@@ -182,6 +268,7 @@ public class ManterUsuario extends ModelController {
 		}
 		return check("false", "null", true);
 	}
+
 
 	public ActionDone check(String erro, String tipo, boolean valida) {
 		ActionDone done = new ActionDone();

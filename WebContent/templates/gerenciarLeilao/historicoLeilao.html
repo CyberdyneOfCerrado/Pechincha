@@ -41,12 +41,17 @@
 <input type="hidden" name="etapa" value="leilaop0"/>
 <input type="hidden" name="redirect" value="false"/>
 <a  id="Button1" name="Criar Leilão" class="btn btn-inverse" onclick="postar('etapa')" style="position:absolute;left:7px;top:130px;width:115px;height:63px;z-index:1;"><i class="icon-plus icon-white"></i><h4 class="texto">Criar Leilão</h4></a>
-<a  id="Button2" name="home"  class="btn btn-inverse" style="position:absolute;left:7px;top:208px;width:115px;height:63px;z-index:2;"><i class="icon-home icon-white"></i><h4 class="texto">Home</h4></a>
+<a  id="Button2" name="home"  class="btn btn-inverse" onclick="home()" style="position:absolute;left:7px;top:208px;width:115px;height:63px;z-index:2;"><i class="icon-home icon-white"></i><h4 class="texto">Home</h4></a>
 </form>
 <div id="wb_Text1" style="position:absolute;left:415px;top:50px;width:252px;height:23px;z-index:3;text-align:left;">
 <h3 class="text-center" style="color:#000000;font-family:Arial;">Histórico de leilão</h3></div>
 <div class="layer3" style="position:absolute;text-align:left;left:162px;top:132px;width:784px;height:450px;z-index:3;" title="" >
 </div>
+<form class="form-search" id="home" action="q" method="post">
+    <input type="hidden" name="useCase" value="home"/>
+    <input type="hidden" name="action" value="home"/>
+    <input type="hidden" name="redirect" value="true"/>
+</form>
 <div id="Layer2" style="position:absolute;text-align:left;left:162px;top:132px;width:784px;height:450px;z-index:4;overflow-y: scroll;" title="" >
                      <table class="table table-striped">
                      <tr>

@@ -129,8 +129,49 @@ public class JDBCUsuarioDAO extends DAOBehavior<Usuario> {
 
 	@Override
 	public void update(Usuario arg) {
-		// TODO Auto-generated method stub
-
+		String sql = "Update " + arg.getTableName() + " set " +
+				"nomecompleto = ?,nickname = ?, datanascimento = ?, emailprincipal = ?, emailalternativo = ?, skype = ?, telcelular = ?, telfixo = ? " +
+				"where pk = ?";
+		try {
+			PreparedStatement ps = c.prepareStatement(sql);
+			ps.setString(1,arg.getNomeCompleto());
+			ps.setString(2, arg.getNickname());
+			ps.setString(3, arg.getDataNascimento());
+			ps.setString(4, arg.getEmailPrincipal());
+			ps.setString(5, arg.getEmailAlternativo());
+			ps.setString(6, arg.getSkype());
+			ps.setString(7,arg.getTelCelular());
+			ps.setString(8, arg.getTelFixo());
+			ps.setInt(9, arg.getPk());
+			ps.execute();
+			ps.close();
+		
+		} catch (SQLException e) {
+			throw new RuntimeException("Erro ao atualizar dados. Classe JDBCUsuarioDAO", e); 
+		}
 	}
 
+	public boolean emailExiste(String mail){
+		try {
+		PreparedStatement ps = c.prepareStatement("select emailprincipal from usuario where emailprincipal='"+mail+"'"); 
+		ResultSet result = ps.executeQuery();
+		while(result.next()){
+			if(result.getString("emailprincipal").equals(mail)){
+				result.close();
+				ps.close();
+				return true;
+			}
+			else {
+				result.close();
+				ps.close();
+				return false;
+			}
+		}
+		}catch (SQLException e) {
+		throw new RuntimeException("Erro ao listar dados. Classe JDBCUsuarioDAO", e); 
+	}
+		return false;
+	}	
+
 }
+
