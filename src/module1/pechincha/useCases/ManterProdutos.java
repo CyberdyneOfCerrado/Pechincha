@@ -87,7 +87,7 @@ public class ManterProdutos  extends ModelController{
 				
 				if ( imagens.size() == 0){
 					manterproduto.delete(pkprodinsert);
-					ad.setMessage("Ao menos uma imagem deve ser enviada, com dimensões entre 640x480 e 1920x1080 nos formatos PNG ou JPG.");
+					ad.setMessage("Ao menos uma imagem deve ser enviada, com dimensões entre 480x360 e 1920x1080 nos formatos PNG ou JPG.");
 					return ad;
 				}
 				
@@ -107,7 +107,7 @@ public class ManterProdutos  extends ModelController{
 					JDBCImagemDAO insimg = new JDBCImagemDAO();
 					
 					if ( !insimg.validar(imag)){
-						ad.setMessage("Ao menos uma imagem deve ser enviada, com dimensões entre 640x480 e 1920x1080 nos formatos PNG ou JPG.");
+						ad.setMessage("Ao menos uma imagem deve ser enviada, com dimensões entre 480x360 e 1920x1080 nos formatos PNG ou JPG e tamanho máximo de 5 Mb.");
 						manterproduto.delete(pkprodinsert);
 						return ad;
 					}
@@ -127,7 +127,7 @@ public class ManterProdutos  extends ModelController{
 			
 				if ( cont == 0 ){
 					manterproduto.delete(pkprodinsert);
-					ad.setMessage("Ao menos uma imagem deve ser enviada, com dimensões entre 640x480 e 1920x1080.");
+					ad.setMessage("Ao menos uma imagem deve ser enviada, com dimensões entre 480x360 e 1920x1080 nos formatos PNG ou JPG e tamanho máximo de 5 Mb.");
 					return ad;
 				}
 				JDBCCategoriaProdutoDAO daoprod = new JDBCCategoriaProdutoDAO(); 
