@@ -186,6 +186,7 @@ public class ManterUsuario extends ModelController {
 				done.setAction("home");
 				done.setUseCase("home");
 				done.setProcessed(true);
+				done.setData("redirect", "true");
 				done.setStatus(true);
 				return done;
 			case "cadastro" :
