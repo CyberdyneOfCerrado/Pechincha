@@ -35,9 +35,16 @@ public class AmbienteLeilaoView extends ViewController {
 
 			boolean isLeiloeiro = Boolean.valueOf(ad.getData("isLeiloeiro").toString());
 			// Adicionando imagens ao ambiente:
-			ArrayList<Imagem> imagens = (ArrayList<Imagem>) ad.getData("imagens");
-			for (Imagem a : imagens) {
-				temp.setVariable("img", a.getPk() + "." + a.getFormato());
+
+			ArrayList<Object> imagens = (ArrayList<Object>) ad.getData("imagens");
+
+			for (Object a : imagens) {
+				if (a.getClass().getName().contains("Imagem")) {
+					Imagem b = (Imagem) a;
+					temp.setVariable("img", b.getPk() + "." + b.getFormato());
+				} else {
+					temp.setVariable("img", (String) a);
+				}
 				temp.addBlock("ImagemProduto");
 			}
 
@@ -55,8 +62,8 @@ public class AmbienteLeilaoView extends ViewController {
 
 			temp.setVariable("botoes", x.generateOutput());
 			resul = temp.generateOutput();
-		} 
-		
+		}
+
 		return resul;
 	};
 
