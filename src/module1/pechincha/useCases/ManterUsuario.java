@@ -180,7 +180,7 @@ public class ManterUsuario extends ModelController {
 				HttpSession s=(HttpSession) action.getData("Session");
 				s.setAttribute("id", String.valueOf(pk));
 				s.setAttribute("login", "true");
-				s.setAttribute("nickname", user.getNickname());
+				s.setAttribute("nickName", user.getNickname());
 				done = new ActionDone();
 				done.setData("Session",action.getData("Session"));
 				done.setAction("home");
