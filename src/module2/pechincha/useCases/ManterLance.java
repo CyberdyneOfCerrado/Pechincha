@@ -18,7 +18,8 @@ public class ManterLance {
 			} 
 			return false;
 		} catch (Exception e) {
-			throw new RuntimeException("Houve um problema ao validar o lance",e ); 
+			e.printStackTrace();
 		}
+		return false;
 	}
 }
