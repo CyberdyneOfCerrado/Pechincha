@@ -16,6 +16,7 @@ import module1.pechincha.controllers.ModelController;
 import module1.pechincha.cruds.JDBCCategoriaDAO;
 import module1.pechincha.cruds.JDBCCategoriaProdutoDAO;
 import module1.pechincha.cruds.JDBCImagemDAO;
+import module1.pechincha.cruds.JDBCLoteProdutoDAO;
 import module1.pechincha.cruds.JDBCProdutoDAO;
 import module1.pechincha.model.Categoria;
 import module1.pechincha.model.CategoriaProduto;
@@ -337,7 +338,12 @@ public class ManterProdutos  extends ModelController{
 			if ( prod == null || prod.getFkUsuario() != idusuario){
 				return ad;
 			}
-						
+			JDBCLoteProdutoDAO lp = new JDBCLoteProdutoDAO(); 
+			if ( lp.existeLote(idproduto)){
+				ad.setMessage("Você não pode remover produtos que esteja relacionado a algum lote.");
+				ad.setAction("listar");
+			}
+
 			if ( conf ){
 				JDBCImagemDAO imgs = new JDBCImagemDAO();
 				List<Imagem> list = imgs.list(idproduto);
@@ -353,7 +359,7 @@ public class ManterProdutos  extends ModelController{
 				imgs.deleteFromFKProduto(idproduto);				
 				new JDBCCategoriaProdutoDAO().deleteFromFKProduto(idproduto);
 				daoprod.delete(idproduto);
-				ad.setMessage("Produto excluído.");
+				ad.setMessage("Produto removido com sucesso.");
 				ad.setAction("listar");
 				
 				return listar(da);
