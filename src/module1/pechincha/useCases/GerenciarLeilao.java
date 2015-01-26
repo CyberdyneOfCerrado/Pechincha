@@ -189,24 +189,17 @@ public class GerenciarLeilao extends ModelController {
 				done.setUseCase("ambienteLeilao");
 				done.setProcessed(true);
 				done.setStatus(true);
-				JDBCProdutoDAO pr = new JDBCProdutoDAO();
-				List<Produto> list= pr.list(Integer.parseInt((String)s.getAttribute("id")));
-				ArrayList <String> imgAdd = new ArrayList<>();
-				for (Produto produto:list){
-					List<Imagem> imgs = new JDBCImagemDAO().list(produto.getPk());
-					if ( imgs.size() > 0){
-						int temp=0;
-						while(temp<imgs.size()){
-							Imagem img = imgs.get(temp);
-							imgAdd.add(img.getPk() + "." + img.getFormato());
-							temp++;
-						}
+				JDBCLoteProdutoDAO lote = new JDBCLoteProdutoDAO();
+				JDBCImagemDAO imageDao = new JDBCImagemDAO();
+				ArrayList<Imagem> imagens = new ArrayList<>();
+				List<Produto> listaProduto = lote.produtosLeilao(Integer.parseInt((String) done.getData("idLeilao")));
+				for (Produto p : listaProduto) {
+					List<Imagem> listaImagem = imageDao.list(p.getPk());
+					for (Imagem a : listaImagem) {
+						imagens.add(a);
 					}
 				}
-				done.setData("imagens",imgAdd);
-				for (String image:imgAdd){
-					System.out.println(image);
-				}
+				done.setData("imagens", imagens);
 				StorageLeilaoEnvironments.iniciarAmbienteLeilao(le);
 				return done;
 			}

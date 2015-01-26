@@ -5,6 +5,7 @@ import java.util.List;
 
 import biz.source_code.miniTemplator.MiniTemplator;
 import module1.pechincha.cruds.JDBCImagemDAO;
+import module1.pechincha.cruds.JDBCLoteProdutoDAO;
 import module1.pechincha.cruds.JDBCProdutoDAO;
 import module1.pechincha.model.Imagem;
 import module1.pechincha.model.Leilao;
@@ -57,12 +58,15 @@ public class GerenciarLeilaoView extends ViewController{
 		String pathi = getSevletContext()+getUseCase()+"leilaop1"+".html";
 		MiniTemplator index = super.startMiniTemplator(pathi);
 		JDBCProdutoDAO pr = new JDBCProdutoDAO();
+		JDBCLoteProdutoDAO lt = new JDBCLoteProdutoDAO();
 		List<Produto> list= pr.list(Integer.parseInt((String) ad.getData("idleiloeiro")));
 		index.setVariable("etiqueta", String.valueOf(ad.getData("etiqueta")));
 		index.setVariable("descricao", String.valueOf(ad.getData("descricao")));
 		index.setVariable("tempolimite", String.valueOf(ad.getData("tempo")));
 		index.setVariable("nickname", String.valueOf(ad.getData("nickname")));
 		for (Produto produto:list){
+			if(produto.getQuantidade()<1)continue;
+			if(lt.existeLote(produto.getPk()))continue;
 			List<Imagem> imgs = new JDBCImagemDAO().list(produto.getPk());
 			if ( imgs.size() > 0){
 				Imagem img = imgs.get(0);
