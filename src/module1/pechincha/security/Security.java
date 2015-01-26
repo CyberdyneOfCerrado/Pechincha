@@ -7,9 +7,9 @@ public class Security {
 
 	public Security() {
 		acess = new Hashtable<>();
-		// Adicionar ações que são permitidas sem o login; 
+		// Adicionar ações que são permitidas sem o login;
 
-		String[] manterUsuario = {"login", "incluir"};
+		String[] manterUsuario = {"login", "incluirUsuario"};
 
 		acess.put("manterUsuario", manterUsuario);
 	}
@@ -18,18 +18,18 @@ public class Security {
 	// ação e permitida
 	// ou não.
 	public boolean permissao(String login, String useCase, String action) {
-		if(login == null) return false;//não permitido, não está logado; 
-		
-		if(login.equals("false")  ){
-			boolean isInList = false;
-			if(useCase != null && action != null){
-				
-			}
-			
-		}else{
-			return true; 
+		if (login == null || login.equals("false")) {
+			// Verificando se há caso de uso ou Ação:
+			if ((useCase == null || action == null))
+				return false;
+			String[] temp = acess.get(useCase);
+
+			for (int a = 0; a < temp.length; a++)
+				if (temp[a].equals(action))
+					return true;
+		} else {
+			return true;
 		}
-		
-		return false;//não permitida. 
+		return false; // Usuário sem login não está permitido.
 	};
 }

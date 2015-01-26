@@ -107,8 +107,8 @@ function redirecionar(idL){
 }
 
 function showError(message) {
-	var html = "<div class='alert alert-error'> <button type='button' class='close' data-dismiss='alert'>&times;</button> <strong>Atenção! </strong> "
-			+ message + "</div>";
+	var html = "<div class='span4 offset4'><div class='alert alert-error'> <button type='button' class='close' data-dismiss='alert'>&times;</button> <strong>Atenção! </strong> "
+			+ message + "</div></div>";
 	$('#feedLeilao').append(html);
 }
 

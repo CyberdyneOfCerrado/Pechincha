@@ -39,8 +39,7 @@ public class ServletController {
 
 	public ServletController(String servletContext) {
 		separador = System.getProperty("file.separator");
-		this.servletContext = servletContext + separador + "templates"
-				+ separador;
+		this.servletContext = servletContext + separador + "templates" + separador;
 		this.ucc = new UseCaseController();
 		this.listViews = new Hashtable<>();
 		initViews();
@@ -48,18 +47,12 @@ public class ServletController {
 
 	// Adicionar todas as classes de gerenciamento de conteúdo aqui.
 	private void initViews() {
-		listViews.put("ambienteLeilao", new AmbienteLeilaoView(servletContext,
-				"ambienteLeilao"));
-		listViews.put("manterUsuario", new ManterUsuarioView(servletContext,
-				"manterUsuario"));
-		listViews.put("gerenciarLeilao", new GerenciarLeilaoView(servletContext,
-				"gerenciarLeilao"));
-		listViews.put("manterGalinha", new ManterGalinhaView(servletContext,
-				"manterGalinha"));
-		listViews.put("manterProdutos", new ManterProdutosView(servletContext,
-				"manterProdutos"));
-		listViews.put("home", new HomeView(servletContext,
-				"home"));
+		listViews.put("ambienteLeilao", new AmbienteLeilaoView(servletContext, "ambienteLeilao"));
+		listViews.put("manterUsuario", new ManterUsuarioView(servletContext, "manterUsuario"));
+		listViews.put("gerenciarLeilao", new GerenciarLeilaoView(servletContext, "gerenciarLeilao"));
+		listViews.put("manterGalinha", new ManterGalinhaView(servletContext, "manterGalinha"));
+		listViews.put("manterProdutos", new ManterProdutosView(servletContext, "manterProdutos"));
+		listViews.put("home", new HomeView(servletContext, "home"));
 	};
 
 	private String init() throws TemplateSyntaxException, IOException {
@@ -70,8 +63,7 @@ public class ServletController {
 	};
 
 	// Processa os dados da Servlet.
-	public String process(HttpServletRequest request)
-			throws TemplateSyntaxException, IOException {
+	public String process(HttpServletRequest request) throws TemplateSyntaxException, IOException {
 		DoAction da = makeDoAction(request); // convertendo o Request em
 												// DoAction
 		ActionDone ad = null;
@@ -80,11 +72,14 @@ public class ServletController {
 		} else {
 			// Se ação informada for do tipo 'redirect=true' os dados não devem
 			// ser enviados p/ o UseCaseController
-			if (!Boolean.valueOf((String)da.getData("redirect"))) {
+			if (!Boolean.valueOf((String) da.getData("redirect"))) {
 				ad = ucc.chooseUserCase(da);
 				ad.setData("redirect", "false");
 			} else {
-				ad = new ActionDone(da.getUseCase(), da.getAction(),da.getHashtable());// copiando o DA p/ o AC
+				ad = new ActionDone(da.getUseCase(), da.getAction(), da.getHashtable());// copiando
+																						// o
+																						// DAp/o
+																						// AC
 			}
 		}
 		return readActionDone(ad);// abre o pacote de ação concluída e o manda
@@ -95,9 +90,22 @@ public class ServletController {
 	private DoAction makeDoAction(HttpServletRequest request) {
 		// 1 pegando o nome do caso de uso e a respectiva ação.
 		// useCase e Action são atributos estáticos em qualquer formulário
-		String useCase = request.getParameter("useCase");
-		String action = request.getParameter("action");
 		DoAction da;
+
+		// Verificação de segurança;
+		String security = (String) request.getAttribute("security");
+		String useCase, action;
+
+		if (security.equals("true")) {
+			useCase = "manterUsuario";
+			action = "login";
+			da = new DoAction(useCase, action);
+			da.setData("redirect", "true");
+			return da;
+		} else {
+			useCase = request.getParameter("useCase");
+			action = request.getParameter("action");
+		}
 
 		da = new DoAction(useCase, action);
 
@@ -125,8 +133,7 @@ public class ServletController {
 				factory.setSizeThreshold(this.maxMemSize);
 				// Location to temporary save data that is larger than
 				// maxMemSize.
-				factory.setRepository(new File(this.servletContext + separador
-						+ "tmp"));
+				factory.setRepository(new File(this.servletContext + separador + "tmp"));
 
 				// Create a new file upload handler
 				ServletFileUpload upload = new ServletFileUpload(factory);
@@ -138,16 +145,16 @@ public class ServletController {
 
 				// Process the uploaded file items
 				FileItemIterator iter = upload.getItemIterator(request);
-				
+
 				while (iter.hasNext()) {
 					FileItemStream fi = iter.next();
 					InputStream is = fi.openStream();
 					if (fi.isFormField()) {
 						System.out.println(fi.getContentType());
-						
-						if (da.getData(fi.getFieldName()) != null){
-							da.setData(fi.getFieldName(), ((String)da.getData(fi.getFieldName())) + "," + Streams.asString(is));
-						}else{
+
+						if (da.getData(fi.getFieldName()) != null) {
+							da.setData(fi.getFieldName(), ((String) da.getData(fi.getFieldName())) + "," + Streams.asString(is));
+						} else {
 							da.setData(fi.getFieldName(), Streams.asString(is));
 						}
 					} else {
@@ -172,6 +179,7 @@ public class ServletController {
 		}
 		da.setData("storageContext", this.servletContext);
 		da.setData("pathSeparador", separador);
+
 		return da;
 	}
 
@@ -184,20 +192,21 @@ public class ServletController {
 
 		conteudo = view.choose(ad);
 		// Fixando conteúdo na index.
-		
-		if(ad.getData("index")==null){
-		MiniTemplator index = null;
-		try {
-			System.out.println(servletContext + "index.html");
-			index = new MiniTemplator(servletContext + "index.html");
-		} catch (TemplateSyntaxException | IOException e) {
-			e.printStackTrace();
-		}
-		index.setVariable("conteudo", conteudo);
-		return index.generateOutput();
-		}else return conteudo;
+
+		if (ad.getData("index") == null) {
+			MiniTemplator index = null;
+			try {
+				System.out.println(servletContext + "index.html");
+				index = new MiniTemplator(servletContext + "index.html");
+			} catch (TemplateSyntaxException | IOException e) {
+				e.printStackTrace();
+			}
+			index.setVariable("conteudo", conteudo);
+			return index.generateOutput();
+		} else
+			return conteudo;
 	};
-	
+
 	public static String getServletContext() {
 		return servletContext;
 	}
