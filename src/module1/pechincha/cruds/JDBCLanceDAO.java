@@ -121,7 +121,7 @@ public class JDBCLanceDAO extends DAOBehavior<Lance>{
 	public Lance searchMaxLanceByLeilao(int pkleilao) {
 		Lance temp = null;
 		try {
-			PreparedStatement ps = c.prepareStatement("select * from lance where idleilao = ? and lance = (select max(lance) from lance where idleilao = ?");
+			PreparedStatement ps = c.prepareStatement("select * from lance where idleilao = ? and lance = (select max(lance) from lance where idleilao = ?)");
 			ps.setInt(1,pkleilao);
 			ResultSet result = ps.executeQuery();
 
