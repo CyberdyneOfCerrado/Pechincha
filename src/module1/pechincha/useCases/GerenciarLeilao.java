@@ -20,10 +20,12 @@ import javax.servlet.http.HttpSession;
 import biz.source_code.miniTemplator.MiniTemplator;
 import biz.source_code.miniTemplator.MiniTemplator.TemplateSyntaxException;
 import module1.pechincha.controllers.ModelController;
+import module1.pechincha.cruds.JDBCImagemDAO;
 import module1.pechincha.cruds.JDBCLeilaoDAO;
 import module1.pechincha.cruds.JDBCLoteProdutoDAO;
 import module1.pechincha.cruds.JDBCProdutoDAO;
 import module1.pechincha.cruds.JDBCUsuarioDAO;
+import module1.pechincha.model.Imagem;
 import module1.pechincha.model.Leilao;
 import module1.pechincha.model.LoteProduto;
 import module1.pechincha.model.Usuario;
@@ -187,6 +189,24 @@ public class GerenciarLeilao extends ModelController {
 				done.setUseCase("ambienteLeilao");
 				done.setProcessed(true);
 				done.setStatus(true);
+				JDBCProdutoDAO pr = new JDBCProdutoDAO();
+				List<Produto> list= pr.list(Integer.parseInt((String)s.getAttribute("id")));
+				ArrayList <String> imgAdd = new ArrayList<>();
+				for (Produto produto:list){
+					List<Imagem> imgs = new JDBCImagemDAO().list(produto.getPk());
+					if ( imgs.size() > 0){
+						int temp=0;
+						while(temp<imgs.size()){
+							Imagem img = imgs.get(temp);
+							imgAdd.add(img.getPk() + "." + img.getFormato());
+							temp++;
+						}
+					}
+				}
+				done.setData("arrayImg",imgAdd);
+				for (String image:imgAdd){
+					System.out.println(image);
+				}
 				StorageLeilaoEnvironments.iniciarAmbienteLeilao(le);
 				return done;
 			}
