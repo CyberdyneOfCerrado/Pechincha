@@ -24,6 +24,9 @@ public class Security {
 				return false;
 			String[] temp = acess.get(useCase);
 
+			if (temp == null)
+				return false;
+
 			for (int a = 0; a < temp.length; a++)
 				if (temp[a].equals(action))
 					return true;
