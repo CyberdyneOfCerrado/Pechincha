@@ -79,14 +79,14 @@ $('document').ready(
 					hide : 100
 				}
 			});
-			
+
 			$('#tempo-restante').tooltip({
 				delay : {
 					show : 500,
 					hide : 100
 				}
 			});
-			
+
 		});
 
 var handshake = false;
