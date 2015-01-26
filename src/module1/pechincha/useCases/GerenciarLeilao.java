@@ -203,7 +203,7 @@ public class GerenciarLeilao extends ModelController {
 						}
 					}
 				}
-				done.setData("arrayImg",imgAdd);
+				done.setData("imagens",imgAdd);
 				for (String image:imgAdd){
 					System.out.println(image);
 				}
