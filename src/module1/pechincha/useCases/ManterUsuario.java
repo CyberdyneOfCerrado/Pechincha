@@ -46,7 +46,7 @@ public class ManterUsuario extends ModelController {
 				Usuario user = userDao.select(pk);
 				String senha = String.valueOf(action.getData("senha"));
 				if (user.getSenha().equals(senha)) {
-					done = retorno("false", "0", true, "manterUsuario", "excluir");
+					done = retorno("Conta excluída com sucesso!", "0", true, "manterUsuario", "excluir");
 					return done;
 				} else {
 					done = retorno("true", "0", false, "manterUsuario", "excluir");
@@ -155,7 +155,7 @@ public class ManterUsuario extends ModelController {
 				done = validar(action);
 				boolean status = (boolean) done.getData("status");
 				if (status) {
-					done = retorno("false", null, true, "manterUsuario", "cadastroerro");
+					done = retorno("Cadastro efetuado com sucesso!", null, true, "manterUsuario", "cadastroerro");
 				} else {
 					done = retorno(String.valueOf(done.getData("erro")), String.valueOf(done.getData("tipo")), (boolean) done.getData("status"),
 							"manterUsuario", "cadastroerro");
@@ -263,9 +263,7 @@ public class ManterUsuario extends ModelController {
 		} catch (Exception e) {
 			return check("Erro no campo Data de Nascimento! O campo deve conter a mascara DD-MM-AAAA", "5", false);
 		}
-		boolean teste;
-		if(a<=1900)teste=false;else teste=true;
-		if (d > 31 || d < 1 || m > 12 || m < 1 || teste || temp == null) {
+		if (d > 31 || d < 1 || m > 12 || m < 1 || a<=1900 || temp == null) {
 			return check("Erro no campo Data de Nascimento! O campo deve conter a mascara DD-MM-AA", "5", false);
 		}
 		if (user.getEmailPrincipal().length() < 10 || user.getEmailPrincipal().length() > 100 || user.getEmailPrincipal().equals("")) {
