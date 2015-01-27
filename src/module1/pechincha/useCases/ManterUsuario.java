@@ -227,7 +227,7 @@ public class ManterUsuario extends ModelController {
 
 		done.setAction("login");
 		done.setUseCase("manterUsuario");
-		done.setProcessed(true);
+		done.setProcessed(false);
 		done.setStatus(true);
 		return done;
 	};
