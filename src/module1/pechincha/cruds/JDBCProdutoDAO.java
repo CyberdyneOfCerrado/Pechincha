@@ -154,7 +154,7 @@ public class JDBCProdutoDAO extends DAOBehavior<Produto>{
 
 	@Override
 	public void update(Produto arg) {
-		String sql = "Update " + arg.getTableName() + " set " +
+		String sql = "update " + arg.getTableName() + " set " +
 				"titulo = ?, descricao = ?, preco = ?, quantidade = ?, fkusuario = ? " +
 				"where pk = ?";
 		

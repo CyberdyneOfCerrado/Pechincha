@@ -178,8 +178,6 @@ public class ManterProdutos  extends ModelController{
 		
 		JDBCProdutoDAO daoprod = new JDBCProdutoDAO();
 		Produto prod =  daoprod.select(idproduto);
-		prod.setPk(idproduto);
-		prod.setFkUsuario(idusuario);
 		
 		if ( prod == null || prod.getFkUsuario() != idusuario){
 			return listar(da);
@@ -243,8 +241,6 @@ public class ManterProdutos  extends ModelController{
 				}
 
 				if ( daoprod.validar(prod)){
-//					int pkprodinsert = daoprod.insertReturningPk(prod);
-					
 					GetFileUpload fup = new GetFileUpload();
 					String path = (String)da.getData("storageContext"),
 							separador = (String)da.getData("pathSeparador");
@@ -311,18 +307,14 @@ public class ManterProdutos  extends ModelController{
 							file.delete();
 						}
 					}
-					
 					if (qterem>0){
-						List<Imagem> list = insimg.list(idproduto);
-						
-						for (Imagem img : list){
-							if (imgs.contains(String.valueOf(img.getPk()))){
-								File file = new File(path + separador + img.getPk() + "." + img.getFormato());					 
-								file.delete();
-								insimg.delete(img.getPk());
-							}
+						for (String i : imgs){
+							Imagem img = insimg.select(Integer.valueOf(i));
+							insimg.delete(Integer.valueOf(i));
+							File file = new File(path + separador + img.getPk() + "." + img.getFormato());					 
+							file.delete();
+							insimg.delete(img.getPk());
 						}
-						insimg.deleteFromFKProduto(idproduto);
 					}
 					
 					daoprod.update(prod);
@@ -490,6 +482,7 @@ public class ManterProdutos  extends ModelController{
 				ad.setData("quantidade", prod.getQuantidade());
 				JDBCImagemDAO img = new JDBCImagemDAO();
 				List<Imagem> imagens = img.list(idproduto);
+				System.out.println(imagens.size() + " imagens");
 				
 				for (int i = 0; i < imagens.size(); i++){
 					ad.setData("img" + (i+1), imagens.get(i).getPk() + "." + imagens.get(i).getFormato());
