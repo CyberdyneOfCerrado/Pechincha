@@ -165,12 +165,23 @@ public class ManterProdutos  extends ModelController{
 		
 		int idusuario, idproduto;
 		
+		ad.setMessage((String)da.getData("message"));
+		
 		try{
 			idusuario = Integer.valueOf(((String)s.getAttribute("id")));
 			idproduto = Integer.valueOf((String)da.getData("idproduto"));
 		}catch(Exception e){
 			e.printStackTrace();
 			ad.setMessage("Erro desconhecido. Por favor, tente novamente.");
+			return listar(da);
+		}
+		
+		JDBCProdutoDAO daoprod = new JDBCProdutoDAO();
+		Produto prod =  daoprod.select(idproduto);
+		prod.setPk(idproduto);
+		prod.setFkUsuario(idusuario);
+		
+		if ( prod == null || prod.getFkUsuario() != idusuario){
 			return listar(da);
 		}
 		
@@ -186,51 +197,42 @@ public class ManterProdutos  extends ModelController{
 		
 		String confirm = (String)da.getData("confirm");
 		
-		if ( confirm == null){
+		if ( confirm == null || !Boolean.valueOf(confirm)){
 			try{
-				JDBCProdutoDAO daoprod = new JDBCProdutoDAO();
-				Produto prod =  daoprod.select(idproduto);
-				if ( prod != null){
-					if ( prod.getFkUsuario() != idusuario){
-						return ad;
-					}
-					ad.setData("titulo", prod.getTitulo());
-					ad.setData("descricao", prod.getDescricao());
-					ad.setData("preco", prod.getPreco());
-					ad.setData("quantidade", prod.getQuantidade());
-					JDBCImagemDAO img = new JDBCImagemDAO();
-					List<Imagem> imagens = img.list(idproduto);
-					
-					ad.setData("imagens", imagens);
+				ad.setData("titulo", prod.getTitulo());
+				ad.setData("descricao", prod.getDescricao());
+				ad.setData("preco", prod.getPreco());
+				ad.setData("quantidade", prod.getQuantidade());
+				JDBCImagemDAO img = new JDBCImagemDAO();
+				List<Imagem> imagens = img.list(idproduto);
 				
-					List<CategoriaProduto> catprod = new JDBCCategoriaProdutoDAO().list(idproduto);
-					ArrayList<Integer> catssel = new ArrayList<Integer>();
+				ad.setData("imagens", imagens);
+			
+				List<CategoriaProduto> catprod = new JDBCCategoriaProdutoDAO().list(idproduto);
+				ArrayList<Integer> catssel = new ArrayList<Integer>();
 
-					for (CategoriaProduto cp : catprod){
-						catssel.add(cp.getFkCategoria());
-					}
-					ad.setData("catsel", catssel);
+				for (CategoriaProduto cp : catprod){
+					catssel.add(cp.getFkCategoria());
 				}
+				ad.setData("catsel", catssel);
 			}catch(Exception e){
 				e.printStackTrace();
-				ad.setMessage("Erro.");
+				ad.setMessage("Erro desconhecido. Por favor, tente novamente.");
 			}
 		}else{
-			Produto prod = new Produto();
-			prod.setTitulo((String)da.getData("titulo"));
-			prod.setDescricao((String)da.getData("descricao"));		
-			
+			da.setData("confirm", "");
 			String cat = ((String)da.getData("categoria"));
 			
 			if ( cat == null ){
-				ad.setMessage("Ao menos uma categoria deve ser selecionada!");
-				return ad;
+				da.setData("message","Ao menos uma categoria deve ser selecionada!");
+				return editar(da);
 			}
 			
 			try{
+				prod.setTitulo((String)da.getData("titulo"));
+				prod.setDescricao((String)da.getData("descricao"));	
 				prod.setPreco(Float.valueOf((String)da.getData("preco")));
 				prod.setQuantidade(Integer.valueOf((String)da.getData("quantidade")));
-				prod.setFkUsuario(Integer.valueOf(((String)da.getData("idusuario")).split(",")[0]));
 								
 				List<String> imgs = null;
 					
@@ -240,9 +242,8 @@ public class ManterProdutos  extends ModelController{
 					imgs = Arrays.asList(((String)da.getData("imgrem")).split(","));
 				}
 
-				JDBCProdutoDAO manterproduto = new JDBCProdutoDAO();
-				if ( manterproduto.validar(prod)){
-					int pkprodinsert = manterproduto.insertReturningPk(prod);
+				if ( daoprod.validar(prod)){
+//					int pkprodinsert = daoprod.insertReturningPk(prod);
 					
 					GetFileUpload fup = new GetFileUpload();
 					String path = (String)da.getData("storageContext"),
@@ -250,10 +251,12 @@ public class ManterProdutos  extends ModelController{
 					path += separador + "imagens";
 					fup.setPath(path);
 					fup.setSeparador(separador);
-					int cont=0;
 					
 					ArrayList<DoAction> imagens = new ArrayList<DoAction>();
 					for (int i = 1; i <= 5; i++){
+						if (da.getData("imagem" + i) == null){
+							continue;
+						}
 						FileItemStream img = (FileItemStream)((DoAction)da.getData("imagem" + i)).getData("file");
 						
 						if (img != null && !img.getName().isEmpty()){
@@ -261,13 +264,21 @@ public class ManterProdutos  extends ModelController{
 						}
 					}
 					
-					if ( imagens.size() == 0){
-						manterproduto.delete(pkprodinsert);
-						ad.setMessage("Ao menos uma imagem deve ser enviada, com dimensões entre 480x360 e 1920x1080 nos formatos PNG ou JPG e tamanho máximo de 5 Mb.");
-						return ad;
+					int qterem = (imgs == null ? 0 : imgs.size());
+					JDBCImagemDAO insimg = new JDBCImagemDAO();
+					List<Imagem> imgsprod = insimg.list(idproduto);
+					
+					if ( imagens.size() == 0 && qterem == imgsprod.size()){
+						da.setData("message","Ao menos uma imagem deve ser enviada, com dimensões entre 480x360 e 1920x1080 nos formatos PNG ou JPG e tamanho máximo de 5 Mb.");
+						return editar(da);
 					}
 					
+					int imgcont=imgsprod.size()-qterem;
+					ArrayList<Imagem> imgtosave = new ArrayList<Imagem>();
 					for (DoAction img : imagens){
+						if (imgcont>5){
+							break;
+						}
 						ByteArrayOutputStream baos = (ByteArrayOutputStream)img.getData("data");
 						
 						if ( baos.size() > fup.getMaxSizeAllowed()){
@@ -278,56 +289,68 @@ public class ManterProdutos  extends ModelController{
 						FileItemStream fis = (FileItemStream)img.getData("file");
 						String name = fis.getName();
 						String formato = name.substring(name.lastIndexOf(".")+1);
-						System.out.println(formato);
-						Imagem imag = new Imagem(0, pkprodinsert, formato, baos.toByteArray());
-						JDBCImagemDAO insimg = new JDBCImagemDAO();
+						Imagem imag = new Imagem(0, idproduto, formato, baos.toByteArray());
 						
 						if ( !insimg.validar(imag)){
-							ad.setMessage("Ao menos uma imagem deve ser enviada, com dimensões entre 480x360 e 1920x1080 nos formatos PNG ou JPG e tamanho máximo de 5 Mb.");
-							manterproduto.delete(pkprodinsert);
-							return ad;
+							da.setData("message","Ao menos uma imagem deve ser enviada, com dimensões entre 480x360 e 1920x1080 nos formatos PNG ou JPG e tamanho máximo de 5 Mb.");
+							return editar(da);
 						}
-						int pknewimg = insimg.insertReturningPk(imag);
-						imag.setPk(pknewimg);
-						
-						long sizeread = fup.saveFile(baos, Integer.toString(pknewimg) + "." + formato);
+						imgtosave.add(imag);
+						imgcont++;
+					}
+
+					for (Imagem imts : imgtosave){
+						int pknewimg = insimg.insertReturningPk(imts);
+						imts.setPk(pknewimg);
+						ByteArrayOutputStream baos = new ByteArrayOutputStream();
+						baos.write(imts.getBytes());
+						long sizeread = fup.saveFile(baos, Integer.toString(pknewimg) + "." + imts.getFormato());
 						if ( sizeread == -1 || sizeread > fup.getMaxSizeAllowed()){
 							insimg.delete(pknewimg);
-						}else{
-							cont++;
-						}
-						if ( cont == 5){
-							break;
+							File file = new File(path + separador + imts.getPk() + "." + imts.getFormato());					 
+							file.delete();
 						}
 					}
-				
-					if ( cont == 0 ){
-						manterproduto.delete(pkprodinsert);
-						ad.setMessage("Ao menos uma imagem deve ser enviada, com dimensões entre 480x360 e 1920x1080 nos formatos PNG ou JPG e tamanho máximo de 5 Mb.");
-						return ad;
+					
+					if (qterem>0){
+						List<Imagem> list = insimg.list(idproduto);
+						
+						for (Imagem img : list){
+							if (imgs.contains(String.valueOf(img.getPk()))){
+								File file = new File(path + separador + img.getPk() + "." + img.getFormato());					 
+								file.delete();
+								insimg.delete(img.getPk());
+							}
+						}
+						insimg.deleteFromFKProduto(idproduto);
 					}
-					JDBCCategoriaProdutoDAO daoprod = new JDBCCategoriaProdutoDAO(); 
-					String[] cats = cat.split(",");
-					for(String i : cats){
-						daoprod.insert(new CategoriaProduto(0,Integer.valueOf(i),pkprodinsert));
+					
+					daoprod.update(prod);
+					
+					String[] nc = cat.split(",");
+					
+					JDBCCategoriaProdutoDAO daocatprod = new JDBCCategoriaProdutoDAO();
+					daocatprod.deleteFromFKProduto(idproduto);
+					
+					for(String i : nc){
+						daocatprod.insert(new CategoriaProduto(0,Integer.valueOf(i),idproduto));
 					}
 					
 					return listar(da);
 				}
 				else{
-					ad.setMessage("Título do produto deve conter entre 5 e 50 caracteres; "
+					da.setData("message","Título do produto deve conter entre 5 e 50 caracteres; "
 							+ "valor deve estar entre 0.1 e 1000000.00; "
 							+ "quantidade deve ser entre 1 e 100.");
-					return ad;
+					return editar(da);
 				}
 			}
 			catch(Exception e){
 				e.printStackTrace();
-				ad.setMessage("Erro desconhecido. Por favor, tente novamente.");
-				return ad;
+				da.setData("message","Erro desconhecido. Por favor, tente novamente.");
+				return editar(da);
 			}
-		}
-		
+		}		
 		return ad;
 	};
 	public ActionDone remover ( DoAction da ){

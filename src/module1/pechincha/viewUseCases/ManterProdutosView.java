@@ -61,7 +61,7 @@ public class ManterProdutosView extends ViewController {
 	}
 	private String visualizar(ActionDone ad){
 		
-		MiniTemplator temp = super.startMiniTemplator(super.getTemplate(ad)); 
+		MiniTemplator temp = super.startMiniTemplator(super.getTemplate(ad));
 		temp.setVariable("titulo",(String)ad.getData("titulo"));
 		for (int i = 1; i <= 5; i++){
 			String img = (String)ad.getData("img" + i);
@@ -77,8 +77,9 @@ public class ManterProdutosView extends ViewController {
 		temp.setVariable("categorias",(String)ad.getData("categorias"));
 		return temp.generateOutput();
 	}
-	private String editar(ActionDone ad){		
-		MiniTemplator temp = super.startMiniTemplator(super.getTemplate(ad)); 
+	private String editar(ActionDone ad){
+		MiniTemplator temp = super.startMiniTemplator(super.getTemplate(ad));
+		temp.setVariable("resultado",ad.getMessage());
 		temp.setVariable("titulo",(String)ad.getData("titulo"));
 		
 		List<Imagem> imagens = (List<Imagem>)ad.getData("imagens");

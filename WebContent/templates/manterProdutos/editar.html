@@ -71,7 +71,9 @@
 	<h6>O valor do produto é: R$ <input type="number" name="preco" min="0.1" max="1000000" value="${preco}" step="0.1" size="5"><h6><br>
 	<h4>Parte 6 - Quantidade de produtos (min: 1; máx: 100)</h4>
 	<h6>Este cadastro contém <input type="number" name="quantidade" min="1" max="100" value="${quantidade}"> unidade(s)</h6><br/>
-<input type="hidden" name="confirm" value="true" />
+	<input id="uc" type="hidden" name=useCase value="manterProdutos">
+	<input id="uc" type="hidden" name="action" value="editar">
+	<input type="hidden" name="confirm" value="true" />
 	<input id="imgrem" type="hidden" name="imgrem" value="" />
 	<div align="center"><input type="submit" value="Editar Produto" /></div>
 </form>
