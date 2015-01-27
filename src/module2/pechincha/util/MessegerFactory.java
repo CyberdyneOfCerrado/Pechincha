@@ -75,7 +75,7 @@ public class MessegerFactory {
 	};
 	
 	public static Messeger createMessegerLanceInvalido(){
-		Messeger m = new Messeger(-1,-1,"Pechincha",MsgTypes.LANCE_INVALIDO,"Seu lance foi invalidado.");
+		Messeger m = new Messeger(-1,-1,"Pechincha",MsgTypes.LANCE_INVALIDO,"Seu lance deve superar o lance corrente em R$ 0,50 e ter valor máximo de R$ 1.000.000,00!");
 		return m;
 	};
 	
