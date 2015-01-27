@@ -8,6 +8,7 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
@@ -77,13 +78,10 @@ public class ServletController {
 				ad.setData("redirect", "false");
 			} else {
 				ad = new ActionDone(da.getUseCase(), da.getAction(), da.getHashtable());// copiando
-																						// o
-																						// DAp/o
-																						// AC
 			}
 		}
+		ad.setData("Session", da.getData("Session"));
 		return readActionDone(ad);// abre o pacote de ação concluída e o manda
-									// p/ classe especialista
 	};
 
 	// Cria um pacote DoAction
@@ -101,6 +99,8 @@ public class ServletController {
 			action = "login";
 			da = new DoAction(useCase, action);
 			da.setData("redirect", "true");
+			// Pegando dados de Sessão
+			da.setData("Session", request.getSession());
 			return da;
 		} else {
 			useCase = request.getParameter("useCase");
@@ -172,11 +172,15 @@ public class ServletController {
 				}
 			} catch (SizeLimitExceededException e) {
 				da.setData("exception", "Tamanho máximo excedido");
+				// Pegando dados de Sessão
+				da.setData("Session", request.getSession());
 				return da;
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
+		// Pegando dados de Sessão
+		da.setData("Session", request.getSession());
 		da.setData("storageContext", this.servletContext);
 		da.setData("pathSeparador", separador);
 
@@ -192,8 +196,12 @@ public class ServletController {
 
 		conteudo = view.choose(ad);
 		// Fixando conteúdo na index.
+		return gerarIndex(conteudo, ad);
+	};
 
+	private String gerarIndex(String conteudo, ActionDone ad) {
 		if (ad.getData("index") == null) {
+
 			MiniTemplator index = null;
 			try {
 				System.out.println(servletContext + "index.html");
@@ -201,12 +209,15 @@ public class ServletController {
 			} catch (TemplateSyntaxException | IOException e) {
 				e.printStackTrace();
 			}
+
+			HttpSession s = (HttpSession) ad.getData("Session");
+
+			index.setVariable("nickName", (String) s.getAttribute("nickName"));
 			index.setVariable("conteudo", conteudo);
 			return index.generateOutput();
 		} else
 			return conteudo;
-	};
-
+	}
 	public static String getServletContext() {
 		return servletContext;
 	}

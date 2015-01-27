@@ -174,12 +174,20 @@ body {
 
 <div>
 <a href="#janela1" id="modal1" rel="modal"></a>
+<a href="#janela2" id="modal2" rel="modal"></a>
 <div class="window" id="janela1">
 		<a href="#" class="fechar close">&times;</a>
         <div class="alert alert-block">
         <h4>Oops!</h4>
     	<span id="mensagem"></span>
     	<span><br />Cheque o erro para continuar o seu cadastro!</span>
+    	</div>
+</div>
+<div class="window" id="janela2">
+		<a href="#" class="fechar close">&times;</a>
+        <div class="alert alert-success">
+        <h4>Sucesso!</h4>
+    	<span id="mensagem2"></span>
     	</div>
 </div>
 <div id="mascara"></div>
@@ -194,48 +202,63 @@ body {
 				<div class="control-group info" id="1">
 				<label for="nomeCompleto">Nome Completo</label><br />
 				<input type="text" id="nomeCompleto" name="nomeCompleto" min="10" max="250" /><span class="alerta">*Campo Obrigatório!</span><br />
+				<span class="help-block">O campo deverá conter entre 10 a 250 caracteres!</span>
 				</div>
 				<div class="control-group info" id="2">
 				<label for="senha">Senha</label><br />
 				<input type="password" id="senha" name="senha" min="6" max="16" /><span class="alerta">*Campo Obrigatório!</span><br />
+				<span class="help-block">O campo deverá conter entre 6 a 16 caracteres!</span>
 				</div>
 				<div class="control-group info" id="3">
 				<label for="confirmarSenha">Confirmar Senha</label><br />
 				<input type="password" id="confirmarSenha" name="confirmarSenha" min="6" max="16"/><span class="alerta">*Campo Obrigatório!</span><br />
+				<span class="help-block">O campo deverá conter entre 6 a 16 caracteres!</span>
 				</div>
 				<div class="control-group info" id="4">
 				<label for="nickname">Nickname</label><br />
 				<input type="text" id="nickname" name="nickname" min="5" max="10"/><span class="alerta">*Campo Obrigatório!</span><br />
+				<span class="help-block">O campo deverá conter entre 5 a 10 caracteres!</span>
 				</div>
 				<div class="control-group info" id="5">	
 				<label for="dataDeNascimento">Data de Nascimento</label><br />
 				<input type="text" id="dataDeNascimento" name="dataDeNascimento" /><span class="alerta">*Campo Obrigatório!</span><br />
+				<span class="help-block">O campo deverá conter a seguinte mascara DD/MM/AAAA!</span>
 				</div>
 				<div class="control-group info" id="6">
 				<label for="email">E-mail</label><br />
 				<input type="email" id="email" name="email" /><span class="alerta">*Campo Obrigatório!</span><br />
+				<span class="help-block">O campo deverá conter entre 10 a 100 caracteres!</span>
 				</div>
 				<div class="control-group info" id="7">
 				<label for="emailAlternativo">E-mail Alternativo</label><br />
 				<input type="email" id="emailAlternativo" name="emailAlternativo" /><br />
+				<span class="help-block">O campo deverá conter entre 10 a 100 caracteres!</span>
 				</div>
 				<div class="control-group info" id="8">
 				<label for="skype">Skype</label><br />
 				<input type="text" id="skype" name="skype" min="3" max="100" /><br />
+				<span class="help-block">O campo deverá conter até 100 caracteres!</span>
 				</div>
 				<div class="control-group info" id="9">
 				<label for="telefoneCelular">Telefone Celular</label><br />
 				<input type="number" id="telefoneCelular" name="telefoneCelular" /><span class="alerta">*Campo Obrigatório!</span><br />
+				<span class="help-block">O campo deverá conter a seguinte mascara '0xx55558888' e poderá ter um digito adicional!</span>
 				</div>
 				<div class="control-group info" id="10">
 				<label for="telefoneFixo">Telefone Fixo</label><br />
 				<input type="number" id="telefoneFixo" name="telefoneFixo" /><br />
+				<span class="help-block">Este campo deverá ter a seguinte máscara: '0xx55558888'!</span>
 				</div>
 				<input type="hidden" id="useCase" name="useCase" value="manterUsuario" />
 				<input type="hidden" id="etapa" name="etapa" value="check" />
 				<input type="hidden" id="action" name="action" value="incluirUsuario" />
 				<input type="button" id="concluir" class="btn btn-primary botao" onclick="concluirCad()" value="Concluir" />
-				<input type="button" id="cancelar" class="btn btn-primary botao" value="Cancelar" />
+				<input type="button" id="cancelar" class="btn btn-primary botao" onclick="cancelarCad()" value="Cancelar" />
+			</form>
+			<form class="form-search" action="q" id="cancelarCad" method="post">
+				<input type="hidden"  name="useCase" value="manterUsuario" />
+				<input type="hidden"  name="action" value="login" />
+				<input type="hidden"  name="redirect" value="true" />
 			</form>
 	</div>
 </div>

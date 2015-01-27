@@ -5,7 +5,14 @@ $.post("q",$("#cadastro").serialize()).done(
             var obj = jQuery.parseJSON(resposta);
             if(obj.estado===true){
                 document.getElementById("etapa").value="cadastrar";
-                document.getElementById("cadastro").submit();
+                    $("#mensagem2").text(obj.erro);
+                    document.getElementById("modal2").click();
+                    $('.fechar').click(function(ev){
+                         ev.preventDefault();
+                         $("#mascara").hide();
+                         $(".window").hide();
+                         document.getElementById("cadastro").submit();
+                     });
             }else{
                     $("#mensagem").text(obj.erro);
                     document.getElementById("modal1").click();
@@ -20,6 +27,10 @@ $.post("q",$("#cadastro").serialize()).done(
             console.log(resposta);
         }
     });
+}
+
+function cancelarCad(){
+    document.getElementById("cancelarCad").submit();
 }
 
 function focarUs(objResposta){

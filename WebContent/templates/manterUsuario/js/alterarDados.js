@@ -12,7 +12,7 @@ $.post("q",$("#cadastro").serialize()).done(
                          ev.preventDefault();
                          $("#mascara").hide();
                          $(".window").hide();
-                         focarUs(obj);
+                         document.getElementById("meusDados").submit();
                      });
                 });
             }else{

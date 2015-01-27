@@ -28,40 +28,52 @@
 				<div class="control-group info" id="1">
 				<label for="nomeCompleto">Nome Completo</label><br />
 				<input type="text" id="nomeCompleto" name="nomeCompleto" min="10" max="250" value="${nome}" /><span class="alerta">*Campo obrigatório!</span><br />
+				<span class="help-block">O campo deverá conter entre 10 a 250 caracteres!</span>
 				</div>
 				<div class="control-group info" id="4">
 				<label for="nickname">Nickname</label><br />
 				<input type="text" id="nickname" name="nickname" min="5" max="10" value="${nickname}" /><span class="alerta">*Campo obrigatório!</span><br />
+				<span class="help-block">O campo deverá conter entre 5 a 10 caracteres!</span>
 				</div>
 				<div class="control-group info" id="5">	
 				<label for="dataDeNascimento">Data de Nascimento</label><br />
 				<input type="text" id="dataDeNascimento" name="dataDeNascimento" value="${data}" /><span class="alerta">*Campo obrigatório!</span><br />
+				<span class="help-block">O campo deverá conter a seguinte mascara DD/MM/AAAA!</span>
 				</div>
 				<div class="control-group info" id="6">
 				<label for="email">E-mail</label><br />
 				<input type="email" id="email" name="email" value="${mail}" /><span class="alerta">*Campo obrigatório!</span><br />
+				<span class="help-block">O campo deverá conter entre 10 a 100 caracteres!</span>
 				</div>
 				<div class="control-group info" id="7">
 				<label for="emailAlternativo">E-mail Alternativo</label><br />
 				<input type="email" id="emailAlternativo" name="emailAlternativo" value="${mailalt}" /><br />
+				<span class="help-block">O campo deverá conter entre 10 a 100 caracteres!</span>
 				</div>
 				<div class="control-group info" id="8">
 				<label for="skype">Skype</label><br />
 				<input type="text" id="skype" name="skype" min="3" max="100" value="${skype}" /><br />
+				<span class="help-block">O campo deverá conter até 100 caracteres!</span>
 				</div>
 				<div class="control-group info" id="9">
 				<label for="telefoneCelular">Telefone Celular</label><br />
 				<input type="number" id="telefoneCelular" name="telefoneCelular" value="${cel}" /><span class="alerta">*Campo obrigatório!</span><br />
+				<span class="help-block">O campo deverá conter a seguinte mascara '0xx55558888' e poderá ter um digito adicional!</span>
 				</div>
 				<div class="control-group info" id="10">
 				<label for="telefoneFixo">Telefone Fixo</label><br />
 				<input type="number" id="telefoneFixo" name="telefoneFixo" value="${fixo}" /><br />
+				<span class="help-block">Este campo deverá ter a seguinte máscara: '0xx55558888'!</span>
 				</div>
 				<input type="hidden" id="useCase" name="useCase" value="manterUsuario" />
 				<input type="hidden" id="etapa" name="etapa" value="check" />
 				<input type="hidden" id="action" name="action" value="alterarDados" />
 				<input type="button" id="concluir" class="btn btn-primary botao" onclick="alterarCAD()" value="Concluir" />
 				<input type="button" id="senha" class="btn btn-primary botao" onclick="" value="alterarSenha" />
+			</form>
+			<form class="form-search" action="q" id="meusDados" method="post">
+				<input type="hidden" id="useCase" name="useCase" value="manterUsuario" />
+				<input type="hidden" id="action" name="action" value="meusDados" />
 			</form>
 	</div>
 </div>

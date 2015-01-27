@@ -93,7 +93,7 @@ public class HomeView extends ViewController {
 		result += "h:";
 
 		if (minutoInt < 10) {
-			result += String.valueOf(minutoInt) + "0";
+			result += "0" + String.valueOf(minutoInt);
 		} else {
 			result += String.valueOf(minutoInt);
 		}

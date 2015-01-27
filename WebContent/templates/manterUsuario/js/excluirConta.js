@@ -13,7 +13,14 @@ function excluir(){
             try{
                 var obj = jQuery.parseJSON(resposta);
     			if(obj.estado===true){
-    				$("#cadastro").submit();
+                    $("#mensagem2").text(obj.erro);
+                    document.getElementById("modal2").click();
+                    $('.fechar').click(function(ev){
+                         ev.preventDefault();
+                         $("#mascara").hide();
+                         $(".window").hide();
+                         $("#cadastro").submit();
+                     });
     			}else{
     				$('.fechar').click();
     				document.getElementById("modal1").click();
