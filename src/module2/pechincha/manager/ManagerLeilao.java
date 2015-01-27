@@ -131,7 +131,7 @@ public class ManagerLeilao extends Thread {
 
 	private synchronized void lance(UserSession userSession, Messeger messeger) {
 		float novoLance = Float.parseFloat(messeger.getMsg());
-		
+
 		if (ml.novoLance(leilao.getIdLeilao(), userSession.getIdUser(), novoLance)) {
 			lanceCorrente = novoLance;
 			this.maiorLance = userSession;
@@ -155,13 +155,12 @@ public class ManagerLeilao extends Thread {
 			// Replicar anúncio de termino de leilão para os participantes
 			// conectados.
 
-			String msg = "Os dados de acordo de comprar foram eviados para o seu email.";
-			String msgFalha = "O leilão fui finalizado, porém houve uma falha ao enviar os emails.";
+			String msg = "Os dados de acordo de compra foram eviados para o seu email.";
 			String msgDone = "O leilão foi encerrado.";
 
 			if (maiorLance.getSession().isOpen()) {
 
-				msgUnicast(maiorLance, MessegerFactory.createMessegerFinalizar( msg));
+				msgUnicast(maiorLance, MessegerFactory.createMessegerFinalizar(msg));
 				peers.remove(maiorLance.getIdUser());
 			}
 
