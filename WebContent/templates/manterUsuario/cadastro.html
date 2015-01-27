@@ -235,7 +235,12 @@ body {
 				<input type="hidden" id="etapa" name="etapa" value="check" />
 				<input type="hidden" id="action" name="action" value="incluirUsuario" />
 				<input type="button" id="concluir" class="btn btn-primary botao" onclick="concluirCad()" value="Concluir" />
-				<input type="button" id="cancelar" class="btn btn-primary botao" value="Cancelar" />
+				<input type="button" id="cancelar" class="btn btn-primary botao" onclick="cancelarCad()" value="Cancelar" />
+			</form>
+			<form class="form-search" action="q" id="cancelarCad" method="post">
+				<input type="hidden"  name="useCase" value="manterUsuario" />
+				<input type="hidden"  name="action" value="login" />
+				<input type="hidden"  name="redirect" value="true" />
 			</form>
 	</div>
 </div>

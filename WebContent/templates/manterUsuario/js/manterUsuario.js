@@ -22,6 +22,10 @@ $.post("q",$("#cadastro").serialize()).done(
     });
 }
 
+function cancelarCad(){
+    document.getElementById("cancelarCad").submit();
+}
+
 function focarUs(objResposta){
         switch(objResposta.tipo){
             case "1":

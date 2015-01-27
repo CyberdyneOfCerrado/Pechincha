@@ -13,6 +13,7 @@ $.post("q",$("#cadastro").serialize()).done(
                          $("#mascara").hide();
                          $(".window").hide();
                          focarUs(obj);
+                         document.getElementById("meusDados").submit();
                      });
                 });
             }else{
