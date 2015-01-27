@@ -259,11 +259,13 @@ public class ManterUsuario extends ModelController {
 		try {
 			d = Integer.parseInt(temp.substring(0, 2));
 			m = Integer.parseInt(temp.substring(3, 5));
-			a = Integer.parseInt(temp.substring(6, 10));
+			a = Integer.parseInt(temp.substring(6));
 		} catch (Exception e) {
 			return check("Erro no campo Data de Nascimento! O campo deve conter a mascara DD-MM-AAAA", "5", false);
 		}
-		if (d > 31 || d < 1 || m > 12 || m < 1 || a < 1900 || temp == null) {
+		boolean teste;
+		if(a<=1900)teste=false;else teste=true;
+		if (d > 31 || d < 1 || m > 12 || m < 1 || teste || temp == null) {
 			return check("Erro no campo Data de Nascimento! O campo deve conter a mascara DD-MM-AA", "5", false);
 		}
 		if (user.getEmailPrincipal().length() < 10 || user.getEmailPrincipal().length() > 100 || user.getEmailPrincipal().equals("")) {
