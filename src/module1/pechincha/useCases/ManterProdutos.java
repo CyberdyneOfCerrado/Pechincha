@@ -163,6 +163,24 @@ public class ManterProdutos  extends ModelController{
 		ad.setStatus(true);
 		ad.setProcessed(true);
 		
+		int idusuario, idproduto;
+		
+		try{
+			idusuario = Integer.valueOf(((String)s.getAttribute("id")));
+			idproduto = Integer.valueOf((String)da.getData("idproduto"));
+		}catch(Exception e){
+			e.printStackTrace();
+			ad.setMessage("Erro desconhecido. Por favor, tente novamente.");
+			return listar(da);
+		}
+		
+		JDBCLoteProdutoDAO lp = new JDBCLoteProdutoDAO(); 
+		if ( lp.existeLote(idproduto)){
+			ad.setMessage("Você não pode editar produto que esteja relacionado a algum lote.");
+			ad.setAction("listar");
+			return ad;
+		}
+		
 		List<Categoria> listcats = new JDBCCategoriaDAO().list();
 		ad.setData("categorias", listcats);
 		
@@ -170,9 +188,6 @@ public class ManterProdutos  extends ModelController{
 		
 		if ( confirm == null){
 			try{
-				int idusuario = Integer.valueOf(((String)s.getAttribute("id"))),
-					idproduto = Integer.valueOf((String)da.getData("idproduto"));
-				
 				JDBCProdutoDAO daoprod = new JDBCProdutoDAO();
 				Produto prod =  daoprod.select(idproduto);
 				if ( prod != null){
@@ -208,7 +223,7 @@ public class ManterProdutos  extends ModelController{
 			String cat = ((String)da.getData("categoria"));
 			
 			if ( cat == null ){
-				ad.setMessage("Nenhuma categoria.");
+				ad.setMessage("Ao menos uma categoria deve ser selecionada!");
 				return ad;
 			}
 			
@@ -248,7 +263,7 @@ public class ManterProdutos  extends ModelController{
 					
 					if ( imagens.size() == 0){
 						manterproduto.delete(pkprodinsert);
-						ad.setMessage("Nenhuma imagem.");
+						ad.setMessage("Ao menos uma imagem deve ser enviada, com dimensões entre 480x360 e 1920x1080 nos formatos PNG ou JPG e tamanho máximo de 5 Mb.");
 						return ad;
 					}
 					
@@ -268,14 +283,12 @@ public class ManterProdutos  extends ModelController{
 						JDBCImagemDAO insimg = new JDBCImagemDAO();
 						
 						if ( !insimg.validar(imag)){
-							ad.setMessage("Dados inconsistentes.");
+							ad.setMessage("Ao menos uma imagem deve ser enviada, com dimensões entre 480x360 e 1920x1080 nos formatos PNG ou JPG e tamanho máximo de 5 Mb.");
 							manterproduto.delete(pkprodinsert);
 							return ad;
 						}
 						int pknewimg = insimg.insertReturningPk(imag);
 						imag.setPk(pknewimg);
-						
-						System.out.println("PK da imagem: " + pknewimg);
 						
 						long sizeread = fup.saveFile(baos, Integer.toString(pknewimg) + "." + formato);
 						if ( sizeread == -1 || sizeread > fup.getMaxSizeAllowed()){
@@ -290,7 +303,7 @@ public class ManterProdutos  extends ModelController{
 				
 					if ( cont == 0 ){
 						manterproduto.delete(pkprodinsert);
-						ad.setMessage("Nenhuma imagem.");
+						ad.setMessage("Ao menos uma imagem deve ser enviada, com dimensões entre 480x360 e 1920x1080 nos formatos PNG ou JPG e tamanho máximo de 5 Mb.");
 						return ad;
 					}
 					JDBCCategoriaProdutoDAO daoprod = new JDBCCategoriaProdutoDAO(); 
@@ -302,13 +315,15 @@ public class ManterProdutos  extends ModelController{
 					return listar(da);
 				}
 				else{
-					ad.setMessage("Dados inconsistentes.");
+					ad.setMessage("Título do produto deve conter entre 5 e 50 caracteres; "
+							+ "valor deve estar entre 0.1 e 1000000.00; "
+							+ "quantidade deve ser entre 1 e 100.");
 					return ad;
 				}
 			}
 			catch(Exception e){
 				e.printStackTrace();
-				ad.setMessage("Erro desconhecido ou erro ao converter valores.");
+				ad.setMessage("Erro desconhecido. Por favor, tente novamente.");
 				return ad;
 			}
 		}
@@ -340,8 +355,9 @@ public class ManterProdutos  extends ModelController{
 			}
 			JDBCLoteProdutoDAO lp = new JDBCLoteProdutoDAO(); 
 			if ( lp.existeLote(idproduto)){
-				ad.setMessage("Você não pode remover produtos que esteja relacionado a algum lote.");
+				ad.setMessage("Você não pode remover produto que esteja relacionado a algum lote.");
 				ad.setAction("listar");
+				return ad;
 			}
 
 			if ( conf ){
