@@ -113,6 +113,7 @@ public class ManterProdutosView extends ViewController {
 	}
 	private String listar(ActionDone ad){
 		MiniTemplator temp = super.startMiniTemplator(super.getTemplate(ad));
+		temp.setVariable("resultado",ad.getMessage());
 		@SuppressWarnings("unchecked")
 		List<Categoria> listcats = (List<Categoria>)ad.getData("categorias");
 		for (Categoria cat : listcats){

@@ -101,9 +101,8 @@ public class ManterProdutos  extends ModelController{
 					}
 					
 					FileItemStream fis = (FileItemStream)img.getData("file");
-					String name = fis.getName();
-					String formato = name.substring(name.lastIndexOf(".")+1);
-					System.out.println(formato);
+					String name = fis.getName(),
+							formato = name.substring(name.lastIndexOf(".")+1);
 					Imagem imag = new Imagem(0, pkprodinsert, formato, baos.toByteArray());
 					JDBCImagemDAO insimg = new JDBCImagemDAO();
 					
@@ -136,7 +135,7 @@ public class ManterProdutos  extends ModelController{
 				for(String i : cats){
 					daoprod.insert(new CategoriaProduto(0,Integer.valueOf(i),pkprodinsert));
 				}
-				
+				da.setData("message", "Produto cadastrado com sucesso.");
 				return listar(da);
 			}
 			else{
@@ -185,9 +184,8 @@ public class ManterProdutos  extends ModelController{
 		
 		JDBCLoteProdutoDAO lp = new JDBCLoteProdutoDAO(); 
 		if ( lp.existeLote(idproduto)){
-			ad.setMessage("Você não pode editar produto que esteja relacionado a algum lote.");
-			ad.setAction("listar");
-			return ad;
+			da.setData("message","Você não pode editar produto que esteja relacionado a algum lote.");
+			return listar(da);
 		}
 		
 		List<Categoria> listcats = new JDBCCategoriaDAO().list();
@@ -237,7 +235,7 @@ public class ManterProdutos  extends ModelController{
 				String strimgrem = (String)da.getData("imgrem");
 				
 				if ( strimgrem != null){
-					imgs = Arrays.asList(((String)da.getData("imgrem")).split(","));
+					imgs = Arrays.asList(strimgrem.split(","));
 				}
 
 				if ( daoprod.validar(prod)){
@@ -259,8 +257,8 @@ public class ManterProdutos  extends ModelController{
 							imagens.add((DoAction)da.getData("imagem" + i));
 						}
 					}
-					
-					int qterem = (imgs == null ? 0 : imgs.size());
+
+					int qterem = (imgs == null || strimgrem.isEmpty() ? 0 : imgs.size());
 					JDBCImagemDAO insimg = new JDBCImagemDAO();
 					List<Imagem> imgsprod = insimg.list(idproduto);
 					
@@ -327,7 +325,7 @@ public class ManterProdutos  extends ModelController{
 					for(String i : nc){
 						daocatprod.insert(new CategoriaProduto(0,Integer.valueOf(i),idproduto));
 					}
-					
+					da.setData("message", "Produto alterado com sucesso.");
 					return listar(da);
 				}
 				else{
@@ -370,9 +368,8 @@ public class ManterProdutos  extends ModelController{
 			}
 			JDBCLoteProdutoDAO lp = new JDBCLoteProdutoDAO(); 
 			if ( lp.existeLote(idproduto)){
-				ad.setMessage("Você não pode remover produto que esteja relacionado a algum lote.");
-				ad.setAction("listar");
-				return ad;
+				da.setData("message","Você não pode remover produto que esteja relacionado a algum lote.");
+				return listar(da);
 			}
 
 			if ( conf ){
@@ -390,9 +387,7 @@ public class ManterProdutos  extends ModelController{
 				imgs.deleteFromFKProduto(idproduto);				
 				new JDBCCategoriaProdutoDAO().deleteFromFKProduto(idproduto);
 				daoprod.delete(idproduto);
-				ad.setMessage("Produto removido com sucesso.");
-				ad.setAction("listar");
-				
+				da.setData("message","Produto removido com sucesso.");
 				return listar(da);
 			}else{
 				ad.setData("idproduto", da.getData("idproduto"));
@@ -423,11 +418,11 @@ public class ManterProdutos  extends ModelController{
 		ad.setStatus(true);
 		ad.setProcessed(true);
 		
+		ad.setMessage((String)da.getData("message"));
+		
 		try{
 			int usuario = Integer.valueOf(((String)s.getAttribute("id")));			
 			String[] filtro = (String[])da.getData("categoria_array");
-			System.out.println("Categorias: " + filtro);
-//			List<Produto> prods = new JDBCProdutoDAO().list(usuario);
 			List<Produto> prods = new JDBCCategoriaProdutoDAO().getProdutosByCategorias(filtro,usuario);
 			
 			List<Categoria> listcats = new JDBCCategoriaDAO().list();
@@ -436,7 +431,6 @@ public class ManterProdutos  extends ModelController{
 			ArrayList<DoAction> list = new ArrayList<DoAction>();
 			for (Produto pr : prods){
 				DoAction prod = new DoAction(null, null);
-				System.out.println("pk prod :" + pr.getPk());
 				prod.setData("idproduto", pr.getPk());
 				prod.setData("titulo", pr.getTitulo());
 				prod.setData("descricao", pr.getDescricao());
@@ -482,7 +476,6 @@ public class ManterProdutos  extends ModelController{
 				ad.setData("quantidade", prod.getQuantidade());
 				JDBCImagemDAO img = new JDBCImagemDAO();
 				List<Imagem> imagens = img.list(idproduto);
-				System.out.println(imagens.size() + " imagens");
 				
 				for (int i = 0; i < imagens.size(); i++){
 					ad.setData("img" + (i+1), imagens.get(i).getPk() + "." + imagens.get(i).getFormato());
@@ -495,11 +488,10 @@ public class ManterProdutos  extends ModelController{
 					categoria += cat.select(cp.getFkCategoria()).getDescricao() + ", ";
 				}
 				ad.setData("categorias", categoria.substring(0, categoria.lastIndexOf(",")));
-				System.out.println("Processou.");
 			}
 		}catch(Exception e){
 			e.printStackTrace();
-			ad.setMessage("Erro.");
+			ad.setMessage("Erro desconhecido. Por favor, tente novamente.");
 		}
 		return ad;
 	};
