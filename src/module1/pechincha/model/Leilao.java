@@ -16,6 +16,7 @@ public class Leilao extends ReflectiveModel {
 	private String nickname;
 	private float precolote;
 	private String termino;
+	private String compras;
 
 	
 	public Leilao(int idLeilao, String etiqueta, int tempoLimite, int idLeiloeiro, float lanceInicial,String descricao,int comprador, ArrayList<LoteProduto> produto,String nickname,boolean ativo,int precolote){
@@ -44,6 +45,14 @@ public class Leilao extends ReflectiveModel {
 	
 	public Leilao(){}
 	
+	public String getCompras() {
+		return compras;
+	}
+
+	public void setCompras(String compras) {
+		this.compras = compras;
+	}
+
 	public String getTermino() {
 		return termino;
 	}

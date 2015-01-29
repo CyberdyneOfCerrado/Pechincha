@@ -256,14 +256,18 @@ public class GerenciarLeilao extends ModelController {
 		leilao.setTermino(tempo);
 		JDBCUsuarioDAO search = new JDBCUsuarioDAO();
 		Usuario comprador = search.select(leilao.getComprador());
+		String compras="<ul>";
 		if(comprador!=null){
 		List<Produto> temp=lt.produtosVendidos(leilao.getIdLeilao());
 			for(Produto prodTemp:temp){
 				Produto prod =  daoprod.select(prodTemp.getPk());
 				prod.setQuantidade(prod.getQuantidade()-prodTemp.getQuantidade());
+				compras+="<li>"+prodTemp.getQuantidade()+"X "+prod.getTitulo()+"</li>";
 				daoprod.update(prod);
 			}
 		}
+		compras+="<li>Total = $"+leilao.getPrecolote()+"</li></ul><br />";
+		leilao.setCompras(compras);
 		lt.delete(leilao.getIdLeilao());
 		leilao.setAtivo(false);
 		update.update(leilao);
@@ -293,7 +297,7 @@ public class GerenciarLeilao extends ModelController {
 		return true;
 		}else{
 			nome=leiloeiro.getNomeCompleto();
-			msg="<span>Informamos que o senhor(a) "+comprador.getNomeCompleto()+" efetuou uma compra no seu leilão. <br />Voce pode entrar em contato com o mesmo com os seguinte dados:<br /><ul><li>Skype: "+comprador.getSkype()+"</li><li>E-mail: "+comprador.getEmailPrincipal()+"</li><li>Telefone fixo: "+comprador.getTelFixo()+"</li><li>Telefone celular: "+comprador.getTelCelular()+"</li></ul><br /><h1>Agradecemos aos nossos clientes pela preferência</h1></span>";
+			msg="<span><h1>Informamos que o senhor(a) "+comprador.getNomeCompleto()+" efetuou uma compra no seu leilão, segue as informações dos produtos:</h1>"+leilao.getCompras()+" Voce pode entrar em contato com o mesmo com os seguinte dados:<br /><ul><li>Skype: "+comprador.getSkype()+"</li><li>E-mail: "+comprador.getEmailPrincipal()+"</li><li>Telefone fixo: "+comprador.getTelFixo()+"</li><li>Telefone celular: "+comprador.getTelCelular()+"</li></ul><br /><h1>Agradecemos aos nossos clientes pela preferência</h1></span>";
 			destino=leiloeiro.getEmailPrincipal();
 			if(!mail(nome,msg,destino)){
 				destino=leiloeiro.getEmailAlternativo();
@@ -302,7 +306,7 @@ public class GerenciarLeilao extends ModelController {
 				}
 			}
 			nome=comprador.getNomeCompleto();
-			msg="<span>É um prazer informar que o senhor(a) efetuou uma compra de "+leiloeiro.getNomeCompleto()+" no Pechincha.com. <br />Voce pode entrar em contato com o mesmo para concluir sua compra pelos seguintes canais de comunicação:<br /><ul><li>Skype: "+leiloeiro.getSkype()+"</li><li>E-mail: "+leiloeiro.getEmailPrincipal()+"</li><li>Telefone fixo: "+leiloeiro.getTelFixo()+"</li><li>Telefone celular: "+leiloeiro.getTelCelular()+"</li></ul><br /><h1>Agradecemos aos nossos clientes pela preferência</h1></span>";
+			msg="<span><h1>É um prazer informar que o senhor(a) efetuou uma compra de "+leiloeiro.getNomeCompleto()+" no Pechincha.com, segue as informações dos produtos:</h1>"+leilao.getCompras()+" Voce pode entrar em contato com o mesmo para concluir sua compra pelos seguintes canais de comunicação:<br /><ul><li>Skype: "+leiloeiro.getSkype()+"</li><li>E-mail: "+leiloeiro.getEmailPrincipal()+"</li><li>Telefone fixo: "+leiloeiro.getTelFixo()+"</li><li>Telefone celular: "+leiloeiro.getTelCelular()+"</li></ul><br /><h1>Agradecemos aos nossos clientes pela preferência</h1></span>";
 			destino=comprador.getEmailPrincipal();
 			if(!mail(nome,msg,destino)){
 				destino=comprador.getEmailAlternativo();

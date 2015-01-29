@@ -20,7 +20,7 @@ public class JDBCLeilaoDAO extends DAOBehavior<Leilao>{
 	};
 	@Override
 	public void insert(Leilao arg) {
-		String sql = "Insert into Leilao (etiqueta,descricao,comprador,ativo,idLeiloeiro,lanceInicial,tempoLimite,nickname,precolote,termino) values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) "; 
+		String sql = "Insert into Leilao (etiqueta,descricao,comprador,ativo,idLeiloeiro,lanceInicial,tempoLimite,nickname,precolote,termino,compras) values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) "; 
 		try {
 			PreparedStatement ps = c.prepareStatement(sql);
 			ps.setString(1,arg.getEtiqueta());
@@ -33,6 +33,7 @@ public class JDBCLeilaoDAO extends DAOBehavior<Leilao>{
 			ps.setString(8, arg.getNickname());
 			ps.setFloat(9, arg.getPrecolote());
 			ps.setString(10, arg.getTermino());
+			ps.setString(11, arg.getCompras());
 			ps.execute();
 			ps.close();
 		} catch (SQLException e) {
@@ -65,7 +66,7 @@ public class JDBCLeilaoDAO extends DAOBehavior<Leilao>{
 }
 	
 	public int insertReturningPk(Leilao arg){
-		String sql = "Insert into Leilao (etiqueta,descricao,comprador,ativo,idLeiloeiro,lanceInicial,tempoLimite,nickname,precolote,termino) values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) returning idleilao"; 
+		String sql = "Insert into Leilao (etiqueta,descricao,comprador,ativo,idLeiloeiro,lanceInicial,tempoLimite,nickname,precolote,termino,compras) values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) returning idleilao"; 
 		System.out.println(sql);
 		try {
 			PreparedStatement ps = c.prepareStatement(sql);
@@ -78,7 +79,8 @@ public class JDBCLeilaoDAO extends DAOBehavior<Leilao>{
 			ps.setInt(7,arg.getTempoLimite());
 			ps.setString(8, arg.getNickname());
 			ps.setFloat(9, arg.getPrecolote());
-			ps.setString(10, arg.getTermino());			
+			ps.setString(10, arg.getTermino());
+			ps.setString(11, arg.getCompras());
 			ResultSet result=ps.executeQuery();
 			int idleilao = 0;
 			while(result.next()){
@@ -121,6 +123,7 @@ public class JDBCLeilaoDAO extends DAOBehavior<Leilao>{
 				temp.setNickname(result.getString("nickname"));
 				temp.setPrecolote(result.getFloat("precolote"));
 				temp.setTermino(result.getString("termino"));
+				temp.setCompras(result.getString("compras"));
 				list.add(temp);
 			}
 			result.close();
@@ -152,6 +155,7 @@ public class JDBCLeilaoDAO extends DAOBehavior<Leilao>{
 				temp.setNickname(result.getString("nickname"));
 				temp.setPrecolote(result.getFloat("precolote"));
 				temp.setTermino(result.getString("termino"));
+				temp.setCompras(result.getString("compras"));
 				break;
 			}
 			result.close();
@@ -183,6 +187,7 @@ public class JDBCLeilaoDAO extends DAOBehavior<Leilao>{
 				temp.setNickname(result.getString("nickname"));
 				temp.setPrecolote(result.getFloat("precolote"));
 				temp.setTermino(result.getString("termino"));
+				temp.setCompras(result.getString("compras"));
 				list.add(temp);
 			}
 			result.close();
@@ -213,6 +218,7 @@ public class JDBCLeilaoDAO extends DAOBehavior<Leilao>{
 				temp.setNickname(result.getString("nickname"));
 				temp.setPrecolote(result.getFloat("precolote"));
 				temp.setTermino(result.getString("termino"));
+				temp.setCompras(result.getString("compras"));
 				break;
 			}
 			result.close();
@@ -227,7 +233,7 @@ public class JDBCLeilaoDAO extends DAOBehavior<Leilao>{
 	@Override
 	public void update(Leilao arg) {
 			String sql = "Update " + arg.getTableName() + " set " +
-					"etiqueta = ?,descricao = ?, comprador = ?, ativo = ?, idleiloeiro = ?, lanceinicial = ?, tempolimite = ?, nickname = ?, precolote = ?, termino = ? " +
+					"etiqueta = ?,descricao = ?, comprador = ?, ativo = ?, idleiloeiro = ?, lanceinicial = ?, tempolimite = ?, nickname = ?, precolote = ?, termino = ? ,compras = ? " +
 					"where idleilao = ?";
 			try {
 				PreparedStatement ps = c.prepareStatement(sql);
@@ -241,7 +247,8 @@ public class JDBCLeilaoDAO extends DAOBehavior<Leilao>{
 				ps.setString(8, arg.getNickname());
 				ps.setFloat(9, arg.getPrecolote());
 				ps.setString(10, arg.getTermino());
-				ps.setInt(11, arg.getIdLeilao());
+				ps.setString(11, arg.getCompras());
+				ps.setInt(12, arg.getIdLeilao());
 				ps.execute();
 				ps.close();
 			
