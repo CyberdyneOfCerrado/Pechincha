@@ -1,5 +1,7 @@
 package module1.pechincha.useCases;
 
+import java.text.DecimalFormat;
+
 public class ValidaLote {
 		public boolean validar(String[] quantidadeLote,String[] precoLote,String[] idproduto,String[] quantidade,String[] precoProd, float valorPerson,String[] adicionado){
 			int x=0;
@@ -14,11 +16,14 @@ public class ValidaLote {
 			x=0;
 			if(precoLote==null)return false;
 			for(String Lote:precoLote){
-				float tempPrecoLote=Float.parseFloat(Lote);
+				double tempPrecoLote=Double.parseDouble(Lote);
+				double precolote=converterDoubleDoisDecimais(tempPrecoLote);
 				int tempquantidade=Integer.parseInt(quantidadeLote[x]);
-				float tempPrecoProd=Float.parseFloat(precoProd[x]);
+				double tempPrecoProd=Double.parseDouble(precoProd[x]);
 				x++;
-				if(tempquantidade*tempPrecoProd==tempPrecoLote)resul=true;else return false;
+				double temp=tempquantidade*tempPrecoProd;
+				double preco=converterDoubleDoisDecimais(temp);
+				if(preco==precolote)resul=true;else return false;
 				}
 			if(valorPerson>=0 && valorPerson<=10000)resul=true;else return false;
 			for(String add:adicionado){
@@ -29,4 +34,13 @@ public class ValidaLote {
 			}
 			return resul;
 			}
+		  
+		public double converterDoubleDoisDecimais(double precoDouble) {  
+		    DecimalFormat fmt = new DecimalFormat("0.00");        
+		    String string = fmt.format(precoDouble);  
+		    String[] part = string.split("[,]");  
+		    String string2 = part[0]+"."+part[1];  
+		        double preco = Double.parseDouble(string2);  
+		    return preco;  
+		}  
 	}
