@@ -108,9 +108,15 @@ public class GerenciarLeilao extends ModelController {
 			quantidade=(String[])action.getData("quantidade_array");
 			precoProd=(String[])action.getData("precoProd_array");
 			adicionado=(String[])action.getData("adicionado_array");
+			valorPerson=0;
+			boolean valido;
+			try{
 			valorPerson=Float.parseFloat((String) action.getData("valorBox"));
+			valido=validaLote.validar(quantidadeLote, precoLote, idproduto, quantidade, precoProd,valorPerson,adicionado);
+			}catch(NumberFormatException e){
+				valido=false;
+			}
 			valorTrue=0;
-			boolean valido=validaLote.validar(quantidadeLote, precoLote, idproduto, quantidade, precoProd,valorPerson,adicionado);
 			if(valido){
 				done.setUseCase(action.getUseCase());
 				done.setAction("leilaop1erro");
