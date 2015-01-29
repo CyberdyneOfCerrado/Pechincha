@@ -1,6 +1,7 @@
 package module1.pechincha.useCases;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -147,8 +148,11 @@ public class GerenciarLeilao extends ModelController {
 				le.setNickname(user.getNickname());
 				le.setTempoLimite(Integer.parseInt((String) action.getData("tempolimite")));
 				if(action.getData("valorPersonalizado").equals("true")){
-					le.setLanceInicial(valorPerson);
-					le.setPrecolote(valorPerson);
+					double tempvalor=Double.valueOf(valorPerson);
+					double tempvalor2=converterDoubleDoisDecimais(tempvalor);
+					float valor = Float.parseFloat(String.valueOf(tempvalor2));
+					le.setLanceInicial(valor);
+					le.setPrecolote(valor);
 				}
 				else{
 					ArrayList<Integer> adicionados=new ArrayList<Integer>();
@@ -161,8 +165,11 @@ public class GerenciarLeilao extends ModelController {
 					for(int indice:adicionados){
 						valorTrue+=Integer.parseInt(quantidadeLote[indice])*Float.parseFloat(precoProd[indice]);
 					}
-					le.setLanceInicial(valorTrue);
-					le.setPrecolote(valorTrue);
+					double tempvalor=Double.valueOf(valorTrue);
+					double tempvalor2=converterDoubleDoisDecimais(tempvalor);
+					float valor = Float.parseFloat(String.valueOf(tempvalor2));
+					le.setLanceInicial(valor);
+					le.setPrecolote(valor);
 				}
 				int pk=leilao.insertReturningPk(le);
 				le.setIdLeilao(pk);
@@ -205,6 +212,15 @@ public class GerenciarLeilao extends ModelController {
 			}
 		return done;
 	}
+	
+	public double converterDoubleDoisDecimais(double precoDouble) {  
+	    DecimalFormat fmt = new DecimalFormat("0.00");        
+	    String string = fmt.format(precoDouble);  
+	    String[] part = string.split("[,]");  
+	    String string2 = part[0]+"."+part[1];  
+	        double preco = Double.parseDouble(string2);  
+	    return preco;  
+	} 	
 	
 	public ActionDone historicoLeilao(DoAction action){
 		ActionDone done=new ActionDone();
