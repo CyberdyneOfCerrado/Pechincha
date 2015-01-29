@@ -262,7 +262,7 @@ public class GerenciarLeilao extends ModelController {
 			for(Produto prodTemp:temp){
 				Produto prod =  daoprod.select(prodTemp.getPk());
 				prod.setQuantidade(prod.getQuantidade()-prodTemp.getQuantidade());
-				compras+="<li>"+prodTemp.getQuantidade()+"X "+prod.getTitulo()+"</li>";
+				compras+="<li>"+prodTemp.getQuantidade()+" unidade(s) de "+prod.getTitulo()+"</li>";
 				daoprod.update(prod);
 			}
 		}
