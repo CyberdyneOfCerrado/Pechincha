@@ -339,7 +339,7 @@ public class GerenciarLeilao extends ModelController {
 			return true;
 		}
 	}
-	private synchronized boolean  mail(String nome,String msg,String destino){
+	public synchronized boolean  mail(String nome,String msg,String destino){
 		final String username = "pechincha@g4group.me";
 	    final String password = "pechincha123";
 	    String separador=System.getProperty("file.separator");
