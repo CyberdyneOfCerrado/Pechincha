@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pechincha</title>
+
+    <!-- Bootstrap -->
+	<link rel="stylesheet" href="templates/lib/css/bootstrap.min.css" media="screen">
+	<link href="templates/lib/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  		<script src="templates/lib/js/bootstrap.min.js"></script>
+  		<script src="templates/manterUsuario/js/md5.js"></script>
+  		<script src="templates/manterUsuario/js/alterarSenha.js"></script>
+  	<!-- Não apaga a treta maligna abaixo -->
+	<!--[if it IE 9]>
+			<script src="templates/lib/js/html5shiv.js"></script>
+		<![endif]-->
+		
+	<style>
+		body {
+			background-image: url('templates/lib/images/index_bkgrnd.png')
+		}
+		
+		.fixContainer{
+			padding-top:70px;
+		}
+		
+		#logo{
+			margin-top:-10px;
+		}
+		
+		.navbar-inner {
+		background-color: #0080ff !important;
+		border-color: #0080ff !important;
+		background-image: none;
+		}
+		
+		.navbar-default .navbar-brand {
+			color: #ffffff;
+		}
+		.navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus {
+			color: #dfdfdf;
+		}
+		.navbar-default .navbar-text {
+			color: #ffffff;
+		}
+		.navbar-default .navbar-nav > li > a {
+			color: #ffffff;
+		}
+		.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+			color: #dfdfdf;
+		}
+		.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
+			color: #dfdfdf;
+			background-color: #0080ff;
+		}
+		.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
+			color: #dfdfdf;
+			background-color: #0080ff;
+		}
+		.navbar-default .navbar-toggle {
+			border-color: #0080ff;
+		}
+		.navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
+			background-color: #0080ff;
+		}
+		.navbar-default .navbar-toggle .icon-bar {
+			background-color: #ffffff;
+		}
+		.navbar-default .navbar-collapse,
+		.navbar-default .navbar-form {
+			border-color: #ffffff;
+		}
+		.navbar-default .navbar-link {
+			color: #ffffff;
+		}
+		.navbar-default .navbar-link:hover {
+			color: #dfdfdf;
+		}
+		
+		@media (max-width: 767px) {
+			.navbar-default .navbar-nav .open .dropdown-menu > li > a {
+				color: #ffffff;
+			}
+			.navbar-default .navbar-nav .open .dropdown-menu > li > a:hover, .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {
+				color: #dfdfdf;
+			}
+			.navbar-default .navbar-nav .open .dropdown-menu > .active > a, .navbar-default .navbar-nav .open .dropdown-menu > .active > a:hover, .navbar-default .navbar-nav .open .dropdown-menu > .active > a:focus {
+				color: #dfdfdf;
+				background-color: #0080ff;
+			}
+		}
+		
+			.box{
+			position: relative; 
+			width:560px; 
+			height:220px;
+			background-color: white; 
+			margin-left:-280px;
+			margin-top:110px;
+			margin-bottom:50px;
+		    left:50%;
+			top:50%;
+			-webkit-border-radius: 2px;
+			-moz-border-radius: 2px;
+			border-radius: 2px;
+			
+			-moz-box-shadow: 0 0 10px gray;
+			-webkit-box-shadow: 0 0 10px gray;
+			box-shadow: 0 0 10px gray;
+		}
+		
+		.header{
+			background-color: rgb(0,128,255);
+			margin-bottom: 20px;
+			width:100%; 
+			height:30px;
+		}
+		
+		.logoCenter{
+			position:relative;
+			margin-left: -114px !important;
+			left:50%;
+		}
+	</style>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+  
+  
+  <div class="navbar navbar-default navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container">
+	 
+		      <!-- Be sure to leave the brand out there if you want it shown -->
+		      <a class="brand logoCenter"  href="#"><img id="logo" src="templates/lib/images/logo.png" /></a>
+		 
+	 </div>
+    </div>
+  </div>
+</div>
+
+	<script>	
+	
+	</script>
+	
+	<!--conteúdo-->
+	<div class="container fixContainer">
+		<!-- Início -->
+					
+				<div class="row">
+					<div class="span6">
+						<!--Cabecalho-->
+						<div class="row">
+							<div class="span6">
+								<h5>Informe o seu e-mail abaixo para receber a senha</h5>
+							</div>
+						</div>
+						<!--formulário-->
+						<div class="row">
+							<div class="span6">
+								 <fieldset>
+								    <label>E-mail</label>
+								    <input type="email" id="email" placeholder="Exemplo@Email.com">
+								    <span class="help-block">Entre com o e-mail que você usa para fazer login.</span>
+								    <button type="submit" id="enviar" class="btn">Enviar solicitação</button>
+								  </fieldset>
+							</div>
+						</div>
+					</div>
+
+					<div class="span6">
+						<!--Cabecalho-->
+						<div class="row">
+							<div class="span6">
+								<h5>Insira o código abaixo e informe a nova senha</h5>
+							</div>
+						</div>
+						<!--formulário-->
+						<div class="row">
+							<div class="span6">
+								
+								  <fieldset>
+								    <label>Codigo de verificação</label>
+								    <input type="text" id="codVerificacao"placeholder="Digite o código">
+								    <span class="help-block">Você deve inserir o código enviado para o seu e-mail aqui.</span>
+								    <label>Nova senha</label>
+								    <input type="password" id="senha">
+								    <label>Confirmação de senha</label>
+								    <input type="password" id="senhaConfirmacao"> </br>
+								    <button type="submit" id="confirmar"class="btn">Confirmar alteração</button>
+								  </fieldset>
+								
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="span12" id="error">
+						</div>
+					</div>
+				</div>
+		<!-- Fim -->
+	</div>
+	
+  </body>
+</html>

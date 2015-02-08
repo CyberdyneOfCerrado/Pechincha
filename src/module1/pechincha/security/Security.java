@@ -9,7 +9,7 @@ public class Security {
 		acess = new Hashtable<>();
 		// Adicionar ações que são permitidas sem o login;
 
-		String[] manterUsuario = {"login", "incluirUsuario"};
+		String[] manterUsuario = {"login", "incluirUsuario","alterarSenha","solicitacao"};
 
 		acess.put("manterUsuario", manterUsuario);
 	}

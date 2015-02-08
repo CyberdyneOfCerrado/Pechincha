@@ -28,20 +28,41 @@ public class ManterUsuarioView extends ViewController {
 			case "meusDados" :
 				retorno = meusDados(ad);
 				break;
-			case "excluir":
+			case "excluir" :
 				retorno = excluirConta(ad);
 				break;
-			case "excluirConta":
+			case "excluirConta" :
 				retorno = telaExcluir(ad);
 				break;
-			case "alterarDados":
+			case "alterarDados" :
 				retorno = telaAlterar(ad);
 				break;
-			case "respostaAlterar":
+			case "respostaAlterar" :
 				retorno = respostaAlterar(ad);
-				break;	
+				break;
+			case "solicitacao" :
+				retorno = solicitacao(ad);
+				break;
+			case "alterarSenha" :
+				retorno = alterarSenha(ad);
+
 		}
 		return retorno;
+	}
+
+	private String solicitacao(ActionDone ad) {
+		ad.setData("index", "false");
+		return ad.getMessage();
+	};
+
+	private String alterarSenha(ActionDone ad) {
+		ad.setData("index", "false");
+
+		if (!ad.isProcessed()) {
+			MiniTemplator temp = super.startMiniTemplator(super.getTemplate(ad));
+			return temp.generateOutput();
+		}
+		return ad.getMessage();
 	}
 
 	private String login(ActionDone ad) {
@@ -49,39 +70,39 @@ public class ManterUsuarioView extends ViewController {
 			MiniTemplator temp = super.startMiniTemplator(super.getTemplate(ad));
 			ad.setData("index", "false");
 			return temp.generateOutput();
-		}else{
-			return (String) ad.getData("loginStatus"); 
+		} else {
+			return (String) ad.getData("loginStatus");
 		}
 	}
-	
-	public String excluirConta(ActionDone ad){
+
+	public String excluirConta(ActionDone ad) {
 		return (String) ad.getData("message");
 	}
-	
-	public String respostaAlterar(ActionDone ad){
+
+	public String respostaAlterar(ActionDone ad) {
 		return (String) ad.getData("message");
 	}
-	
-	public String telaAlterar(ActionDone ad){
+
+	public String telaAlterar(ActionDone ad) {
 		Usuario user = (Usuario) ad.getData("user");
 		MiniTemplator temp = super.startMiniTemplator(super.getTemplate(ad));
 		temp.setVariable("nome", user.getNomeCompleto());
 		temp.setVariable("nickname", user.getNickname());
-		temp.setVariable("data",user.getDataNascimento());
+		temp.setVariable("data", user.getDataNascimento());
 		temp.setVariable("mail", user.getEmailPrincipal());
 		temp.setVariable("mailalt", user.getEmailAlternativo());
 		temp.setVariable("skype", user.getSkype());
 		temp.setVariable("cel", user.getTelCelular());
 		temp.setVariable("fixo", user.getTelFixo());
-		return temp.generateOutput();	
+		return temp.generateOutput();
 	}
-	
-	public String meusDados(ActionDone ad){
+
+	public String meusDados(ActionDone ad) {
 		Usuario user = (Usuario) ad.getData("usuario");
 		MiniTemplator temp = super.startMiniTemplator(super.getTemplate(ad));
 		temp.setVariable("nome", user.getNomeCompleto());
 		temp.setVariable("nickname", user.getNickname());
-		temp.setVariable("data",user.getDataNascimento());
+		temp.setVariable("data", user.getDataNascimento());
 		temp.setVariable("mail", user.getEmailPrincipal());
 		temp.setVariable("mailAlt", user.getEmailAlternativo());
 		temp.setVariable("skype", user.getSkype());
@@ -98,8 +119,8 @@ public class ManterUsuarioView extends ViewController {
 		MiniTemplator temp = super.startMiniTemplator(super.getTemplate(ad));
 		temp.setVariable("id", String.valueOf(ad.getData("id")));
 		return temp.generateOutput();
-	}	
-	
+	}
+
 	public String cadastro(ActionDone ad) {
 		MiniTemplator temp = super.startMiniTemplator(super.getTemplate(ad));
 		return temp.generateOutput();

@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import module1.pechincha.controllers.ModelController;
 import module1.pechincha.cruds.JDBCUsuarioDAO;
 import module1.pechincha.model.Usuario;
+import module1.pechincha.security.VerificationCodeFactory;
 import module1.pechincha.util.ActionDone;
 import module1.pechincha.util.DoAction;
 
@@ -15,7 +16,7 @@ public class ManterUsuario extends ModelController {
 
 	@Override
 	public String[] getActions() {
-		String[] actions = {"incluirUsuario", "login", "meusDados", "excluirConta", "alterarDados", "sair"};
+		String[] actions = {"incluirUsuario", "login", "meusDados", "excluirConta", "alterarDados", "solicitacao", "alterarSenha", "sair"};
 		return actions;
 	}
 
@@ -23,6 +24,45 @@ public class ManterUsuario extends ModelController {
 	public String getUserCase() {
 		return "manterUsuario";
 	}
+
+	public ActionDone alterarSenha(DoAction action) {
+		ActionDone done = new ActionDone();
+		JDBCUsuarioDAO usuarioDao = new JDBCUsuarioDAO();
+		String code = (String) action.getData("code");
+		String email = VerificationCodeFactory.verify(code);
+
+		int pk = usuarioDao.getPkByEmail(email);
+
+		if (pk != -1) {
+			String senha = (String) action.getData("senha");
+			usuarioDao.updateSenha(pk, senha);
+			done.setMessage("true");
+		} else {
+			done.setMessage("false");
+		}
+
+		done.setAction("alterarSenha");
+		done.setUseCase("manterUsuario");
+		done.setProcessed(true);
+		done.setStatus(true);
+		return done;
+	};
+
+	public ActionDone solicitacao(DoAction action) {
+		ActionDone done = new ActionDone();
+		GerenciarLeilao gl = new GerenciarLeilao();
+
+		String verificationCode = VerificationCodeFactory.create((String) action.getData("email"));
+
+		gl.mail("Pechicha", "Seu código de verificação é : " + verificationCode, (String) action.getData("email"));
+
+		done.setAction("solicitacao");
+		done.setUseCase("manterUsuario");
+		done.setMessage("Código de verificação foi enviado com sucesso para o e-mail '" + (String) action.getData("email") + "'");
+		done.setProcessed(false);
+		done.setStatus(true);
+		return done;
+	};
 
 	public ActionDone excluirConta(DoAction action) {
 		String etapa = String.valueOf(action.getData("etapa"));
@@ -263,7 +303,7 @@ public class ManterUsuario extends ModelController {
 		} catch (Exception e) {
 			return check("Erro no campo Data de Nascimento! O campo deve conter a mascara DD-MM-AAAA", "5", false);
 		}
-		if (d > 31 || d < 1 || m > 12 || m < 1 || a<=1900 || temp == null) {
+		if (d > 31 || d < 1 || m > 12 || m < 1 || a <= 1900 || temp == null) {
 			return check("Erro no campo Data de Nascimento! O campo deve conter a mascara DD-MM-AA", "5", false);
 		}
 		if (user.getEmailPrincipal().length() < 10 || user.getEmailPrincipal().length() > 100 || user.getEmailPrincipal().equals("")) {

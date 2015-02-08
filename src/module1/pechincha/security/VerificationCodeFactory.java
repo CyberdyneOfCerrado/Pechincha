@@ -18,7 +18,7 @@ public class VerificationCodeFactory {
 		Random rand = new Random();
 
 		for (int a = 0; a < code.length; a++) {
-			code[a] = (char) ((char) rand.nextInt(125) + 49);
+			code[a] = (char) ((char) rand.nextInt(76) + 49);
 		}
 		map.put(new String(code), email);
 		return new String(code);
@@ -29,6 +29,7 @@ public class VerificationCodeFactory {
 		// Se o código existir, o respectivo email será retornado, caso
 		// contrário, será retornado null.
 		instanceMap(); 
+		
 		if (null != map.get(code)) {
 			String temp = map.get(code);
 			map.remove(code);
